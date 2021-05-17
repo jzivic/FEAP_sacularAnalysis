@@ -10,6 +10,7 @@ from SimulationsData import *
 
 
 simPath = "/home/josip/feap/pocetak/"+parametarskaAnaliza+"/rezultati/sakularna/"
+# simPath = "/home/josip/feap/pocetak/"+parametarskaAnaliza+"/rezultati/sakularna/r=10/"
 
 
 
@@ -21,34 +22,48 @@ class FolderSearch:
 
 
     def __init__(self, folder):
-        self.folder = folder
-        self.iteratingOverFolder()
 
+        for root, dirs, files in os.walk(folder):
 
-    def iteratingOverFolder(self):
-        for root, dirs, files in os.walk(self.folder):
-
-            for lvl1 in dirs:
-                if str(lvl1).startswith("r="):
-                    rFolder = lvl1
-                    # print(i)
-                    os.chdir(simPath+"/"+rFolder)
-                    print(os.getcwd())
-
-
-            break
+            if "iparameters" in files and "PRESKOCI" not in self.pathToStrings(root):   #dobre dat koje se anal
+                print(root)
 
 
 
 
+    def pathToStrings(self, path):
+        path = path[1::] if path[0] == "/" else path[0::]
+        l, lDirString, s = [],[], None
+        for ch in [i for i in path]:
+            if ch != "/":
+                l.append(ch)
+                s = "".join(l)
+            else:
+                lDirString.append(s)
+                l = []
+        return lDirString
 
 
 
 
+"""
+def pathToStrings(path):
 
+    path = path[1::] if path[0]=="/" else path[0::]
+    l, lDirString, s = [],[], None
 
+    for ch in [i for i in path]:
+        if ch != "/":
+            l.append(ch)
+            s = "".join(l)
+        else:
+            lDirString.append(s)
+            l = []
+    # print(lDirString)
+    return lDirString
 
-
+# pathToStrings(pathAnalysis)
+"""
 
 
 
