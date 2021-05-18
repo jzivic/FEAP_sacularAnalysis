@@ -14,10 +14,10 @@ from SimulationsData import *
 oneSimTestPath = "/home/josip/feap/pocetak/" + parametarskaAnaliza + "/rezultati/sakularna/r=10/parametar_k1/k1=1.06"
 ###################################################################################################################
 
-duljinaStepa = 51
-TSLegnht_eIW = duljinaStepa + 3
-TSLegnht_rIl = duljinaStepa + 1
-TSLegnht_ctl = duljinaStepa + 1
+TSLenght = 51
+TSLegnht_eIW = TSLenght + 3
+TSLegnht_rIl = TSLenght + 1
+TSLegnht_ctl = TSLenght + 1
 TSLegnht_rN1704 = 1
 
 ###################################################################################################################

@@ -1,5 +1,6 @@
+##################################################################################################################################################################
 PODACI
-
+##################################################################################################################################################################
 
 parametarskaAnaliza                        =
 
@@ -26,36 +27,79 @@ uvjetFlagova                            flagCondition
 
 
 ##################################################################################################################################################################
-
-
 SKLAPANJE
+##################################################################################################################################################################
+
+rezultatiFolder                         resultsFolder
+SakularnaFunkcija_TS                    SacularAnalysis_f
+pretrazivanje                           search
+n                                       =
 
 
-
-
-
-
-
-
-
-
-
-
+##################################################################################################################################################################
 PRETRAŽIVANJE FOLDERA
+##################################################################################################################################################################
+
+class PretrazivanjeFolderaSakularna     FolderSearch
+
+self.popisSvihPutanja = []              allPaths = []
+self.popisSvihImena = []                allNames = []
 
 
 
 
 
-
-
-
-
-
-
-
-
+##################################################################################################################################################################
 RAČUNANJE
+##################################################################################################################################################################
+
+
+duljinaStepa                                                                 TSLenght
+duljinaStepa_eIW                                                             TSLegnht_eIW
+duljinaStepa_rIl                                                             TSLegnht_rIl
+duljinaStepa_ctl                                                             TSLegnht_ctl
+duljinaStepa_rN1704                                                          TSLegnht_rN1704
+
+
+
+putanjaSakularne                                                             resultsFolder
+nSimulacije                                                                  nSim
+self.nSimulacije                                                             self.nSim
+
+self.objektPS                                                                self.objectDE
+putanjaSimulacije                                                            simPath
+
+self.imeSimulacije                                                           self.simName
+
+
+self.oKorSim                                                                 self.chosenTStSim
+self.bK                                                                      self.nTSt
+self.bEx                                                                     self.bEx
+self.Pravljenje_sTS()                                                        ####self.Creating_aTS_Vector()
+
+self.PostavljanjeOdabranogKoraka()                                           self.SettingChosenTimeStep()
+self.PostavljanjeDatoteka(putanjaSimulacije)                                 self.SettingAnalysisFiles()
+
+
+startniRed_eIW = 69 - 1 + duljinaStepa_eIW * (self.oKorSim[self.bK] - 1)   --->   startingLine_eIW = 69 -1 + TSLegnht_eIW * (self.chosenTStSim[self.nTSt] - 1 )
+
+
+otvaranje_eIW                                                                 opening_eIW
+self.cijeli_tekst_eIW                                                         self.wholeDocument_eIW
+self.nl_eIW                                                                   self.nl_eIW
+self.maxTS                                                                    self.maxTS
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
