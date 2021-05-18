@@ -17,15 +17,6 @@ popisNastavaka                          suffixList
 uvjetFlagova                            flagCondition
 
 
-
-
-
-
-
-
-
-
-
 ##################################################################################################################################################################
 SKLAPANJE
 ##################################################################################################################################################################
@@ -72,7 +63,7 @@ putanjaSimulacije                                                            sim
 self.imeSimulacije                                                           self.simName
 
 
-self.oKorSim                                                                 self.chosenTStSim
+self.oKorSim                                                                 self.chosListTS
 self.bK                                                                      self.nTSt
 self.bEx                                                                     self.bEx
 self.Pravljenje_sTS()                                                        ####self.Creating_aTS_Vector()
@@ -81,7 +72,7 @@ self.PostavljanjeOdabranogKoraka()                                           sel
 self.PostavljanjeDatoteka(putanjaSimulacije)                                 self.SettingAnalysisFiles()
 
 
-startniRed_eIW = 69 - 1 + duljinaStepa_eIW * (self.oKorSim[self.bK] - 1)   --->   startingLine_eIW = 69 -1 + TSLegnht_eIW * (self.chosenTStSim[self.nTSt] - 1 )
+startniRed_eIW = 69 - 1 + duljinaStepa_eIW * (self.oKorSim[self.bK] - 1)   --->   startLine_eIW = 69 -1 + TSLegnht_eIW * (self.chosListTS[self.nTSt] - 1 )
 
 
 otvaranje_eIW                                                                 opening_eIW
@@ -90,20 +81,17 @@ self.nl_eIW                                                                   se
 self.maxTS                                                                    self.maxTS
 
 
+self.oKorSim[self.bK]                                                         self.chosListTS[self.nTSt]
+odabraniKorak                                                                 chosenTimeStep
 
 
 
 
+self.ProvjeraNastankaAAA()                                                    self.CheckAAAFormation
+self.NemaAAA()                                                                self.NoAAA
 
 
-
-
-
-
-
-
-
-
+redN                                                                          nNodes
 
 
 

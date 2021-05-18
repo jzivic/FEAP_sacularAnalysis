@@ -7,24 +7,10 @@ parametarskaAnaliza="parametarskaAnaliza_2"
 # parametarskaAnaliza = "parametarskaAnalizaSve"
 
 
-folder1 = "r="
-
 # chosenTimeSteps = [190, 208, 226, 244, 262, 280, 298, 316, 334, 352, 370, 388, 406, 424, 442, 460, 478]
 # chosenTimeSteps = [190, 220,280, 316, 350]
 # chosenTimeSteps = [222, 300]
 chosenTimeSteps = [-1]
-
-
-analizaSvihSimulacija = True
-istiPocetniRadijus = False
-plotanjeKonture = False
-
-
-sigmaKriticno = 1000
-popisNastavaka = ["101-2", "102-3"]
-
-uvjetFlagova = {"S22":[500, 800], "GR":[5, 10], "D":45}
-
 
 
 
