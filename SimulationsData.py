@@ -9,10 +9,10 @@ parametarskaAnaliza="parametarskaAnaliza_2"
 
 folder1 = "r="
 
-# chosenSteps = [190, 208, 226, 244, 262, 280, 298, 316, 334, 352, 370, 388, 406, 424, 442, 460, 478]
-# chosenSteps = [190, 220,280, 316, 350]
-chosenSteps = [222, 300]
-# chosenSteps = [-1]
+# chosenTimeSteps = [190, 208, 226, 244, 262, 280, 298, 316, 334, 352, 370, 388, 406, 424, 442, 460, 478]
+# chosenTimeSteps = [190, 220,280, 316, 350]
+# chosenTimeSteps = [222, 300]
+chosenTimeSteps = [-1]
 
 
 analizaSvihSimulacija = True
@@ -21,7 +21,6 @@ plotanjeKonture = False
 
 
 sigmaKriticno = 1000
-duljinaStepa = 51
 popisNastavaka = ["101-2", "102-3"]
 
 uvjetFlagova = {"S22":[500, 800], "GR":[5, 10], "D":45}
@@ -36,11 +35,16 @@ parametarskaAnaliza="parametarskaAnaliza_2"
 
 
 
-allSimulationsAnalysis = True
+allSimulationsAnalysis = False
+
 sameInitalRadius = False
-# plotanjeKonture = False
 
 
+sigmaCritical = 1000
+TSLeght = 51
+suffixList = ["101-2", "102-3"]
+
+flagCondition = {"S22":[500, 800], "GR":[5, 10], "D":45}
 
 
 

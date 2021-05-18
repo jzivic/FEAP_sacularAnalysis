@@ -1,0 +1,65 @@
+PODACI
+
+
+parametarskaAnaliza                        =
+
+odabraniKoraci                          chosenTimeSteps
+
+
+analizaSvihSimulacija                   allSimulationsAnalysis
+istiPocetniRadijus                      sameInitalRadius
+plotanjeKonture
+
+sigmaKriticno                           sigmaCritical
+duljinaStepa                            TSLeght
+popisNastavaka                          suffixList
+uvjetFlagova                            flagCondition
+
+
+
+
+
+
+
+
+
+
+
+##################################################################################################################################################################
+
+
+SKLAPANJE
+
+
+
+
+
+
+
+
+
+
+
+
+PRETRAŽIVANJE FOLDERA
+
+
+
+
+
+
+
+
+
+
+
+
+
+RAČUNANJE
+
+
+
+
+
+
+
