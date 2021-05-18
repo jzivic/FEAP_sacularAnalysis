@@ -41,16 +41,10 @@ class DataExtraction:
             os.chdir(self.simPath)
 
 
-
-
-
-
-
-
         self.chosListTS = list(chosenTimeSteps)
         self.nTSt = 0
         self.bEx = 0
-        # self.Creating_allTS_Vector()
+        self.Creating_allTS_Vector()                                #OVO SE RADI
 
 
 
@@ -58,15 +52,14 @@ class DataExtraction:
 
         # while self.nTSt < len(self.chosListTS):      # as long as there is steps in list
 
-        # self.SettingChosenTimeStep()
         self.SettingAnalysisFiles() #"putanja koja je zapravo simPath uvijek"
-
-
 
 
         if self.CheckAAAFormation() == False:
             self.bEx +=1
             self.chosListTS.remove(self.chosListTS[self.nTSt])
+
+            # self.NoAAA()
             # continue
 
 
@@ -88,6 +81,7 @@ class DataExtraction:
 
 
 
+    def Creating_allTS_Vector(self):
 
 
 
@@ -120,7 +114,6 @@ class DataExtraction:
 
 
                 self.startLine_eIW = startLine_eIW % self.nl_eIW
-
                 nNodes = self.wholeDocument_eIW[2].strip().split()                      # number of nodes, written in eIW file
                 self.nTheta, self.nZ = int(nNodes[0]), int(nNodes[1])
 
