@@ -36,7 +36,9 @@ parametarskaAnaliza="parametarskaAnaliza_2"
 
 
 
-
+allSimulationsAnalysis = True
+sameInitalRadius = False
+# plotanjeKonture = False
 
 
 

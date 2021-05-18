@@ -14,5 +14,19 @@ resultsFolder = "/home/josip/feap/pocetak/"+parametarskaAnaliza+"/rezultati/saku
 
 
 
-def SacularFunction():
-    search = FolderSearch()
+def SacularAnalysis_f():
+    search = FolderSearch(resultsFolder)
+    n = len(FolderSearch.allNames) - 1
+
+    for i in range(n):
+        print(FolderSearch.allNames[i])
+
+
+
+
+
+
+
+
+
+SacularAnalysis_f()

@@ -15,11 +15,11 @@ from SimulationsData import *
 simPath = "/home/josip/feap/pocetak/parametarskaAnaliza_2/rezultati/sakularna/"
 
 
+
 class FolderSearch:
 
     allPaths = []
     allNames = []
-
 
     def pathToStrings(self, path):
         path = path[1::] if path[0] == "/" else path[0::]
@@ -42,6 +42,7 @@ class FolderSearch:
 
                 sufix = self.pathToStrings(root)[-1][:3] if self.pathToStrings(root)[-1] == "orginal" else self.pathToStrings(root)[-1]
                 simName = self.pathToStrings(root)[7] + "_" + sufix
+
                 FolderSearch.allPaths.append(root)
                 FolderSearch.allNames.append(simName)
 
@@ -55,7 +56,7 @@ class FolderSearch:
 
 a = FolderSearch(simPath)
 
-print(a.allNames)
+# print(a.allNames)
 
 
 
