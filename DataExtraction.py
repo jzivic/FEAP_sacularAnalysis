@@ -43,11 +43,6 @@ class DataExtraction:
 
 
 
-        #premjestit
-        def CheckAAAFormation():
-            return False
-
-
 
 
 
@@ -65,16 +60,17 @@ class DataExtraction:
 
         # self.SettingChosenTimeStep()
         self.SettingAnalysisFiles() #"putanja koja je zapravo simPath uvijek"
-        print(self.simPath)
 
 
-        if CheckAAAFormation() == False:
+
+
+        if self.CheckAAAFormation() == False:
             self.bEx +=1
             self.chosListTS.remove(self.chosListTS[self.nTSt])
             # continue
 
 
-        elif CheckAAAFormation() == True:
+        elif self.CheckAAAFormation() == True:
 
             if self.chosListTS[self.nTSt] <= self.maxTS:  #used for limiting simulation till last TS
                 3
@@ -96,44 +92,25 @@ class DataExtraction:
 
 
 
-
-
-    def SettingChosenTimeStep(self):        # ovo u biti opće ne treba
-        if self.chosListTS[self.nTSt] > 0:
-            startLine_eIW = 69 -1 + TSLegnht_eIW * (self.chosListTS[self.nTSt] - 1 )
-            startLine_rIL = 6 - 1 + TSLegnht_rIl * (self.chosListTS[self.nTSt] - 1 )
-            startLine_ctl = 5 - 1 + TSLegnht_ctl * (self.chosListTS[self.nTSt] - 1 )
-            startLine_rN1704 = 6 - 1 + TSLegnht_rN1704 * (self.chosListTS[self.nTSt] - 1 )
-
-        elif self.chosListTS[self.nTSt] < 0:  #negative timesteps counts from the last
-            startLine_eIW = 1 + TSLegnht_eIW * self.chosListTS[self.nTSt]  # number of line in
-            startLine_rIL = 0 + TSLegnht_rIl * self.chosListTS[self.nTSt]
-            startLine_ctl = 0 + TSLegnht_ctl * self.chosListTS[self.nTSt]
-            startLine_rN1704 = 0 + TSLegnht_rN1704 * self.chosListTS[self.nTSt]
-
-
-
-
     def SettingAnalysisFiles(self):
         os.chdir(self.simPath)
         for suffix in suffixList:
             try:
                 opening_eIW = open("export__INNER_WALL__" + suffix, "r")
-                self.wholeDocument_eIW = opening_eIW.readlines()
+                self.wholeDocument_eIW = opening_eIW.readlines()                                # whole txt read
                 self.nl_eIW = sum(1 for line in open("export__INNER_WALL__" + suffix))          #number of lines in export Inner Wall
                 self.maxTS = int(self.wholeDocument_eIW[-TSLegnht_eIW + 1].strip().split()[1])  #last TimeStep in simulation
 
-
-                if self.chosListTS[self.nTSt] <= self.maxTS:            #chosenTimeStep = chosen / maxTS
+                if self.chosListTS[self.nTSt] <= self.maxTS:                                     #chosenTimeStep = chosen or  maxTS if chosen bigger
                     chosenTimeStep = self.chosListTS[self.nTSt]
                 elif self.chosListTS[self.nTSt] > self.maxTS:
                     chosenTimeStep = self.maxTS
 
-                if self.chosListTS[self.nTSt] > 0:
-                    startLine_eIW = 69 - 1 + TSLegnht_eIW * (self.chosListTS[self.nTSt] - 1)
-                    startLine_rIL = 6 - 1 + TSLegnht_rIl * (self.chosListTS[self.nTSt] - 1)
-                    startLine_ctl = 5 - 1 + TSLegnht_ctl * (self.chosListTS[self.nTSt] - 1)
-                    startLine_rN1704 = 6 - 1 + TSLegnht_rN1704 * (self.chosListTS[self.nTSt] - 1)
+                if self.chosListTS[self.nTSt] > 0:      # in past : def SettingChosenTimeStep(self)       # setting starting line in each document
+                    startLine_eIW = 68 + TSLegnht_eIW * (self.chosListTS[self.nTSt] - 1)
+                    startLine_rIL = 5 + TSLegnht_rIl * (self.chosListTS[self.nTSt] - 1)
+                    startLine_ctl = 4 + TSLegnht_ctl * (self.chosListTS[self.nTSt] - 1)
+                    startLine_rN1704 = 5 + TSLegnht_rN1704 * (self.chosListTS[self.nTSt] - 1)
 
                 elif self.chosListTS[self.nTSt] < 0:  # negative timesteps counts from the last
                     startLine_eIW = 1 + TSLegnht_eIW * self.chosListTS[self.nTSt]  # number of line in
@@ -144,7 +121,7 @@ class DataExtraction:
 
                 self.startLine_eIW = startLine_eIW % self.nl_eIW
 
-                nNodes = self.wholeDocument_eIW[2].strip().split()
+                nNodes = self.wholeDocument_eIW[2].strip().split()                      # number of nodes, written in eIW file
                 self.nTheta, self.nZ = int(nNodes[0]), int(nNodes[1])
 
 
@@ -164,40 +141,33 @@ class DataExtraction:
                 self.nl_rN1704 = sum(1 for line in open("res__NODE_1704_" + suffix))
                 self.startLine_rN1704 = startLine_rN1704 #% self.nl_rN1704
 
-
-
-
-
-
-
-
             except:
                 FileNotFoundError
                 continue
 
 
+    def CheckAAAFormation(self):
+        if sameInitalRadius == True:
+            self.D0 = float(self.wholeDocument_rIl[5].strip().split()[0]) * 2               # initial radius D0, deformed or non deformed
+        elif sameInitalRadius == False:
+            self.D0 = (float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[0]) +
+                       float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[1]) +
+                       float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[2])) * 2 / 3
+
+        nLine_rIL = self.startLine_rIL
+
+        # iterating over TS, checking in AAA condition is fulfilled
+        for line in self.wholeDocument_rIl[self.startLine_rIL: (self.startLine_rIL + TSLegnht_rIl - 1)]:
+            nLine_rIL += 1
+            line = line.strip().split()
+            D = (float(line[0]) + float(line[1]) + float(line[2])) * 2 / 3
+            if D >= self.D0 * 1.5:
+                return True
+        return False
 
 
 
 
-
-    # def CheckAAAFormation(self):
-    #     if sameInitalRadius == True:
-    #         self.D0 = float(self.wholeDocument_rIl[5].strip().split()[0]) * 2
-    #     elif sameInitalRadius == False:
-    #         self.D0 = (float(self.wholeDocument_rIl[self.startniRed_rIL].strip().split()[0]) +
-    #                    float(self.wholeDocument_rIl[self.startniRed_rIL].strip().split()[1]) +
-    #                    float(self.wholeDocument_rIl[self.startniRed_rIL].strip().split()[2])) * 2 / 3
-    #
-    #
-    #     nRed_rIL = self.startniRed_rIL
-    #     for redak in self.cijeli_tekst_rIL[self.startniRed_rIL: (self.startniRed_rIL + duljinaStepa_rIl - 1)]:
-    #         nRed_rIL += 1
-    #         redak = redak.strip().split()
-    #         DI = (float(redak[0]) + float(redak[1]) + float(redak[2])) * 2 / 3
-    #         if DI >= self.D0 * 1.5:
-    #             return True
-    #     return False
 
 
 
