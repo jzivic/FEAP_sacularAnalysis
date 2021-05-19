@@ -1,13 +1,20 @@
 
 
+class P:
+    def __init__(self):
+        self.fora()
+        self.Fora2()
 
 
-def pero(x):
-    while x > 0:
-        yield x
-        x -=1
+    def fora(self):
+        self.a = "Pero"
 
 
-a = pero(3)
 
-print(a)
+    def Fora2(self):
+        print(self.a)
+
+
+
+
+P()

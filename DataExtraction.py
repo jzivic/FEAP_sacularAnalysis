@@ -207,6 +207,88 @@ class DataExtraction:
         self.HVainTotal = float(self.wholeDocument_rIl[self.startLine_rIL + TSLegnht_rIl - 2].strip().split()[5]) #total vain leght
 
 
+        r1, r2 = 0, 0
+        lineBefore = [0, 0, 0]
+        self.vectorAAAIndices = []
+        nLine_rIL = self.startLine_rIL
+        # self.RZkonture = [[],[]]
+
+        for line in self.wholeDocument_rIl[self.startLine_rIL: (self.startLine_rIL + TSLegnht_rIl-1)]:
+            nLine_rIL += 1
+            line = line.strip().split()
+            DI = (float(line[0]) + float(line[1]) + float(line[2])) * 2 / 3
+            ZI = float(line[4])
+            # self.RZkonture[0].append(DI)
+            # self.RZkonture[1].append(ZI)
+
+            if DI > self.d0 * 1.05:
+                self.vectorAAAIndices.append((nLine_rIL-6) % TSLegnht_rIl)
+                if r2 == 0:
+                    r1 = lineBefore
+                    r2 = line
+            redakPrije = line
+
+
+
+        r1, r2 = 0, 0
+        redakPrije = [0, 0, 0]
+        self.vekIndAn = []
+        nRed_rIL = self.startniRed_rIL
+        for redak in self.cijeli_tekst_rIL[self.startniRed_rIL: (self.startniRed_rIL + duljinaStepa_rIl - 1)]:
+            nRed_rIL += 1
+            redak = redak.strip().split()
+            DI = (float(redak[0]) + float(redak[1]) + float(redak[2])) * 2 / 3
+            ZI = float(redak[4])
+            self.RZkonture[0].append(DI)
+            self.RZkonture[1].append(ZI)
+
+            if DI > self.D0 * 1.05:  # Interpol
+                self.vekIndAn.append((nRed_rIL - 6) % duljinaStepa_rIl)
+                if r2 == 0:
+                    r1 = redakPrije
+                    r2 = redak
+            redakPrije = redak
+
+        try:  # interpolacija
+            t1 = [(float(r1[0]) + float(r1[1]) + float(r1[2])) / 3, (float(r1[3]) + float(r1[4]) + float(r1[5])) / 3]
+            t2 = [(float(r2[0]) + float(r2[1]) + float(r2[2])) / 3, (float(r2[3]) + float(r2[4]) + float(r2[5])) / 3]
+            koef = (t2[1] - t1[1]) / (t2[0] - t1[0])
+            dR = t2[0] - 1.05 * self.D0 / 2
+            dH = (dR) * koef
+            dL = np.sqrt(dR ** 2 + dH ** 2) * 2
+            dH *= 2
+        except TypeError:
+            dH, dL = 0, 0
+
+        veky, vekz = [], []
+        for indAn in self.vekIndAn:
+            z = float(self.cijeli_tekst_ctl[self.startniRed_ctl + indAn].strip().split()[0])
+            y = float(self.cijeli_tekst_ctl[self.startniRed_ctl + indAn].strip().split()[1])
+            vekz.append(z), veky.append(y)
+
+        try:
+            self.H = (vekz[len(veky) - 1] - vekz[0]) + 0
+            self.L = 0
+            for br in range(0, len(veky) - 1):
+                self.L += math.sqrt((vekz[br + 1] - vekz[br]) ** 2 + (veky[br + 1] - veky[br]) ** 2)
+        except IndexError:
+            self.H, self.L = 0, 0
+        self.H = self.H + dH
+        self.L = self.L + dL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #############################
