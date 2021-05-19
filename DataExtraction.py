@@ -184,39 +184,28 @@ class DataExtraction:
         self.S = None
         self.V = None
 
-    def CalculatingDiameter(self, numberOfLine):
-        dRes = (float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[0]) +
-                float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[1]) +
-                float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[2])) * 2 / 3
-        return dRes
+
 
     def Calculating_d0_H_L(self):
 
-        self.CalculatingDiameter(3)
+        def CalculatingDiameter(numberOfLine):     # auxiliary function
+            # startLine_rIL = self.startLine_rIL
+            # wholeDocument_rIl = self.wholeDocument_rIl
+            dRes = (float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[0]) +
+                    float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[1]) +
+                    float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[2])) * 2 / 3
+            return dRes
 
-
-        if sameInitalRadius == True:
+        if sameInitalRadius == True:    #undeformed inital shape
             self.d0 = float(self.wholeDocument_rIl[5].strip().split()[0]) * 2
+        elif sameInitalRadius == False:     #deformed inital shape
+            self.d0 =  CalculatingDiameter(0)
 
-        elif sameInitalRadius == False:
+        self.d1 =  CalculatingDiameter(20)
+        self.d2 =  CalculatingDiameter(21)
+        self.d3 =  CalculatingDiameter(22)
+        self.HVainTotal = float(self.wholeDocument_rIl[self.startLine_rIL + TSLegnht_rIl - 2].strip().split()[5]) #total vain leght
 
-
-
-
-            # dp1 = CalculatingDiameter(20)
-
-
-            self.d0 = (float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[0]) +
-                       float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[1]) +
-                       float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[2])) * 2 / 3
-
-
-
-
-        # self.HZile = float(self.cijeli_tekst_rIL[self.startniRed_rIL + duljinaStepa_rIl - 2].strip().split()[5])
-        # self.dp1 = float(self.cijeli_tekst_rIL[self.startniRed_rIL+20].strip().split()[0])*2
-        # self.dp2 = float(self.cijeli_tekst_rIL[self.startniRed_rIL+21].strip().split()[0])*2
-        # self.dp3 = float(self.cijeli_tekst_rIL[self.startniRed_rIL+22].strip().split()[0])*2
 
 
 

@@ -118,9 +118,9 @@ self.imeKoraka_sTs                                                           TSN
                                                                             self.D_allTS = []
                                                                             self.d0_allTS = []
 
-                                                                            self.dp1_allTS = []
-                                                                            self.dp2_allTS = []
-                                                                            self.dp3_allTS = []
+                                                                            self.d1_allTS = []
+                                                                            self.d2_allTS = []
+                                                                            self.d3_allTS = []
 
                                                                             self.H_allTS = []
                                                                             self.L_allTS = []
@@ -134,6 +134,38 @@ D0                                                                          d0
 
 
 RacunanjeD0_H_L()                                                           Calculating_d0_H_L()
+
+
+self.HZile                                                                  self.HVainTotal
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
