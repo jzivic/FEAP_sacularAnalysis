@@ -174,20 +174,20 @@ self.redak                                                                  self
 
 
 NoviKorak()                                                                NewTimeStep()
-PojedinaTheta()                                                            Theta()
-
-self.PojedinaTheta
+PojedinaTheta()                                                            EachTheta()
 
 
+self.imeKoraka                                                              TSName
 
 
-
-
+self.rjecnikKoraka = {}                                                     TSData
 
 
 
+self.listaZ                                                                 zLine
+listaTheta                                                                  thetaLine
 
-
+tocka                                                                       pointCoord
 
 
 

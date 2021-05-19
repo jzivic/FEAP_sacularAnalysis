@@ -70,6 +70,8 @@ class DataExtraction:
                 #Calculating d0
                 self.Calculating_d0_H_L()
                 self.Calculating_D_S22_GR()
+                self.MainProgram()
+
                 # self.RacunanjeD0_H_L()
                 # self.RacunanjeD_S22_GR()
 
@@ -272,39 +274,53 @@ class DataExtraction:
     #Reading eIW (table of data)
 
     def MainProgram(self):  # početna funkcija koja ide kroz sve redove ispisa
-        self.rjecnikKoraka = {}  # for whole TS
-        self.count_eIW = -1  # zato da prvi red s podacima bude na 0
+        self.TSData = {}  # for whole TS, made of
+        n_eIW = -1  # zato da prvi red s podacima bude na 0
 
-        for self.line in self.wholeDocument_eIW[self.startLine_eIW: self.startLine_eIW + TSLegnht_eIW]:
-            self.line = self.line.strip().split()  # red teksta
-            if self.line == []: continue  # preskakanje praznih redova, ne ulaze u brojac_eIW
-            self.count_eIW += 1
-            if self.count_eIW == 0:  # ==Timestep: red
-                self.NewTimeStep()  # za svaki novi Timestep
+        for line in self.wholeDocument_eIW[self.startLine_eIW: self.startLine_eIW + TSLegnht_eIW]:
+            line = line.strip().split()  # red teksta
+            if line == []: continue  # preskakanje praznih redova, ne ulaze u brojac_eIW
+            n_eIW += 1
+
+            if n_eIW == 0:  # ==Timestep: red
+                self.TSName = line[0] + line[1]  # New TS
+                self.listaZ = []
                 continue
-            self.PojedinaTheta()  # u svakom redu hvata Thetu
-            if self.brojac_eIW == self.nZ:
-                self.RacunanjeS_V()  # ako je na brojac_eIW==nZ, Timestep je gotov
-                self.Resetiranje()
 
-    def NewTimeStep(self):  # f za resetiranje brojača i skupova podataka
-        self.imeKoraka = self.redak[0] + self.redak[1]  # Timestep: n
-        self.listaZ = []
+            # for every line is new Theta analysis
+            thetaLine = []
+            pointCoord = []
 
-    def PojedinaTheta(self):  # ide po jednoj liniji u datoteci
-        self.listaTheta = []
-        tocka = []
-        for rijec in self.redak:
-            broj = float(rijec)
-            tocka.append(broj)
-            if len(tocka) == 3:
-                self.listaTheta.append(tocka)
-                tocka = []
-        self.listaZ.append(self.listaTheta)  # resetira se za svaki NoviKorak
+            for number in line:
+                number = float(number)
+                pointCoord.append(number)
+                if len(pointCoord) == 3:
+                    thetaLine.append(pointCoord)
+                    pointCoord = []
+            self.listaZ.append(thetaLine)  # resetira se za svaki NoviKorak
 
-    def Resetiranje(self):
-        self.brojac_eIW = -1
-        self.rjecnikKoraka[self.imeKoraka] = self.listaZ
+
+
+            if n_eIW == self.nZ:
+                # self.RacunanjeS_V()  # ako je na brojac_eIW==nZ, Timestep je gotov
+
+                #reset TS:
+                self.brojac_eIW = -1
+                self.TSData[self.TSName] = self.listaZ
+
+        print(self.TSData)
+
+    # def EachTheta(self):  # ide po jednoj liniji u datoteci
+    #     self.listaTheta = []
+    #     tocka = []
+    #     for rijec in line:
+    #         broj = float(rijec)
+    #         tocka.append(broj)
+    #         if len(tocka) == 3:
+    #             self.listaTheta.append(tocka)
+    #             tocka = []
+    #     self.listaZ.append(self.listaTheta)  # resetira se za svaki NoviKorak
+
 
 
 
@@ -345,6 +361,64 @@ class DataExtraction:
     # def Resetiranje(self):
     #     self.brojac_eIW = -1
     #     self.rjecnikKoraka[self.imeKoraka] = self.listaZ
+
+
+
+
+    # def RacunanjeS_V(self):
+    #     S0 = self.D0*math.pi*self.HZile*(178/180)*0.9988
+    #     self.S = -S0
+    #     V0 = 1/4*(self.D0)**2*math.pi*self.HZile*((178/180)**2)*(0.9941)
+    #     self.V = -V0
+    # 
+    #     for thetaLinija in self.listaZ:  # thetaLinija je popis tocaka po theta smjeru (51 -> 50 theta linija)
+    #         indZ = self.listaZ.index(thetaLinija)  # koja od 1-50 theta linija
+    #         pThetaLinije = 0  # povrsina thetaLinije, bit će ih indZ puta
+    #         tockeVolumena = []
+    # 
+    #         for tocka in thetaLinija:  # iterira po thetaLiniji
+    #             indTheta = thetaLinija.index(tocka)  # trenutniInexThete
+    #             try:
+    #                 A = self.listaZ[indZ][indTheta]
+    #                 B = self.listaZ[indZ + 1][indTheta]
+    #                 C = self.listaZ[indZ][indTheta + 1]
+    #                 D = self.listaZ[indZ + 1][indTheta + 1]
+    # 
+    #                 tockeVolumena.extend([A, B, C, D])
+    # 
+    #             except IndexError:
+    #                 break
+    #             try:
+    #                 vTheta1 = np.subtract(C, A)  # vektori izmedu tocaka
+    #                 vZ1 = np.subtract(B, A)
+    #                 vTheta2 = np.subtract(B, C)
+    #                 vZ2 = np.subtract(D, C)
+    #                 vProdukt1 = np.cross(vZ1, vTheta1)  # == vektorska površina 1. trokuta
+    #                 vProdukt2 = np.cross(vTheta2, vZ2)  # == vektorska površina 2.
+    #                 vProduktSuma = (vProdukt1 + vProdukt2) / 2  # jer će četverokuti bit nepravilni
+    #                 pEl = np.linalg.norm(vProduktSuma)  # povrsina elementa, kvadratica
+    #                 pThetaLinije += pEl  # povrsina theta snite
+    #             except ValueError:
+    #                 continue
+    # 
+    #         self.S += pThetaLinije*2
+    # 
+    #         tockeVolumenaArray = np.array(tockeVolumena, dtype="object")
+    #         try:
+    #             vThetaLinije = ConvexHull(tockeVolumenaArray).volume  # ugradena funkcija za V kao array[tocke]
+    #         except:
+    #             vThetaLinije = False  # ako se dogodi da ne valja volumen
+    #         self.V += vThetaLinije*2
+
+
+
+
+
+
+
+
+
+
 
 
 
