@@ -273,10 +273,11 @@ class DataExtraction:
 
     #Reading eIW (table of data)
 
-    def MainProgram(self):  # početna funkcija koja ide kroz sve redove ispisa
-        self.TSData = {}  # for whole TS, made of
-        n_eIW = -1  # zato da prvi red s podacima bude na 0
+    def MainProgram(self):
+        self.TSData = {}  # for whole TS points data, made of coordinates in in theta direction  --> Z Lines
+        n_eIW = -1  #
 
+        #firstly, iteerating over every line that represents first radial layer
         for line in self.wholeDocument_eIW[self.startLine_eIW: self.startLine_eIW + TSLegnht_eIW]:
             line = line.strip().split()  # red teksta
             if line == []: continue  # preskakanje praznih redova, ne ulaze u brojac_eIW
@@ -284,83 +285,42 @@ class DataExtraction:
 
             if n_eIW == 0:  # ==Timestep: red
                 self.TSName = line[0] + line[1]  # New TS
-                self.listaZ = []
-                continue
+                self.ZLines = []
+                continue                # to exclude empty lines
 
-            # for every line is new Theta analysis
-            thetaLine = []
-            pointCoord = []
-
-            for number in line:
+            # for every line is new Theta line
+            thetaLine, pointCoord = [],[]
+            for number in line:             #iterating every line. Points are constructed as (x1,y1,z1, x2,y2,z2...)
                 number = float(number)
                 pointCoord.append(number)
-                if len(pointCoord) == 3:
+                if len(pointCoord) == 3:        #constructing one points coordinate for every 3 coordinates
                     thetaLine.append(pointCoord)
                     pointCoord = []
-            self.listaZ.append(thetaLine)  # resetira se za svaki NoviKorak
 
+            self.ZLines.append(thetaLine)  # when all theta lines are over appending last line
 
+            if n_eIW == self.nZ:                # if counter n_eIW==nZ, Timestep is over
+                self.RacunanjeS_V()
 
-            if n_eIW == self.nZ:
-                # self.RacunanjeS_V()  # ako je na brojac_eIW==nZ, Timestep je gotov
-
-                #reset TS:
                 self.brojac_eIW = -1
-                self.TSData[self.TSName] = self.listaZ
-
-        print(self.TSData)
-
-    # def EachTheta(self):  # ide po jednoj liniji u datoteci
-    #     self.listaTheta = []
-    #     tocka = []
-    #     for rijec in line:
-    #         broj = float(rijec)
-    #         tocka.append(broj)
-    #         if len(tocka) == 3:
-    #             self.listaTheta.append(tocka)
-    #             tocka = []
-    #     self.listaZ.append(self.listaTheta)  # resetira se za svaki NoviKorak
+                self.TSData[self.TSName] = self.ZLines
 
 
 
 
 
+    def Calculating_S_V(self):
+        S0 = self.d0 * math.pi * self.HVainTotal * (178 / 180) * 0.9988         #inital surface. 178 deg, straight edgges
+        self.S = -S0
+        V0 = 1/4*(self.d0)**2*math.pi*self.HVainTotal*((178/180)**2)*(0.9941)
+        self.V = -V0
 
 
-    # def GlavniProgram(self):  # početna funkcija koja ide kroz sve redove ispisa
-    #     self.rjecnikKoraka = {}  # cijeli Timestep je ovdje (->listaZ -> listaTheta->tocka)
-    #     self.brojac_eIW = -1  # zato da prvi red s podacima bude na 0
-    #
-    #     for self.redak in self.cijeli_tekst_eIW[self.startniRed_eIW: self.startniRed_eIW + duljinaStepa_eIW]:
-    #         self.redak = self.redak.strip().split()  # red teksta
-    #         if self.redak == []: continue  # preskakanje praznih redova, ne ulaze u brojac_eIW
-    #         self.brojac_eIW += 1
-    #         if self.brojac_eIW == 0:  # ==Timestep: red
-    #             self.NoviKorak()  # za svaki novi Timestep
-    #             continue
-    #         self.PojedinaTheta()  # u svakom redu hvata Thetu
-    #         if self.brojac_eIW == self.nZ:
-    #             self.RacunanjeS_V()  # ako je na brojac_eIW==nZ, Timestep je gotov
-    #             self.Resetiranje()
 
-    # def NoviKorak(self):  # f za resetiranje brojača i skupova podataka
-    #     self.imeKoraka = self.redak[0] + self.redak[1]  # Timestep: n
-    #     self.listaZ = []
-    #
-    # def PojedinaTheta(self):  # ide po jednoj liniji u datoteci
-    #     self.listaTheta = []
-    #     tocka = []
-    #     for rijec in self.redak:
-    #         broj = float(rijec)
-    #         tocka.append(broj)
-    #         if len(tocka) == 3:
-    #             self.listaTheta.append(tocka)
-    #             tocka = []
-    #     self.listaZ.append(self.listaTheta)  # resetira se za svaki NoviKorak
-    #
-    # def Resetiranje(self):
-    #     self.brojac_eIW = -1
-    #     self.rjecnikKoraka[self.imeKoraka] = self.listaZ
+        for thetaLinija in self.listaZ:  # thetaLinija je popis tocaka po theta smjeru (51 -> 50 theta linija)
+            indZ = self.listaZ.index(thetaLinija)  # koja od 1-50 theta linija
+            pThetaLinije = 0  # povrsina thetaLinije, bit će ih indZ puta
+            tockeVolumena = []
 
 
 
