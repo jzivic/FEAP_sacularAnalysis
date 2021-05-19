@@ -9,7 +9,7 @@ from FolderSearch import FolderSearch
 from SimulationsData import *
 
 
-chosenTimeSteps = [-1]
+chosenTimeSteps = [-3]
 
 
 
@@ -57,19 +57,19 @@ class DataExtraction:
         # while self.nTSt < len(self.chosListTS):      # as long as there is steps in list
         self.SettingAnalysisFiles() #"putanja koja je zapravo simPath uvijek"
 
-
         if self.CheckAAAFormation() == False:
             self.bEx +=1
             self.chosListTS.remove(self.chosListTS[self.nTSt])
 
             self.NoAAAFormed()
-            self.chosListTS.remove((self.chosListTS[self.nTSt]))
+            # self.chosListTS.remove((self.chosListTS[self.nTSt]))
             # continue
 
         elif self.CheckAAAFormation() == True:          #if AAA formed
             if self.chosListTS[self.nTSt] <= self.maxTS:  #used for limiting simulation till last TS
                 #Calculating d0
                 self.Calculating_d0_H_L()
+                self.Calculating_D_S22_GR()
                 # self.RacunanjeD0_H_L()
                 # self.RacunanjeD_S22_GR()
 
@@ -140,13 +140,13 @@ class DataExtraction:
                 self.startLine_rIL = startLine_rIL  # % self.nl_rIL
 
                 opening_ctl = open("res__CENTERLINE__" + suffix, "r")
-                self.cijeli_tekst_ctl = opening_ctl.readlines()
+                self.wholeDocument_ctl = opening_ctl.readlines()
                 self.nl_ctl = sum(1 for line in open("res__CENTERLINE__" + suffix))
                 self.startLine_ctl = startLine_ctl  # % self.nl_ctl
 
 
                 opening_rN1704 = open("res__NODE_1704_" + suffix, "r")
-                self.cijeli_tekst_rN1704 = opening_rN1704.readlines()
+                self.wholeDocument_rN1704 = opening_rN1704.readlines()
                 self.nl_rN1704 = sum(1 for line in open("res__NODE_1704_" + suffix))
                 self.startLine_rN1704 = startLine_rN1704 #% self.nl_rN1704
 
@@ -184,106 +184,167 @@ class DataExtraction:
         self.S = None
         self.V = None
 
-
-
     def Calculating_d0_H_L(self):
 
-        def CalculatingDiameter(numberOfLine):     # auxiliary function
-            # startLine_rIL = self.startLine_rIL
-            # wholeDocument_rIl = self.wholeDocument_rIl
-            dRes = (float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[0]) +
+        # auxiliary function for calculating diameter
+        def CalculatingDiameter(numberOfLine):
+            D = (float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[0]) +
                     float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[1]) +
                     float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[2])) * 2 / 3
-            return dRes
+            return D
+
 
         if sameInitalRadius == True:    #undeformed inital shape
             self.d0 = float(self.wholeDocument_rIl[5].strip().split()[0]) * 2
         elif sameInitalRadius == False:     #deformed inital shape
-            self.d0 =  CalculatingDiameter(0)
-
-        self.d1 =  CalculatingDiameter(20)
-        self.d2 =  CalculatingDiameter(21)
-        self.d3 =  CalculatingDiameter(22)
+            self.d0 =  CalculatingDiameter(numberOfLine=0)
+        self.d1 =  CalculatingDiameter(numberOfLine=20)          #proximal diameter at height 55m from center
+        self.d2 =  CalculatingDiameter(numberOfLine=21)
+        self.d3 =  CalculatingDiameter(numberOfLine=22)
         self.HVainTotal = float(self.wholeDocument_rIl[self.startLine_rIL + TSLegnht_rIl - 2].strip().split()[5]) #total vain leght
 
-
-        r1, r2 = 0, 0
+        # auxiliary lines to find before/after AAA formation lines
+        lineA, lineB = 0, 0
         lineBefore = [0, 0, 0]
-        self.vectorAAAIndices = []
-        nLine_rIL = self.startLine_rIL
-        # self.RZkonture = [[],[]]
+        self.vectorAAAIndices = []          # AAA formed lines in TS
+        nLine_rIL = self.startLine_rIL      # starting line in rIL
 
+        # checking Diameter at every hight to fullfill condition
         for line in self.wholeDocument_rIl[self.startLine_rIL: (self.startLine_rIL + TSLegnht_rIl-1)]:
-            nLine_rIL += 1
+            nLine_rIL += 1                                                                              # number of line in rIL
             line = line.strip().split()
-            DI = (float(line[0]) + float(line[1]) + float(line[2])) * 2 / 3
-            ZI = float(line[4])
-            # self.RZkonture[0].append(DI)
-            # self.RZkonture[1].append(ZI)
+            D_ = (float(line[0]) + float(line[1]) + float(line[2])) * 2 / 3             # D in every line / height
+            Z_ = float(line[4])
 
-            if DI > self.d0 * 1.05:
+            if D_ > self.d0 * 1.05:
                 self.vectorAAAIndices.append((nLine_rIL-6) % TSLegnht_rIl)
-                if r2 == 0:
-                    r1 = lineBefore
-                    r2 = line
-            redakPrije = line
+                if lineB == 0:
+                    lineA = lineBefore                  # made to collect elements/heights before and after condition
+                    lineB = line
+            lineBefore = line
 
+        # linear inteerpolation between before/after forming AAA elements
+        try:
+            #coordinates of pointA, pointB of line that connects elements before/after condition
+            # pA = (rCoord, zCoord)
+            pA = [(float(lineA[0]) + float(lineA[1]) + float(lineA[2])) / 3, (float(lineA[3]) + float(lineA[4]) + float(lineA[5])) / 3]
+            pB = [(float(lineB[0]) + float(lineB[1]) + float(lineB[2])) / 3, (float(lineB[3]) + float(lineB[4]) + float(lineB[5])) / 3] 
+            slope = (pB[1] - pA[1]) / (pB[0] - pA[0])
 
-
-        r1, r2 = 0, 0
-        redakPrije = [0, 0, 0]
-        self.vekIndAn = []
-        nRed_rIL = self.startniRed_rIL
-        for redak in self.cijeli_tekst_rIL[self.startniRed_rIL: (self.startniRed_rIL + duljinaStepa_rIl - 1)]:
-            nRed_rIL += 1
-            redak = redak.strip().split()
-            DI = (float(redak[0]) + float(redak[1]) + float(redak[2])) * 2 / 3
-            ZI = float(redak[4])
-            self.RZkonture[0].append(DI)
-            self.RZkonture[1].append(ZI)
-
-            if DI > self.D0 * 1.05:  # Interpol
-                self.vekIndAn.append((nRed_rIL - 6) % duljinaStepa_rIl)
-                if r2 == 0:
-                    r1 = redakPrije
-                    r2 = redak
-            redakPrije = redak
-
-        try:  # interpolacija
-            t1 = [(float(r1[0]) + float(r1[1]) + float(r1[2])) / 3, (float(r1[3]) + float(r1[4]) + float(r1[5])) / 3]
-            t2 = [(float(r2[0]) + float(r2[1]) + float(r2[2])) / 3, (float(r2[3]) + float(r2[4]) + float(r2[5])) / 3]
-            koef = (t2[1] - t1[1]) / (t2[0] - t1[0])
-            dR = t2[0] - 1.05 * self.D0 / 2
-            dH = (dR) * koef
-            dL = np.sqrt(dR ** 2 + dH ** 2) * 2
-            dH *= 2
+            dR = pB[0] - 1.05 * self.d0 / 2             # AAA forming point radial offset from coordinates element before
+            dH = (dR) * slope                           # AAA forming point axial offset from coordinates element before
+            dL = np.sqrt(dR ** 2 + dH ** 2) * 2         #
+            dH *= 2                                     # becuase of upper and lower halves
         except TypeError:
             dH, dL = 0, 0
 
-        veky, vekz = [], []
-        for indAn in self.vekIndAn:
-            z = float(self.cijeli_tekst_ctl[self.startniRed_ctl + indAn].strip().split()[0])
-            y = float(self.cijeli_tekst_ctl[self.startniRed_ctl + indAn].strip().split()[1])
-            vekz.append(z), veky.append(y)
-
+        # AAA points coordinate
+        coordAAA = {"z":[], "y":[]}
+        for indAn in self.vectorAAAIndices: #iterating over points that fulfill AAA condition, z,y obtained from ctl file !!
+            z = float(self.wholeDocument_ctl[self.startLine_ctl + indAn].strip().split()[0])
+            y = float(self.wholeDocument_ctl[self.startLine_ctl + indAn].strip().split()[1])
+            coordAAA["z"].append(z), coordAAA["y"].append(y)
         try:
-            self.H = (vekz[len(veky) - 1] - vekz[0]) + 0
+            self.H = (coordAAA["z"][len(coordAAA["y"]) - 1] - coordAAA["z"][0]) + 0
             self.L = 0
-            for br in range(0, len(veky) - 1):
-                self.L += math.sqrt((vekz[br + 1] - vekz[br]) ** 2 + (veky[br + 1] - veky[br]) ** 2)
+            for n in range(0, len(coordAAA["y"]) - 1):
+                self.L += math.sqrt((coordAAA["z"][n + 1] - coordAAA["z"][n]) ** 2 + (coordAAA["y"][n + 1] - coordAAA["y"][n]) ** 2)
         except IndexError:
             self.H, self.L = 0, 0
-        self.H = self.H + dH
+
+        self.H = self.H + dH        # interpolation addition
         self.L = self.L + dL
 
+    # Reading D, GR, S22 from r1704 file
+    def Calculating_D_S22_GR(self):
+        if self.chosListTS[self.nTSt] > 0:
+            nLine = self.wholeDocument_rN1704[self.startLine_rN1704 - 1].strip().split()
+        elif self.chosListTS[self.nTSt] < 0:
+            nLine = self.wholeDocument_rN1704[self.startLine_rN1704].strip().split()
+
+        self.D = float(nLine[2]) * 2
+        self.GR = float(nLine[3]) * 2
+        self.S22 = float(nLine[5]) * 1000  # kPa
+
+
+
+
+    #Reading eIW (table of data)
+
+    def MainProgram(self):  # početna funkcija koja ide kroz sve redove ispisa
+        self.rjecnikKoraka = {}  # for whole TS
+        self.count_eIW = -1  # zato da prvi red s podacima bude na 0
+
+        for self.line in self.wholeDocument_eIW[self.startLine_eIW: self.startLine_eIW + TSLegnht_eIW]:
+            self.line = self.line.strip().split()  # red teksta
+            if self.line == []: continue  # preskakanje praznih redova, ne ulaze u brojac_eIW
+            self.count_eIW += 1
+            if self.count_eIW == 0:  # ==Timestep: red
+                self.NewTimeStep()  # za svaki novi Timestep
+                continue
+            self.PojedinaTheta()  # u svakom redu hvata Thetu
+            if self.brojac_eIW == self.nZ:
+                self.RacunanjeS_V()  # ako je na brojac_eIW==nZ, Timestep je gotov
+                self.Resetiranje()
+
+    def NewTimeStep(self):  # f za resetiranje brojača i skupova podataka
+        self.imeKoraka = self.redak[0] + self.redak[1]  # Timestep: n
+        self.listaZ = []
+
+    def PojedinaTheta(self):  # ide po jednoj liniji u datoteci
+        self.listaTheta = []
+        tocka = []
+        for rijec in self.redak:
+            broj = float(rijec)
+            tocka.append(broj)
+            if len(tocka) == 3:
+                self.listaTheta.append(tocka)
+                tocka = []
+        self.listaZ.append(self.listaTheta)  # resetira se za svaki NoviKorak
+
+    def Resetiranje(self):
+        self.brojac_eIW = -1
+        self.rjecnikKoraka[self.imeKoraka] = self.listaZ
 
 
 
 
 
 
+    # def GlavniProgram(self):  # početna funkcija koja ide kroz sve redove ispisa
+    #     self.rjecnikKoraka = {}  # cijeli Timestep je ovdje (->listaZ -> listaTheta->tocka)
+    #     self.brojac_eIW = -1  # zato da prvi red s podacima bude na 0
+    #
+    #     for self.redak in self.cijeli_tekst_eIW[self.startniRed_eIW: self.startniRed_eIW + duljinaStepa_eIW]:
+    #         self.redak = self.redak.strip().split()  # red teksta
+    #         if self.redak == []: continue  # preskakanje praznih redova, ne ulaze u brojac_eIW
+    #         self.brojac_eIW += 1
+    #         if self.brojac_eIW == 0:  # ==Timestep: red
+    #             self.NoviKorak()  # za svaki novi Timestep
+    #             continue
+    #         self.PojedinaTheta()  # u svakom redu hvata Thetu
+    #         if self.brojac_eIW == self.nZ:
+    #             self.RacunanjeS_V()  # ako je na brojac_eIW==nZ, Timestep je gotov
+    #             self.Resetiranje()
 
-
+    # def NoviKorak(self):  # f za resetiranje brojača i skupova podataka
+    #     self.imeKoraka = self.redak[0] + self.redak[1]  # Timestep: n
+    #     self.listaZ = []
+    #
+    # def PojedinaTheta(self):  # ide po jednoj liniji u datoteci
+    #     self.listaTheta = []
+    #     tocka = []
+    #     for rijec in self.redak:
+    #         broj = float(rijec)
+    #         tocka.append(broj)
+    #         if len(tocka) == 3:
+    #             self.listaTheta.append(tocka)
+    #             tocka = []
+    #     self.listaZ.append(self.listaTheta)  # resetira se za svaki NoviKorak
+    #
+    # def Resetiranje(self):
+    #     self.brojac_eIW = -1
+    #     self.rjecnikKoraka[self.imeKoraka] = self.listaZ
 
 
 

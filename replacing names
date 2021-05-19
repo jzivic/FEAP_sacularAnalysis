@@ -147,6 +147,47 @@ redakPrije                                                                  line
 nRed_rIL                                                                    nLine_RIL
 
 
+r1                                                                          lineA
+r2                                                                          lineB
+
+
+t1                                                                          pA
+t2                                                                          pB
+koef                                                                        slope
+
+
+indAn                                                                       =
+
+veky, vekz                                                                  coordAAA["z"], y
+GlavniProgram()                                                             MainProgram()
+
+
+
+
+
+
+
+
+brojac_eIW                                                                  count_eIW
+
+self.redak                                                                  self.line
+
+
+NoviKorak()                                                                NewTimeStep()
+PojedinaTheta()                                                            Theta()
+
+self.PojedinaTheta
+
+
+
+
+
+
+
+
+
+
+
 
 
 

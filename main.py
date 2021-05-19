@@ -1,20 +1,8 @@
 
 
-class P:
-    def __init__(self):
-        self.fora()
-        self.Fora2()
+def pero():
+    a = 2
+    b = 4
+    return a,b
 
-
-    def fora(self):
-        self.a = "Pero"
-
-
-
-    def Fora2(self):
-        print(self.a)
-
-
-
-
-P()
+print(pero()[0])
