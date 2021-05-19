@@ -184,7 +184,6 @@ self.rjecnikKoraka = {}                                                     TSDa
 
 
 
-self.listaZ                                                                 zLine
 listaTheta                                                                  thetaLine
 
 tocka                                                                       pointCoord
@@ -193,14 +192,14 @@ tocka                                                                       poin
 self.listaZ                                                                 ZLines
 
 
+for thetaLinija in self.listaZ                                              for nThL in range(len(self.ZLines)):
+
+
+pThetaLinije                                                                STh
 
 
 
-
-
-
-
-
+tockeVolumena                                                               pointsOfElement
 
 
 

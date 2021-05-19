@@ -316,12 +316,25 @@ class DataExtraction:
         self.V = -V0
 
 
-        for thetaLine in self.ZLines:  # thetaLinija je popis tocaka po theta smjeru (51 -> 50 theta linija)
-            indZ = self.ZLines.index(thetaLine)  # koja od 1-50 theta linija
-            pThetaLinije = 0  # povrsina thetaLinije, bit će ih indZ puta
-            tockeVolumena = []
+        for nThL in range(len(self.ZLines)):    #iterating the
+            STh = 0
+            pointsOfElement = []
 
 
+
+            for nPoint in range(len(self.ZLines[nThL])):  # iterira po thetaLiniji
+                # indTheta = thetaLinija.index(tocka)  # trenutniInexThete
+                try:
+                    A = self.ZLines[nThL][nPoint]
+                    B = self.ZLines[nThL + 1][nPoint]
+                    C = self.ZLines[nThL][nPoint + 1]
+                    D = self.ZLines[nThL + 1][nPoint + 1]
+
+                    pointsOfElement.extend([A, B, C, D])
+
+
+                except IndexError:
+                    break
 
     # def RacunanjeS_V(self):
     #     S0 = self.D0*math.pi*self.HZile*(178/180)*0.9988
