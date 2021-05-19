@@ -45,7 +45,7 @@ class DataExtraction:
             os.chdir(self.simPath)
 
 
-        self.chosListTS = list(chosenTimeSteps)
+        self.chosenTSList = list(chosenTimeSteps)
         self.nTSt = 0
         self.bEx = 0
         self.Creating_allTS_Vector()                                #OVO SE RADI
@@ -54,32 +54,33 @@ class DataExtraction:
 
 
 
-        # while self.nTSt < len(self.chosListTS):      # as long as there is steps in list
+        # while self.nTSt < len(self.chosenTSList):      # as long as there is steps in list
         self.SettingAnalysisFiles() #"putanja koja je zapravo simPath uvijek"
 
         if self.CheckAAAFormation() == False:
             self.bEx +=1
-            self.chosListTS.remove(self.chosListTS[self.nTSt])
+            self.chosenTSList.remove(self.chosenTSList[self.nTSt])
 
             self.NoAAAFormed()
-            # self.chosListTS.remove((self.chosListTS[self.nTSt]))
+            # self.chosenTSList.remove((self.chosenTSList[self.nTSt]))
             # continue
 
+
         elif self.CheckAAAFormation() == True:          #if AAA formed
-            if self.chosListTS[self.nTSt] <= self.maxTS:  #used for limiting simulation till last TS
-                #Calculating d0
+
+            if self.chosenTSList[self.nTSt] <= self.maxTS:  #used for limiting simulation till last TS
                 self.Calculating_d0_H_L()
                 self.Calculating_D_S22_GR()
+                if self.GR < 0 or self.D < 0:
+                    self.oKorSim[self.bK] -= 1
+                    # continue
                 self.MainProgram()
 
-                # self.RacunanjeD0_H_L()
-                # self.RacunanjeD_S22_GR()
 
 
             else:
                 # break
                 4
-                
             self.nTSt += 1
             self.bEx += 1
 
@@ -113,22 +114,22 @@ class DataExtraction:
                 self.nl_eIW = sum(1 for line in open("export__INNER_WALL__" + suffix))          #number of lines in export Inner Wall
                 self.maxTS = int(self.wholeDocument_eIW[-TSLegnht_eIW + 1].strip().split()[1])  #last TimeStep in simulation
 
-                if self.chosListTS[self.nTSt] <= self.maxTS:                                     #chosenTimeStep = chosen or  maxTS if chosen bigger
-                    chosenTimeStep = self.chosListTS[self.nTSt]
-                elif self.chosListTS[self.nTSt] > self.maxTS:
+                if self.chosenTSList[self.nTSt] <= self.maxTS:                                     #chosenTimeStep = chosen or  maxTS if chosen bigger
+                    chosenTimeStep = self.chosenTSList[self.nTSt]
+                elif self.chosenTSList[self.nTSt] > self.maxTS:
                     chosenTimeStep = self.maxTS
 
-                if self.chosListTS[self.nTSt] > 0:      # in past : def SettingChosenTimeStep(self)       # setting starting line in each document
-                    startLine_eIW = 68 + TSLegnht_eIW * (self.chosListTS[self.nTSt] - 1)
-                    startLine_rIL = 5 + TSLegnht_rIl * (self.chosListTS[self.nTSt] - 1)
-                    startLine_ctl = 4 + TSLegnht_ctl * (self.chosListTS[self.nTSt] - 1)
-                    startLine_rN1704 = 5 + TSLegnht_rN1704 * (self.chosListTS[self.nTSt] - 1)
+                if self.chosenTSList[self.nTSt] > 0:      # in past : def SettingChosenTimeStep(self)       # setting starting line in each document
+                    startLine_eIW = 68 + TSLegnht_eIW * (self.chosenTSList[self.nTSt] - 1)
+                    startLine_rIL = 5 + TSLegnht_rIl * (self.chosenTSList[self.nTSt] - 1)
+                    startLine_ctl = 4 + TSLegnht_ctl * (self.chosenTSList[self.nTSt] - 1)
+                    startLine_rN1704 = 5 + TSLegnht_rN1704 * (self.chosenTSList[self.nTSt] - 1)
 
-                elif self.chosListTS[self.nTSt] < 0:  # negative timesteps counts from the last
-                    startLine_eIW = 1 + TSLegnht_eIW * self.chosListTS[self.nTSt]  # number of line in
-                    startLine_rIL = 0 + TSLegnht_rIl * self.chosListTS[self.nTSt]
-                    startLine_ctl = 0 + TSLegnht_ctl * self.chosListTS[self.nTSt]
-                    startLine_rN1704 = 0 + TSLegnht_rN1704 * self.chosListTS[self.nTSt]
+                elif self.chosenTSList[self.nTSt] < 0:  # negative timesteps counts from the last
+                    startLine_eIW = 1 + TSLegnht_eIW * self.chosenTSList[self.nTSt]  # number of line in
+                    startLine_rIL = 0 + TSLegnht_rIl * self.chosenTSList[self.nTSt]
+                    startLine_ctl = 0 + TSLegnht_ctl * self.chosenTSList[self.nTSt]
+                    startLine_rN1704 = 0 + TSLegnht_rN1704 * self.chosenTSList[self.nTSt]
 
 
                 self.startLine_eIW = startLine_eIW % self.nl_eIW
@@ -177,8 +178,6 @@ class DataExtraction:
 
     def NoAAAFormed(self):
         self.TSName = None
-
-
         self.S22 = None
         self.D = None
         self.H = None
@@ -187,7 +186,6 @@ class DataExtraction:
         self.V = None
 
     def Calculating_d0_H_L(self):
-
         # auxiliary function for calculating diameter
         def CalculatingDiameter(numberOfLine):
             D = (float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[0]) +
@@ -259,20 +257,16 @@ class DataExtraction:
 
     # Reading D, GR, S22 from r1704 file
     def Calculating_D_S22_GR(self):
-        if self.chosListTS[self.nTSt] > 0:
+        if self.chosenTSList[self.nTSt] > 0:
             nLine = self.wholeDocument_rN1704[self.startLine_rN1704 - 1].strip().split()
-        elif self.chosListTS[self.nTSt] < 0:
+        elif self.chosenTSList[self.nTSt] < 0:
             nLine = self.wholeDocument_rN1704[self.startLine_rN1704].strip().split()
 
         self.D = float(nLine[2]) * 2
         self.GR = float(nLine[3]) * 2
         self.S22 = float(nLine[5]) * 1000  # kPa
 
-
-
-
     #Reading eIW (table of data)
-
     def MainProgram(self):
         self.TSData = {}  # for whole TS points data, made of coordinates in in theta direction  --> Z Lines
         n_eIW = -1  #
@@ -299,15 +293,12 @@ class DataExtraction:
 
             self.ZLines.append(thetaLine)  # when all theta lines are over appending last line
 
+
             if n_eIW == self.nZ:                # if counter n_eIW==nZ, Timestep is over
                 self.Calculating_S_V()
 
                 self.brojac_eIW = -1
-                self.TSData[self.TSName] = self.ZLines
-
-
-
-
+                self.TSData[self.TSName] = self.ZLines      #filling TSData
 
     def Calculating_S_V(self):
         S0 = self.d0 * math.pi * self.HVainTotal * (178 / 180) * 0.9988         #inital surface. 178 deg, straight edgges
@@ -315,15 +306,11 @@ class DataExtraction:
         V0 = 1/4*(self.d0)**2*math.pi*self.HVainTotal*((178/180)**2)*(0.9941)
         self.V = -V0
 
-
-        for nThL in range(len(self.ZLines)):    #iterating the
+        for nThL in range(len(self.ZLines)):    #iterating every cut
             STh = 0
             pointsOfElement = []
 
-
-
-            for nPoint in range(len(self.ZLines[nThL])):  # iterira po thetaLiniji
-                # indTheta = thetaLinija.index(tocka)  # trenutniInexThete
+            for nPoint in range(len(self.ZLines[nThL])):  # iterating the theta line in cut
                 try:
                     A = self.ZLines[nThL][nPoint]
                     B = self.ZLines[nThL + 1][nPoint]
@@ -332,54 +319,31 @@ class DataExtraction:
 
                     pointsOfElement.extend([A, B, C, D])
 
-
                 except IndexError:
                     break
+                try:
+                    vTheta1 = np.subtract(C, A)  # vektori izmedu tocaka
+                    vZ1 = np.subtract(B, A)
+                    vTheta2 = np.subtract(B, C)
+                    vZ2 = np.subtract(D, C)
+                    vProdukt1 = np.cross(vZ1, vTheta1)  # == vektorska površina 1. trokuta
+                    vProdukt2 = np.cross(vTheta2, vZ2)  # == vektorska površina 2.
+                    vProduktSuma = (vProdukt1 + vProdukt2) / 2  # jer će četverokuti bit nepravilni
+                    SEl = np.linalg.norm(vProduktSuma)  # povrsina elementa, kvadratica
+                    STh += SEl  # povrsina theta snite
+                except ValueError:
+                    continue
 
-    # def RacunanjeS_V(self):
-    #     S0 = self.D0*math.pi*self.HZile*(178/180)*0.9988
-    #     self.S = -S0
-    #     V0 = 1/4*(self.D0)**2*math.pi*self.HZile*((178/180)**2)*(0.9941)
-    #     self.V = -V0
-    # 
-    #     for thetaLinija in self.listaZ:  # thetaLinija je popis tocaka po theta smjeru (51 -> 50 theta linija)
-    #         indZ = self.listaZ.index(thetaLinija)  # koja od 1-50 theta linija
-    #         pThetaLinije = 0  # povrsina thetaLinije, bit će ih indZ puta
-    #         tockeVolumena = []
-    # 
-    #         for tocka in thetaLinija:  # iterira po thetaLiniji
-    #             indTheta = thetaLinija.index(tocka)  # trenutniInexThete
-    #             try:
-    #                 A = self.listaZ[indZ][indTheta]
-    #                 B = self.listaZ[indZ + 1][indTheta]
-    #                 C = self.listaZ[indZ][indTheta + 1]
-    #                 D = self.listaZ[indZ + 1][indTheta + 1]
-    # 
-    #                 tockeVolumena.extend([A, B, C, D])
-    # 
-    #             except IndexError:
-    #                 break
-    #             try:
-    #                 vTheta1 = np.subtract(C, A)  # vektori izmedu tocaka
-    #                 vZ1 = np.subtract(B, A)
-    #                 vTheta2 = np.subtract(B, C)
-    #                 vZ2 = np.subtract(D, C)
-    #                 vProdukt1 = np.cross(vZ1, vTheta1)  # == vektorska površina 1. trokuta
-    #                 vProdukt2 = np.cross(vTheta2, vZ2)  # == vektorska površina 2.
-    #                 vProduktSuma = (vProdukt1 + vProdukt2) / 2  # jer će četverokuti bit nepravilni
-    #                 pEl = np.linalg.norm(vProduktSuma)  # povrsina elementa, kvadratica
-    #                 pThetaLinije += pEl  # povrsina theta snite
-    #             except ValueError:
-    #                 continue
-    # 
-    #         self.S += pThetaLinije*2
-    # 
-    #         tockeVolumenaArray = np.array(tockeVolumena, dtype="object")
-    #         try:
-    #             vThetaLinije = ConvexHull(tockeVolumenaArray).volume  # ugradena funkcija za V kao array[tocke]
-    #         except:
-    #             vThetaLinije = False  # ako se dogodi da ne valja volumen
-    #         self.V += vThetaLinije*2
+            self.S += STh*2
+
+            pointsOfElementArray = np.array(pointsOfElement, dtype="object")
+            try:
+                VTh = ConvexHull(pointsOfElementArray).volume  # ugradena funkcija za V kao array[tocke]
+            except:
+                VTh = False  # ako se dogodi da ne valja volumen
+            self.V += VTh*2
+
+        print(self.V)
 
 
 
