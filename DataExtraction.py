@@ -9,6 +9,10 @@ from FolderSearch import FolderSearch
 from SimulationsData import *
 
 
+chosenTimeSteps = [-1]
+
+
+
 ###################################################################################################################
 # analyzing just one simulation for testing
 oneSimTestPath = "/home/josip/feap/pocetak/" + parametarskaAnaliza + "/rezultati/sakularna/r=10/parametar_k1/k1=1.06"
@@ -51,7 +55,6 @@ class DataExtraction:
 
 
         # while self.nTSt < len(self.chosListTS):      # as long as there is steps in list
-
         self.SettingAnalysisFiles() #"putanja koja je zapravo simPath uvijek"
 
 
@@ -59,18 +62,18 @@ class DataExtraction:
             self.bEx +=1
             self.chosListTS.remove(self.chosListTS[self.nTSt])
 
-            # self.NoAAA()
+            self.NoAAAFormed()
+            self.chosListTS.remove((self.chosListTS[self.nTSt]))
             # continue
 
-
-        elif self.CheckAAAFormation() == True:
-
+        elif self.CheckAAAFormation() == True:          #if AAA formed
             if self.chosListTS[self.nTSt] <= self.maxTS:  #used for limiting simulation till last TS
-                3
-                #sve ostalo se računa
-                
-                
-                
+                #Calculating d0
+                self.Calculating_d0_H_L()
+                # self.RacunanjeD0_H_L()
+                # self.RacunanjeD_S22_GR()
+
+
             else:
                 # break
                 4
@@ -81,10 +84,23 @@ class DataExtraction:
 
 
 
-    def Creating_allTS_Vector(self):
+    def Creating_allTS_Vector(self):                    # vectors to store data
+        self.TSName_allTS = []
+        self.simName_allTS = []
+        self.S22_allTS = []
 
+        self.D_allTS = []
+        self.d0_allTS = []
 
+        self.dp1_allTS = []
+        self.dp2_allTS = []
+        self.dp3_allTS = []
 
+        self.H_allTS = []
+        self.L_allTS = []
+
+        self.S_allTS = []
+        self.V_allTS = []
 
     def SettingAnalysisFiles(self):
         os.chdir(self.simPath)
@@ -138,7 +154,6 @@ class DataExtraction:
                 FileNotFoundError
                 continue
 
-
     def CheckAAAFormation(self):
         if sameInitalRadius == True:
             self.D0 = float(self.wholeDocument_rIl[5].strip().split()[0]) * 2               # initial radius D0, deformed or non deformed
@@ -158,13 +173,56 @@ class DataExtraction:
                 return True
         return False
 
+    def NoAAAFormed(self):
+        self.TSName = None
+
+
+        self.S22 = None
+        self.D = None
+        self.H = None
+        self.L = None
+        self.S = None
+        self.V = None
+
+    def CalculatingDiameter(self, numberOfLine):
+        dRes = (float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[0]) +
+                float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[1]) +
+                float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[2])) * 2 / 3
+        return dRes
+
+    def Calculating_d0_H_L(self):
+
+        self.CalculatingDiameter(3)
+
+
+        if sameInitalRadius == True:
+            self.d0 = float(self.wholeDocument_rIl[5].strip().split()[0]) * 2
+
+        elif sameInitalRadius == False:
 
 
 
 
+            # dp1 = CalculatingDiameter(20)
+
+
+            self.d0 = (float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[0]) +
+                       float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[1]) +
+                       float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[2])) * 2 / 3
 
 
 
+
+        # self.HZile = float(self.cijeli_tekst_rIL[self.startniRed_rIL + duljinaStepa_rIl - 2].strip().split()[5])
+        # self.dp1 = float(self.cijeli_tekst_rIL[self.startniRed_rIL+20].strip().split()[0])*2
+        # self.dp2 = float(self.cijeli_tekst_rIL[self.startniRed_rIL+21].strip().split()[0])*2
+        # self.dp3 = float(self.cijeli_tekst_rIL[self.startniRed_rIL+22].strip().split()[0])*2
+
+
+
+#############################
+#   POMOĆNE FUNKCIJE
+##############################
 
 
 
