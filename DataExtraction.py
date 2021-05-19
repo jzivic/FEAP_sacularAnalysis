@@ -277,7 +277,7 @@ class DataExtraction:
         self.TSData = {}  # for whole TS points data, made of coordinates in in theta direction  --> Z Lines
         n_eIW = -1  #
 
-        #firstly, iteerating over every line that represents first radial layer
+        #firstly, iteerating every cut that represents first radial layer
         for line in self.wholeDocument_eIW[self.startLine_eIW: self.startLine_eIW + TSLegnht_eIW]:
             line = line.strip().split()  # red teksta
             if line == []: continue  # preskakanje praznih redova, ne ulaze u brojac_eIW
@@ -288,7 +288,7 @@ class DataExtraction:
                 self.ZLines = []
                 continue                # to exclude empty lines
 
-            # for every line is new Theta line
+            # iteerating every arc line (Theta line)
             thetaLine, pointCoord = [],[]
             for number in line:             #iterating every line. Points are constructed as (x1,y1,z1, x2,y2,z2...)
                 number = float(number)
@@ -300,7 +300,7 @@ class DataExtraction:
             self.ZLines.append(thetaLine)  # when all theta lines are over appending last line
 
             if n_eIW == self.nZ:                # if counter n_eIW==nZ, Timestep is over
-                self.RacunanjeS_V()
+                self.Calculating_S_V()
 
                 self.brojac_eIW = -1
                 self.TSData[self.TSName] = self.ZLines
@@ -316,12 +316,10 @@ class DataExtraction:
         self.V = -V0
 
 
-
-        for thetaLinija in self.listaZ:  # thetaLinija je popis tocaka po theta smjeru (51 -> 50 theta linija)
-            indZ = self.listaZ.index(thetaLinija)  # koja od 1-50 theta linija
+        for thetaLine in self.ZLines:  # thetaLinija je popis tocaka po theta smjeru (51 -> 50 theta linija)
+            indZ = self.ZLines.index(thetaLine)  # koja od 1-50 theta linija
             pThetaLinije = 0  # povrsina thetaLinije, bit će ih indZ puta
             tockeVolumena = []
-
 
 
 
