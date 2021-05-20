@@ -354,7 +354,7 @@ class DataExtraction:
         self.V_allTS.append(self.V)
 
 
-        print(self.TSName, self.simName)
+        # print(self.TSName, self.simName)
 
 
 
