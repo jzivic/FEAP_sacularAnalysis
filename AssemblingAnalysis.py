@@ -1,4 +1,4 @@
-from FolderSearch import FolderSearch, PretrazivanjeFolderaSakularna
+from FolderSearch import FolderSearch
 from DataExtraction import DataExtraction
 from SimulationsData import *
 
@@ -9,13 +9,13 @@ from SimulationsData import *
 
 
 def SacularAnalysis_f():
-    searchData = FolderSearch(resultsFolder)        #svako pozivanje FolderSearch klase puni class varijabel ponovno
-    n = len(searchData.allNames) - 1
-
+    extractedData = FolderSearch(resultsFolder)        #svako pozivanje FolderSearch klase puni class varijabel ponovno
+    n = len(extractedData.allNames) - 1
 
     for i in range(n):
-        print(searchData.allNames[i])
+        print(extractedData.allNames[i])
         simulacija_TS = DataExtraction(resultsFolder, i)
+
 
 SacularAnalysis_f()
 

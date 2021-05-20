@@ -1,5 +1,6 @@
 import os, math#, xlsxwriter, openpyxl
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.spatial import ConvexHull
 # from openpyxl.styles import Font, PatternFill
@@ -9,7 +10,7 @@ from FolderSearch import FolderSearch
 from SimulationsData import *
 
 
-# chosenTimeSteps = [190, 220,280, 316, 350]
+chosenTimeSteps = [190, 220,280, 316, 350]
 
 
 
@@ -32,7 +33,6 @@ class DataExtraction:
     def __init__(self, resultsFolder, nSim=0):
         self.nSim = nSim
 
-
         if allSimulationsAnalysis == True:               # ovo se tek poslije konstruktora izvodi ????
             self.objectDE = FolderSearch(resultsFolder)  # putanjaSakularne
             self.simPath = self.objectDE.allPaths[self.nSim]
@@ -44,15 +44,9 @@ class DataExtraction:
             self.simName = "TestName"
             os.chdir(self.simPath)
 
-
         self.chosenTSList = list(chosenTimeSteps)
         self.nTSt = 0
-        self.bEx = 0
-        self.Creating_allTS_Vector()                                #OVO SE RADI
-
-
-
-
+        self.Creating_allTS_Vector()
 
         while self.nTSt < len(self.chosenTSList):      # as long as there is steps in list
             self.SettingAnalysisFiles() #"putanja koja je zapravo simPath uvijek"
@@ -72,24 +66,19 @@ class DataExtraction:
                         continue
                     self.MainProgram()
                     self.DataStorage()
-
                 else:
                     break
                 self.nTSt += 1
-                self.bEx += 1
-
-
-
+        self.DataFrameConstruct()
 
     def Creating_allTS_Vector(self):                    # vectors to store data
         self.TSName_allTS = []
-        self.simName_allTS = []
-        self.S22_allTS = []
         self.D_allTS = []
         self.d0_allTS = []
         self.d1_allTS = []
         self.d2_allTS = []
         self.d3_allTS = []
+        self.S22_allTS = []
         self.H_allTS = []
         self.L_allTS = []
         self.S_allTS = []
@@ -168,12 +157,12 @@ class DataExtraction:
 
     def NoAAAFormed(self):
         self.TSName = None
-        self.S22 = None
         self.D = None
         self.d0 = None
         self.d1 = None
         self.d2 = None
         self.d3 = None
+        self.S22 = None
         self.H = None
         self.L = None
         self.S = None
@@ -249,7 +238,6 @@ class DataExtraction:
         self.H = self.H + dH        # interpolation addition
         self.L = self.L + dL
 
-    # Reading D, GR, S22 from r1704 file
     def Calculating_D_S22_GR(self):
         if self.chosenTSList[self.nTSt] > 0:
             nLine = self.wholeDocument_rN1704[self.startLine_rN1704 - 1].strip().split()
@@ -258,9 +246,8 @@ class DataExtraction:
 
         self.D = float(nLine[2]) * 2
         self.GR = float(nLine[3]) * 2
-        self.S22 = float(nLine[5]) * 1000  # kPa
+        self.S22 = float(nLine[5]) * 1000  # kPa# Reading D, GR, S22 from r1704 file
 
-    #Reading eIW (table of data)
     def MainProgram(self):
         self.TSData = {}  # for whole TS points data, made of coordinates in in theta direction  --> Z Lines
         n_eIW = -1  #
@@ -293,7 +280,7 @@ class DataExtraction:
                 self.Calculating_S_V()
 
                 self.brojac_eIW = -1
-                self.TSData[self.TSName] = self.ZLines      #filling TSData
+                self.TSData[self.TSName] = self.ZLines      #filling TSData#Reading eIW (table of data)
 
     def Calculating_S_V(self):
         S0 = self.d0 * math.pi * self.HVainTotal * (178 / 180) * 0.9988         #inital surface. 178 deg, straight edgges
@@ -338,40 +325,43 @@ class DataExtraction:
                 VTh = False  # ako se dogodi da ne valja volumen
             self.V += VTh*2
 
-
     def DataStorage(self):
         self.TSName_allTS.append(self.TSName)
-        self.simName_allTS.append(self.simName)
-        self.S22_allTS.append(self.S22)
         self.D_allTS.append(self.D)
         self.d0_allTS.append(self.d0)
         self.d1_allTS.append(self.d1)
         self.d2_allTS.append(self.d2)
         self.d3_allTS.append(self.d3)
+        self.S22_allTS.append(self.S22)
         self.H_allTS.append(self.H)
         self.L_allTS.append(self.L)
         self.S_allTS.append(self.S)
         self.V_allTS.append(self.V)
 
 
-        # print(self.TSName, self.simName)
+    def DataFrameConstruct(self):
+        TimeSteps = pd.Series(self.TSName_allTS)
+
+        TSData = pd.DataFrame({"D":self.D_allTS,
+                           "d1": self.d1_allTS,
+                           "d2": self.d2_allTS,
+                           "d3": self.d3_allTS,
+                           "S22": self.S22_allTS,
+                           "H": self.H_allTS,
+                           "L": self.L_allTS,
+                           "S": self.S_allTS,
+                           "V": self.V_allTS,
+                           }, index=TimeSteps)
+
+        print(TSData)
 
 
 
+# comment if allSimulationsAnalysis=True
+proba = DataExtraction(oneSimTestPath)
 
 
-
-#############################
-#   POMOĆNE FUNKCIJE
-##############################
-
-
-
-
-DataExtraction(oneSimTestPath)
-
-
-
+# print(proba.simName)
 
 
 

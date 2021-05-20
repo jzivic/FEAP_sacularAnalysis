@@ -1,15 +1,7 @@
 import os
-from os import path
-from SimulationsData import *
 
-
-# simPath = "/home/josip/feap/pocetak/"+parametarskaAnaliza+"/rezultati/sakularna/"
-
-# allPaths = []
-# allNames = []
 
 class FolderSearch:
-
     allPaths, allNames = [], []
 
     def pathToStrings(self, path):
@@ -25,7 +17,6 @@ class FolderSearch:
         lDirString.append(s)
         return lDirString
 
-
     def __init__(self, directory):
         for root, dirs, files in os.walk(directory):
             if "iparameters" in files and "PRESKOCI" not in self.pathToStrings(root):   #dobre dat koje se anal
@@ -35,9 +26,7 @@ class FolderSearch:
                 FolderSearch.allPaths.append(root)
                 FolderSearch.allNames.append(simName)
 
-
 # a = FolderSearch(resultsFolder)
-#
 # for i in a.allNames:
 #     print(i)
 
