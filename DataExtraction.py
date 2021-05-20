@@ -52,6 +52,9 @@ class DataExtraction:
             # self.SettingStartingLinesA()
             self.SettingAnalysisFiles() #"putanja koja je zapravo simPath uvijek"
 
+            # if self.nTSt > 1:
+            #     if
+
             if self.CheckAAAFormation() == False:
                 self.NoAAAFormed()
                 self.DataStorage()
@@ -87,18 +90,18 @@ class DataExtraction:
 
 
 
-    def SettingStartingLinesA(self):
-        if self.chosenTSList[self.nTSt] > 0:
-            startLine_eIW = 68 + TSLegnht_eIW * (self.chosenTSList[self.nTSt] - 1)
-            startLine_rIL = 5 + TSLegnht_rIl * (self.chosenTSList[self.nTSt] - 1)
-            startLine_ctl = 4 + TSLegnht_ctl * (self.chosenTSList[self.nTSt] - 1)
-            startLine_rN1704 = 5 + TSLegnht_rN1704 * (self.chosenTSList[self.nTSt] - 1)
-
-        elif self.chosenTSList[self.nTSt] < 0:
-            startLine_eIW = 1 + TSLegnht_eIW * self.chosenTSList[self.nTSt]  # number of line in
-            startLine_rIL = 0 + TSLegnht_rIl * self.chosenTSList[self.nTSt]
-            startLine_ctl = 0 + TSLegnht_ctl * self.chosenTSList[self.nTSt]
-            startLine_rN1704 = 0 + TSLegnht_rN1704 * self.chosenTSList[self.nTSt]
+    # def SettingStartingLinesA(self):
+    #     if self.chosenTSList[self.nTSt] > 0:
+    #         startLine_eIW = 68 + TSLegnht_eIW * (self.chosenTSList[self.nTSt] - 1)
+    #         startLine_rIL = 5 + TSLegnht_rIl * (self.chosenTSList[self.nTSt] - 1)
+    #         startLine_ctl = 4 + TSLegnht_ctl * (self.chosenTSList[self.nTSt] - 1)
+    #         startLine_rN1704 = 5 + TSLegnht_rN1704 * (self.chosenTSList[self.nTSt] - 1)
+    #
+    #     elif self.chosenTSList[self.nTSt] < 0:
+    #         startLine_eIW = 1 + TSLegnht_eIW * self.chosenTSList[self.nTSt]  # number of line in
+    #         startLine_rIL = 0 + TSLegnht_rIl * self.chosenTSList[self.nTSt]
+    #         startLine_ctl = 0 + TSLegnht_ctl * self.chosenTSList[self.nTSt]
+    #         startLine_rN1704 = 0 + TSLegnht_rN1704 * self.chosenTSList[self.nTSt]
 
 
 
@@ -117,6 +120,7 @@ class DataExtraction:
                     chosenTimeStep = self.chosenTSList[self.nTSt]
                 elif self.chosenTSList[self.nTSt] > self.maxTS:
                     chosenTimeStep = self.maxTS
+                    self.chosenTSList[self.nTSt] = self.maxTS
 
                 if chosenTimeStep > 0:      # in past : def SettingChosenTimeStep(self)       # setting starting line in each document
                     startLine_eIW = 68 + TSLegnht_eIW * (chosenTimeStep - 0)    #00
@@ -134,11 +138,9 @@ class DataExtraction:
                 # print(startLine_rN1704)
 
 
-
                 self.startLine_eIW = startLine_eIW % self.nl_eIW
                 nNodes = self.wholeDocument_eIW[2].strip().split()                      # number of nodes, written in eIW file
                 self.nTheta, self.nZ = int(nNodes[0]), int(nNodes[1])
-
 
                 opening_rIL = open("res__INNER_lines__" + suffix, "r")
                 self.wholeDocument_rIl = opening_rIL.readlines()
@@ -150,13 +152,10 @@ class DataExtraction:
                 self.nl_ctl = sum(1 for line in open("res__CENTERLINE__" + suffix))
                 self.startLine_ctl = startLine_ctl  # % self.nl_ctl
 
-
                 opening_rN1704 = open("res__NODE_1704_" + suffix, "r")
                 self.wholeDocument_rN1704 = opening_rN1704.readlines()
                 self.nl_rN1704 = sum(1 for line in open("res__NODE_1704_" + suffix))
                 self.startLine_rN1704 = startLine_rN1704 #% self.nl_rN1704
-
-                # print(self.startLine_rN1704)
 
             except:
                 FileNotFoundError
@@ -171,6 +170,7 @@ class DataExtraction:
                        float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[2])) * 2 / 3
 
         nLine_rIL = self.startLine_rIL
+        # print(nLine_rIL)
 
         # iterating over TS, checking in AAA condition is fulfilled
         for line in self.wholeDocument_rIl[self.startLine_rIL: (self.startLine_rIL + TSLegnht_rIl - 1)]:

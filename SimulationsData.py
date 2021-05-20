@@ -10,7 +10,7 @@ parametarskaAnaliza="parametarskaAnaliza_2"
 # chosenTimeSteps = [190, 208, 226, 244, 262, 280, 298, 316, 334, 352, 370, 388, 406, 424, 442, 460, 478]
 # chosenTimeSteps = [190, 220,280, 316, 350, 666]
 # chosenTimeSteps = [333, 350, 400]
-chosenTimeSteps = [-1,-1, 100, 666]
+chosenTimeSteps = [100, 666, 700]
 
 
 
