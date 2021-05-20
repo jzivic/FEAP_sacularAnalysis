@@ -272,13 +272,10 @@ class DataExtraction:
                 if len(pointCoord) == 3:        #constructing one points coordinate for every 3 coordinates
                     thetaLine.append(pointCoord)
                     pointCoord = []
-
             self.ZLines.append(thetaLine)  # when all theta lines are over appending last line
-
 
             if n_eIW == self.nZ:                # if counter n_eIW==nZ, Timestep is over
                 self.Calculating_S_V()
-
                 self.brojac_eIW = -1
                 self.TSData[self.TSName] = self.ZLines      #filling TSData#Reading eIW (table of data)
 
@@ -342,7 +339,7 @@ class DataExtraction:
     def DataFrameConstruct(self):
         TimeSteps = pd.Series(self.TSName_allTS)
 
-        TSData = pd.DataFrame({"D":self.D_allTS,
+        allTSData = pd.DataFrame({"D":self.D_allTS,
                            "d1": self.d1_allTS,
                            "d2": self.d2_allTS,
                            "d3": self.d3_allTS,
@@ -351,17 +348,18 @@ class DataExtraction:
                            "L": self.L_allTS,
                            "S": self.S_allTS,
                            "V": self.V_allTS,
-                           }, index=TimeSteps)
+                           },
+                              index=TimeSteps)
 
-        print(TSData)
+        # n = 315
+        # nstr = str(n)
+        # print(TSData.loc[nstr])
 
 
 
 # comment if allSimulationsAnalysis=True
 proba = DataExtraction(oneSimTestPath)
 
-
-# print(proba.simName)
 
 
 
