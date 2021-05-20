@@ -10,7 +10,7 @@ from FolderSearch import FolderSearch
 from SimulationsData import *
 
 
-chosenTimeSteps = [190, 220,280, 316, 350]
+# chosenTimeSteps = [190, 220,280, 316, 350]
 
 
 
@@ -49,6 +49,7 @@ class DataExtraction:
         self.Creating_allTS_Vector()
 
         while self.nTSt < len(self.chosenTSList):      # as long as there is steps in list
+            # self.SettingStartingLinesA()
             self.SettingAnalysisFiles() #"putanja koja je zapravo simPath uvijek"
 
             if self.CheckAAAFormation() == False:
@@ -84,6 +85,25 @@ class DataExtraction:
         self.S_allTS = []
         self.V_allTS = []
 
+
+
+    def SettingStartingLinesA(self):
+        if self.chosenTSList[self.nTSt] > 0:
+            startLine_eIW = 68 + TSLegnht_eIW * (self.chosenTSList[self.nTSt] - 1)
+            startLine_rIL = 5 + TSLegnht_rIl * (self.chosenTSList[self.nTSt] - 1)
+            startLine_ctl = 4 + TSLegnht_ctl * (self.chosenTSList[self.nTSt] - 1)
+            startLine_rN1704 = 5 + TSLegnht_rN1704 * (self.chosenTSList[self.nTSt] - 1)
+
+        elif self.chosenTSList[self.nTSt] < 0:
+            startLine_eIW = 1 + TSLegnht_eIW * self.chosenTSList[self.nTSt]  # number of line in
+            startLine_rIL = 0 + TSLegnht_rIl * self.chosenTSList[self.nTSt]
+            startLine_ctl = 0 + TSLegnht_ctl * self.chosenTSList[self.nTSt]
+            startLine_rN1704 = 0 + TSLegnht_rN1704 * self.chosenTSList[self.nTSt]
+
+
+
+
+
     def SettingAnalysisFiles(self):
         os.chdir(self.simPath)
         for suffix in suffixList:
@@ -98,17 +118,21 @@ class DataExtraction:
                 elif self.chosenTSList[self.nTSt] > self.maxTS:
                     chosenTimeStep = self.maxTS
 
-                if self.chosenTSList[self.nTSt] > 0:      # in past : def SettingChosenTimeStep(self)       # setting starting line in each document
-                    startLine_eIW = 68 + TSLegnht_eIW * (self.chosenTSList[self.nTSt] - 1)
-                    startLine_rIL = 5 + TSLegnht_rIl * (self.chosenTSList[self.nTSt] - 1)
-                    startLine_ctl = 4 + TSLegnht_ctl * (self.chosenTSList[self.nTSt] - 1)
-                    startLine_rN1704 = 5 + TSLegnht_rN1704 * (self.chosenTSList[self.nTSt] - 1)
+                if chosenTimeStep > 0:      # in past : def SettingChosenTimeStep(self)       # setting starting line in each document
+                    startLine_eIW = 68 + TSLegnht_eIW * (chosenTimeStep - 0)    #00
+                    startLine_rIL = 5 + TSLegnht_rIl * (chosenTimeStep - 0)
+                    startLine_ctl = 4 + TSLegnht_ctl * (chosenTimeStep - 0)
+                    startLine_rN1704 = 5 + TSLegnht_rN1704 * (chosenTimeStep - 0)
 
-                elif self.chosenTSList[self.nTSt] < 0:  # negative timesteps counts from the last
-                    startLine_eIW = 1 + TSLegnht_eIW * self.chosenTSList[self.nTSt]  # number of line in
-                    startLine_rIL = 0 + TSLegnht_rIl * self.chosenTSList[self.nTSt]
-                    startLine_ctl = 0 + TSLegnht_ctl * self.chosenTSList[self.nTSt]
-                    startLine_rN1704 = 0 + TSLegnht_rN1704 * self.chosenTSList[self.nTSt]
+                elif chosenTimeStep < 0:  # negative timesteps counts from the last
+                    startLine_eIW = 1 + TSLegnht_eIW * chosenTimeStep  # number of line in
+                    startLine_rIL = 0 + TSLegnht_rIl * chosenTimeStep
+                    startLine_ctl = 0 + TSLegnht_ctl * chosenTimeStep
+                    startLine_rN1704 = 0 + TSLegnht_rN1704 * chosenTimeStep
+
+
+                # print(startLine_rN1704)
+
 
 
                 self.startLine_eIW = startLine_eIW % self.nl_eIW
@@ -131,6 +155,8 @@ class DataExtraction:
                 self.wholeDocument_rN1704 = opening_rN1704.readlines()
                 self.nl_rN1704 = sum(1 for line in open("res__NODE_1704_" + suffix))
                 self.startLine_rN1704 = startLine_rN1704 #% self.nl_rN1704
+
+                # print(self.startLine_rN1704)
 
             except:
                 FileNotFoundError
@@ -156,7 +182,7 @@ class DataExtraction:
         return False
 
     def NoAAAFormed(self):
-        self.TSName = None
+        self.TSName = self.wholeDocument_eIW[self.startLine_eIW: self.startLine_eIW + TSLegnht_eIW][0].strip().split()[1]
         self.D = None
         self.d0 = None
         self.d1 = None
@@ -263,7 +289,6 @@ class DataExtraction:
                 self.TSName = line[1]  # New TS
                 self.ZLines = []
                 continue                # to exclude empty lines
-
             # iteerating every arc line (Theta line)
             thetaLine, pointCoord = [],[]
             for number in line:             #iterating every line. Points are constructed as (x1,y1,z1, x2,y2,z2...)
@@ -338,22 +363,25 @@ class DataExtraction:
 
     def DataFrameConstruct(self):
         TimeSteps = pd.Series(self.TSName_allTS)
+        # print(TimeSteps)
 
-        allTSData = pd.DataFrame({"D":self.D_allTS,
-                           "d1": self.d1_allTS,
-                           "d2": self.d2_allTS,
-                           "d3": self.d3_allTS,
-                           "S22": self.S22_allTS,
-                           "H": self.H_allTS,
-                           "L": self.L_allTS,
-                           "S": self.S_allTS,
-                           "V": self.V_allTS,
-                           },
-                              index=TimeSteps)
+        self.DataFromAllTimeSteps = pd.DataFrame({  "D":self.D_allTS,
+                                                   "d1": self.d1_allTS,
+                                                   "d2": self.d2_allTS,
+                                                   "d3": self.d3_allTS,
+                                                   "S22": self.S22_allTS,
+                                                   "H": self.H_allTS,
+                                                   "L": self.L_allTS,
+                                                   "S": self.S_allTS,
+                                                   "V": self.V_allTS,
+                                                   },
+                                                      index=TimeSteps)
+
+        print(self.DataFromAllTimeSteps)
 
         # n = 315
         # nstr = str(n)
-        # print(TSData.loc[nstr])
+        # print(self.TSData.loc[nstr])
 
 
 
