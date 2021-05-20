@@ -48,12 +48,13 @@ class DataExtraction:
         self.nTSt = 0
         self.Creating_allTS_Vector()
 
+
         while self.nTSt < len(self.chosenTSList):      # as long as there is steps in list
             # self.SettingStartingLinesA()
             self.SettingAnalysisFiles() #"putanja koja je zapravo simPath uvijek"
 
-            # if self.nTSt > 1:
-            #     if
+            if self.SameAsPreviousStep()==True:   #checking if the TS are repeating
+                break
 
             if self.CheckAAAFormation() == False:
                 self.NoAAAFormed()
@@ -75,6 +76,8 @@ class DataExtraction:
                 self.nTSt += 1
         self.DataFrameConstruct()
 
+
+
     def Creating_allTS_Vector(self):                    # vectors to store data
         self.TSName_allTS = []
         self.D_allTS = []
@@ -87,25 +90,6 @@ class DataExtraction:
         self.L_allTS = []
         self.S_allTS = []
         self.V_allTS = []
-
-
-
-    # def SettingStartingLinesA(self):
-    #     if self.chosenTSList[self.nTSt] > 0:
-    #         startLine_eIW = 68 + TSLegnht_eIW * (self.chosenTSList[self.nTSt] - 1)
-    #         startLine_rIL = 5 + TSLegnht_rIl * (self.chosenTSList[self.nTSt] - 1)
-    #         startLine_ctl = 4 + TSLegnht_ctl * (self.chosenTSList[self.nTSt] - 1)
-    #         startLine_rN1704 = 5 + TSLegnht_rN1704 * (self.chosenTSList[self.nTSt] - 1)
-    #
-    #     elif self.chosenTSList[self.nTSt] < 0:
-    #         startLine_eIW = 1 + TSLegnht_eIW * self.chosenTSList[self.nTSt]  # number of line in
-    #         startLine_rIL = 0 + TSLegnht_rIl * self.chosenTSList[self.nTSt]
-    #         startLine_ctl = 0 + TSLegnht_ctl * self.chosenTSList[self.nTSt]
-    #         startLine_rN1704 = 0 + TSLegnht_rN1704 * self.chosenTSList[self.nTSt]
-
-
-
-
 
     def SettingAnalysisFiles(self):
         os.chdir(self.simPath)
@@ -134,9 +118,8 @@ class DataExtraction:
                     startLine_ctl = 0 + TSLegnht_ctl * chosenTimeStep
                     startLine_rN1704 = 0 + TSLegnht_rN1704 * chosenTimeStep
 
-
-                # print(startLine_rN1704)
-
+                if self.SameAsPreviousStep() == True:
+                    break
 
                 self.startLine_eIW = startLine_eIW % self.nl_eIW
                 nNodes = self.wholeDocument_eIW[2].strip().split()                      # number of nodes, written in eIW file
@@ -161,6 +144,10 @@ class DataExtraction:
                 FileNotFoundError
                 continue
 
+    def SameAsPreviousStep(self):
+        if self.chosenTSList[self.nTSt] == self.chosenTSList[self.nTSt-1]:
+            return True
+
     def CheckAAAFormation(self):
         if sameInitalRadius == True:
             self.d0 = float(self.wholeDocument_rIl[5].strip().split()[0]) * 2               # initial radius D0, deformed or non deformed
@@ -169,10 +156,8 @@ class DataExtraction:
                        float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[1]) +
                        float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[2])) * 2 / 3
 
-        nLine_rIL = self.startLine_rIL
-        # print(nLine_rIL)
-
         # iterating over TS, checking in AAA condition is fulfilled
+        nLine_rIL = self.startLine_rIL
         for line in self.wholeDocument_rIl[self.startLine_rIL: (self.startLine_rIL + TSLegnht_rIl - 1)]:
             nLine_rIL += 1
             line = line.strip().split()
@@ -198,10 +183,9 @@ class DataExtraction:
         # auxiliary function for calculating diameter
         def CalculatingDiameter(numberOfLine):
             D = (float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[0]) +
-                    float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[1]) +
-                    float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[2])) * 2 / 3
+                 float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[1]) +
+                 float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[2])) * 2 / 3
             return D
-
 
         if sameInitalRadius == True:    #undeformed inital shape
             self.d0 = float(self.wholeDocument_rIl[5].strip().split()[0]) * 2
@@ -223,7 +207,7 @@ class DataExtraction:
             nLine_rIL += 1                                                                              # number of line in rIL
             line = line.strip().split()
             D_ = (float(line[0]) + float(line[1]) + float(line[2])) * 2 / 3             # D in every line / height
-            Z_ = float(line[4])
+            # Z_ = float(line[4])
 
             if D_ > self.d0 * 1.05:
                 self.vectorAAAIndices.append((nLine_rIL-6) % TSLegnht_rIl)
@@ -237,7 +221,7 @@ class DataExtraction:
             #coordinates of pointA, pointB of line that connects elements before/after condition
             # pA = (rCoord, zCoord)
             pA = [(float(lineA[0]) + float(lineA[1]) + float(lineA[2])) / 3, (float(lineA[3]) + float(lineA[4]) + float(lineA[5])) / 3]
-            pB = [(float(lineB[0]) + float(lineB[1]) + float(lineB[2])) / 3, (float(lineB[3]) + float(lineB[4]) + float(lineB[5])) / 3] 
+            pB = [(float(lineB[0]) + float(lineB[1]) + float(lineB[2])) / 3, (float(lineB[3]) + float(lineB[4]) + float(lineB[5])) / 3]
             slope = (pB[1] - pA[1]) / (pB[0] - pA[0])
 
             dR = pB[0] - 1.05 * self.d0 / 2             # AAA forming point radial offset from coordinates element before
@@ -285,7 +269,6 @@ class DataExtraction:
             n_eIW += 1
 
             if n_eIW == 0:  # ==Timestep: red
-                # self.TSName = line[0] + line[1]  # New TS
                 self.TSName = line[1]  # New TS
                 self.ZLines = []
                 continue                # to exclude empty lines
@@ -360,28 +343,26 @@ class DataExtraction:
         self.S_allTS.append(self.S)
         self.V_allTS.append(self.V)
 
-
     def DataFrameConstruct(self):
+
         TimeSteps = pd.Series(self.TSName_allTS)
-        # print(TimeSteps)
-
         self.DataFromAllTimeSteps = pd.DataFrame({  "D":self.D_allTS,
-                                                   "d1": self.d1_allTS,
-                                                   "d2": self.d2_allTS,
-                                                   "d3": self.d3_allTS,
-                                                   "S22": self.S22_allTS,
-                                                   "H": self.H_allTS,
-                                                   "L": self.L_allTS,
-                                                   "S": self.S_allTS,
-                                                   "V": self.V_allTS,
-                                                   },
-                                                      index=TimeSteps)
-
-        print(self.DataFromAllTimeSteps)
+                                                    "d1": self.d1_allTS,
+                                                    "d2": self.d2_allTS,
+                                                    "d3": self.d3_allTS,
+                                                    "S22": self.S22_allTS,
+                                                    "H": self.H_allTS,
+                                                    "L": self.L_allTS,
+                                                    "S": self.S_allTS,
+                                                    "V": self.V_allTS,
+                                                    },
+                                                 index=TimeSteps)
 
         # n = 315
         # nstr = str(n)
         # print(self.TSData.loc[nstr])
+
+        print(self.DataFromAllTimeSteps)
 
 
 
