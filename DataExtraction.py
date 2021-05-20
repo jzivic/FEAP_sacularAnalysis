@@ -75,6 +75,7 @@ class DataExtraction:
                     self.oKorSim[self.bK] -= 1
                     # continue
                 self.MainProgram()
+                self.DataStorage()
 
 
 
@@ -91,17 +92,13 @@ class DataExtraction:
         self.TSName_allTS = []
         self.simName_allTS = []
         self.S22_allTS = []
-
         self.D_allTS = []
         self.d0_allTS = []
-
-        self.dp1_allTS = []
-        self.dp2_allTS = []
-        self.dp3_allTS = []
-
+        self.d1_allTS = []
+        self.d2_allTS = []
+        self.d3_allTS = []
         self.H_allTS = []
         self.L_allTS = []
-
         self.S_allTS = []
         self.V_allTS = []
 
@@ -159,9 +156,9 @@ class DataExtraction:
 
     def CheckAAAFormation(self):
         if sameInitalRadius == True:
-            self.D0 = float(self.wholeDocument_rIl[5].strip().split()[0]) * 2               # initial radius D0, deformed or non deformed
+            self.d0 = float(self.wholeDocument_rIl[5].strip().split()[0]) * 2               # initial radius D0, deformed or non deformed
         elif sameInitalRadius == False:
-            self.D0 = (float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[0]) +
+            self.d0 = (float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[0]) +
                        float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[1]) +
                        float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[2])) * 2 / 3
 
@@ -172,7 +169,7 @@ class DataExtraction:
             nLine_rIL += 1
             line = line.strip().split()
             D = (float(line[0]) + float(line[1]) + float(line[2])) * 2 / 3
-            if D >= self.D0 * 1.5:
+            if D >= self.d0 * 1.5:
                 return True
         return False
 
@@ -278,7 +275,8 @@ class DataExtraction:
             n_eIW += 1
 
             if n_eIW == 0:  # ==Timestep: red
-                self.TSName = line[0] + line[1]  # New TS
+                # self.TSName = line[0] + line[1]  # New TS
+                self.TSName = line[1]  # New TS
                 self.ZLines = []
                 continue                # to exclude empty lines
 
@@ -343,12 +341,20 @@ class DataExtraction:
                 VTh = False  # ako se dogodi da ne valja volumen
             self.V += VTh*2
 
-        print(self.V)
 
-
-
-
-
+    def DataStorage(self):
+        self.TSName_allTS.append(self.TSName)
+        self.simName_allTS.append(self.simName)
+        self.S22_allTS.append(self.S22)
+        self.D_allTS.append(self.D)
+        self.d0_allTS.append(self.d0)
+        self.d1_allTS.append(self.d1)
+        self.d2_allTS.append(self.d2)
+        self.d3_allTS.append(self.d3)
+        self.H_allTS.append(self.H)
+        self.L_allTS.append(self.L)
+        self.S_allTS.append(self.S)
+        self.V_allTS.append(self.V)
 
 
 
