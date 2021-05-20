@@ -9,7 +9,7 @@ from FolderSearch import FolderSearch
 from SimulationsData import *
 
 
-chosenTimeSteps = [190, 220,280, 316, 350]
+# chosenTimeSteps = [190, 220,280, 316, 350]
 
 
 
@@ -63,9 +63,7 @@ class DataExtraction:
                 self.chosenTSList.remove(self.chosenTSList[self.nTSt])
                 continue
 
-
             elif self.CheckAAAFormation() == True:          #if AAA formed
-
                 if self.chosenTSList[self.nTSt] <= self.maxTS:  #used for limiting simulation till last TS
                     self.Calculating_d0_H_L()
                     self.Calculating_D_S22_GR()

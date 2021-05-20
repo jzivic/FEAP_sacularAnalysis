@@ -3,16 +3,7 @@ from os import path
 from SimulationsData import *
 
 
-
-
-
-
-
-
 # simPath = "/home/josip/feap/pocetak/"+parametarskaAnaliza+"/rezultati/sakularna/"
-# simPath = "/home/josip/feap/pocetak/"+parametarskaAnaliza+"/rezultati/sakularna/r=10/"
-
-simPath = "/home/josip/feap/pocetak/parametarskaAnaliza_2/rezultati/sakularna/"
 
 
 
@@ -35,7 +26,6 @@ class FolderSearch:
         return lDirString
 
 
-
     def __init__(self, folder):
         for root, dirs, files in os.walk(folder):
             if "iparameters" in files and "PRESKOCI" not in self.pathToStrings(root):   #dobre dat koje se anal
@@ -45,19 +35,6 @@ class FolderSearch:
 
                 FolderSearch.allPaths.append(root)
                 FolderSearch.allNames.append(simName)
-
-
-
-
-
-
-
-
-
-a = FolderSearch(simPath)
-
-# print(a.allNames)
-
 
 
 
