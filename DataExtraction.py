@@ -9,7 +9,7 @@ from FolderSearch import FolderSearch
 from SimulationsData import *
 
 
-chosenTimeSteps = [-3]
+chosenTimeSteps = [190, 220,280, 316, 350]
 
 
 
@@ -54,36 +54,31 @@ class DataExtraction:
 
 
 
-        # while self.nTSt < len(self.chosenTSList):      # as long as there is steps in list
-        self.SettingAnalysisFiles() #"putanja koja je zapravo simPath uvijek"
+        while self.nTSt < len(self.chosenTSList):      # as long as there is steps in list
+            self.SettingAnalysisFiles() #"putanja koja je zapravo simPath uvijek"
 
-        if self.CheckAAAFormation() == False:
-            self.bEx +=1
-            self.chosenTSList.remove(self.chosenTSList[self.nTSt])
-
-            self.NoAAAFormed()
-            # self.chosenTSList.remove((self.chosenTSList[self.nTSt]))
-            # continue
-
-
-        elif self.CheckAAAFormation() == True:          #if AAA formed
-
-            if self.chosenTSList[self.nTSt] <= self.maxTS:  #used for limiting simulation till last TS
-                self.Calculating_d0_H_L()
-                self.Calculating_D_S22_GR()
-                if self.GR < 0 or self.D < 0:
-                    self.oKorSim[self.bK] -= 1
-                    # continue
-                self.MainProgram()
+            if self.CheckAAAFormation() == False:
+                self.NoAAAFormed()
                 self.DataStorage()
+                self.chosenTSList.remove(self.chosenTSList[self.nTSt])
+                continue
 
 
+            elif self.CheckAAAFormation() == True:          #if AAA formed
 
-            else:
-                # break
-                4
-            self.nTSt += 1
-            self.bEx += 1
+                if self.chosenTSList[self.nTSt] <= self.maxTS:  #used for limiting simulation till last TS
+                    self.Calculating_d0_H_L()
+                    self.Calculating_D_S22_GR()
+                    if self.GR < 0 or self.D < 0:
+                        self.oKorSim[self.bK] -= 1
+                        continue
+                    self.MainProgram()
+                    self.DataStorage()
+
+                else:
+                    break
+                self.nTSt += 1
+                self.bEx += 1
 
 
 
@@ -177,6 +172,10 @@ class DataExtraction:
         self.TSName = None
         self.S22 = None
         self.D = None
+        self.d0 = None
+        self.d1 = None
+        self.d2 = None
+        self.d3 = None
         self.H = None
         self.L = None
         self.S = None
@@ -357,10 +356,7 @@ class DataExtraction:
         self.V_allTS.append(self.V)
 
 
-
-
-
-
+        print(self.TSName, self.simName)
 
 
 
