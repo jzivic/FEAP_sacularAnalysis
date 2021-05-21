@@ -27,17 +27,14 @@ def SacularAnalysis_f():
         AllNames.append(currentSimulation.simName)
 
 
-    # ContactAllSimData = pd.concat(AllSimData, keys=AllNames, axis = 0).reset_index(level=1)
-    ContactAllSimData = pd.concat(AllSimData, keys=AllNames, axis = 0).reset_index(level=1)
-
-    ContactAllSimData = ContactAllSimData.rename(columns={"level_1":"TS"})
-
-
+    ContactAllSimData = pd.concat(AllSimData, keys=AllNames, axis = 0).reset_index(level=1) #create one big dataFrame of all df
+    ContactAllSimData = ContactAllSimData.rename(columns={"level_1":"TS"})                  #column renamed to TS
+    ContactAllSimData.set_index([ContactAllSimData.index, "TS"], inplace=True)              # make indices, 1.(unnamed), 2. TS
 
     print(ContactAllSimData)
 
 
-    # ContactAllSimData.to_pickle(analysisFolder+"SacularData1.pickle")
+    ContactAllSimData.to_pickle(analysisFolder+"SacularData_basic.pickle")
 
     # print(ContactAllSimData)
 
