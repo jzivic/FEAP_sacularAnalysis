@@ -6,12 +6,12 @@ import pandas as pd
 
 
 
-def MakeFolder(destination):
+def MakeFolder():
     try:
-        shutil.rmtree(destination)
+        shutil.rmtree(analysisFolder)
     except:
         FileNotFoundError
-    os.mkdir(destination)
+    os.mkdir(analysisFolder)
 
 
 def SacularAnalysis_f():
@@ -30,20 +30,11 @@ def SacularAnalysis_f():
     ContactAllSimData = pd.concat(AllSimData, keys=AllNames, axis = 0).reset_index(level=1) #create one big dataFrame of all df
     ContactAllSimData = ContactAllSimData.rename(columns={"level_1":"TS"})                  #column renamed to TS
     ContactAllSimData.set_index([ContactAllSimData.index, "TS"], inplace=True)              # make indices, 1.(unnamed), 2. TS
-
-    print(ContactAllSimData)
-
-
-    ContactAllSimData.to_pickle(analysisFolder+"SacularData_basic.pickle")
-
-    # print(ContactAllSimData)
+    ContactAllSimData.to_pickle(analysisFolder+"SacularData_basic.pickle")                  # save data to .pickle
 
 
 
-
-
-
-MakeFolder(analysisFolder)
+MakeFolder()
 SacularAnalysis_f()
 
 # nova = pd.concat(l, keys=imena, axis=0).reset_index(level=1)
