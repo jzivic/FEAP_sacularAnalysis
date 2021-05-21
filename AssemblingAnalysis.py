@@ -5,6 +5,7 @@ from SimulationsData import *
 import pandas as pd
 
 
+
 def MakeFolder(destination):
     try:
         shutil.rmtree(destination)

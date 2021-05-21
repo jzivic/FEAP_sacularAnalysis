@@ -29,7 +29,7 @@ suffixList = ["101-2", "102-3"]
 
 resultsFolder = "/home/josip/feap/pocetak/"+parametarskaAnaliza+"/rezultati/sakularna"
 analysisFolder = "/home/josip/feap/pocetak/" + parametarskaAnaliza + "/rezultati/sakularna/analysis"
-
+PickleData = analysisFolder+"SacularData1.pickle"
 
 
 
