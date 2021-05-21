@@ -6,41 +6,8 @@ from SimulationsData import *
 
 
 
-print()
-
-def Proba():
-
-    allData = pd.DataFrame(pd.read_pickle(PickleData))
 
 
-    # allData.Index.set_names("pero")
-
-
-
-    allData.set_index([allData.index, "level_1"], inplace=True)
-
-    # print(allData.index)
-
-    # print(allData.loc["r=12_k1=1.048","10"])
-
-
-
-
-
-
-
-    # print(allData["level_1"])
-
-
-
-
-
-
-
-
-
-
-Proba()
 
 
 
@@ -68,22 +35,8 @@ def DerivedParameters_f(ulaz):
     allData["NAL"] = allData["L"]*(4*allData["D"]**2-allData["d3"]**2)/allData["d3"]**2
 
 
-    # def Flag():
+    print(allData)
 
 
 
-    # print(allData.loc["r=12_k1=1.048"])
-    print(allData.loc[10])
-
-
-
-
-
-    # for i in allData:
-    #     print(i)
-
-
-    # print(allData["novi"])
-
-
-# DerivedParameters_f(PickleData)
+DerivedParameters_f(PickleData)

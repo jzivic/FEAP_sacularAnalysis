@@ -28,8 +28,8 @@ suffixList = ["101-2", "102-3"]
 flagCondition = {"S22":[500, 800], "GR":[5, 10], "D":45}
 
 resultsFolder = "/home/josip/feap/pocetak/"+parametarskaAnaliza+"/rezultati/sakularna"
-analysisFolder = "/home/josip/feap/pocetak/" + parametarskaAnaliza + "/rezultati/sakularna/analysisData"
-PickleData = analysisFolder+"SacularData1.pickle"
+analysisFolder = "/home/josip/feap/pocetak/" + parametarskaAnaliza + "/rezultati/sakularna/analysisData/"
+PickleData = analysisFolder+"SacularData_basic.pickle"
 
 
 
