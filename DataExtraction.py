@@ -1,12 +1,14 @@
 import os, math#, xlsxwriter, openpyxl
+import ssl
+
 import numpy as np
 import pandas as pd
+import xarray as xr
 import matplotlib.pyplot as plt
 from scipy.spatial import ConvexHull
 # from openpyxl.styles import Font, PatternFill
 
 from FolderSearch import FolderSearch
-
 from SimulationsData import *
 
 
@@ -75,7 +77,6 @@ class DataExtraction:
                     break
                 self.nTSt += 1
         self.DataFrameConstruct()
-
 
 
     def Creating_allTS_Vector(self):                    # vectors to store data
@@ -345,29 +346,30 @@ class DataExtraction:
 
     def DataFrameConstruct(self):
 
-        TimeSteps = pd.Series(self.TSName_allTS)
-        self.DataFromAllTimeSteps = pd.DataFrame({  "D":self.D_allTS,
-                                                    "d1": self.d1_allTS,
-                                                    "d2": self.d2_allTS,
-                                                    "d3": self.d3_allTS,
-                                                    "S22": self.S22_allTS,
-                                                    "H": self.H_allTS,
-                                                    "L": self.L_allTS,
-                                                    "S": self.S_allTS,
-                                                    "V": self.V_allTS,
-                                                    },
-                                                 index=TimeSteps)
+        allTimeSteps = pd.Series(self.TSName_allTS)
+
+        dictData = { "D":self.D_allTS,
+                    "d1": self.d1_allTS,
+                    "d2": self.d2_allTS,
+                    "d3": self.d3_allTS,
+                    "S22": self.S22_allTS,
+                    "H": self.H_allTS,
+                    "L": self.L_allTS,
+                    "S": self.S_allTS,
+                    "V": self.V_allTS,
+                    }
+
+        self.simDataFromAllTS = pd.DataFrame(dictData, index=allTimeSteps)
 
         # n = 315
         # nstr = str(n)
         # print(self.TSData.loc[nstr])
 
-        print(self.DataFromAllTimeSteps)
 
 
 
 # comment if allSimulationsAnalysis=True
-proba = DataExtraction(oneSimTestPath)
+# proba = DataExtraction(oneSimTestPath)
 
 
 
