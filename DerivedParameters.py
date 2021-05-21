@@ -7,6 +7,7 @@ from SimulationsData import *
 
 def DerivedParameters_f(ulaz):
     allData = pd.read_pickle(ulaz)
+    allData = allData.dropna()
 
 
     allData["Ddr"] = allData["D"] / allData["d0"]
@@ -28,9 +29,6 @@ def DerivedParameters_f(ulaz):
 
 
 
-    # for i in allData:
-    #     print(i)
-
 
     def Flag(S22, GR):
         if S22 < flagCondition["S22"][0] and GR < flagCondition["GR"][0]:
@@ -42,8 +40,8 @@ def DerivedParameters_f(ulaz):
 
 
     v = []
-    for key, value in allData.iteritems():
-        allData.loc[key]
+    # for key, value in allData.iteritems():
+    #     print(str(value))
 
 
 
