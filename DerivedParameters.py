@@ -32,24 +32,26 @@ def DerivedParameters_f(ulaz):
     #     print(i)
 
 
-    def Flag():
-        # if allData["S22"] < flagCondition["S22"][0] and allData["GR"] < flagCondition["GR"][0]:
-        #     allData["Flag"] = "A"
-        # elif flagCondition["S22"][0] <= allData["S22"] < flagCondition["S22"][1] and allData["GR"] < flagCondition["GR"][1]:
-        #     allData["Flag"] = "B"
-        # elif allData["S22"] >= flagCondition["S22"][1] and allData["GR"] >= flagCondition["GR"][0]:
-        #     allData["Flag"] = "C"
+    def Flag(S22, GR):
+        if S22 < flagCondition["S22"][0] and GR < flagCondition["GR"][0]:
+            flag = "A"
+        elif flagCondition["S22"][0] <= S22 < flagCondition["S22"][1] and GR < flagCondition["GR"][1]:
+            flag = "B"
+        elif S22 >= flagCondition["S22"][1] and GR >= flagCondition["GR"][0]:
+            flag = "C"
 
 
-        print(allData["S22"], allData["GR"])
+    v = []
+    for key, value in allData.iteritems():
+        allData.loc[key]
 
 
-        # print(allData["Flag"])
 
 
 
-    Flag()
-        
+
+
+
 
 
 
