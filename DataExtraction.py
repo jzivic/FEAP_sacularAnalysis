@@ -90,6 +90,7 @@ class DataExtraction:
         self.L_allTS = []
         self.S_allTS = []
         self.V_allTS = []
+        self.GR_allTS = []
 
     def SettingAnalysisFiles(self):
         os.chdir(self.simPath)
@@ -178,6 +179,7 @@ class DataExtraction:
         self.L = None
         self.S = None
         self.V = None
+        self.GR = None
 
     def Calculating_d0_H_L(self):
         # auxiliary function for calculating diameter
@@ -342,6 +344,7 @@ class DataExtraction:
         self.L_allTS.append(self.L)
         self.S_allTS.append(self.S)
         self.V_allTS.append(self.V)
+        self.GR_allTS.append(self.GR)
 
     def DataFrameConstruct(self):
         allTimeSteps = pd.Series(self.TSName_allTS)
@@ -355,6 +358,8 @@ class DataExtraction:
                     "L": self.L_allTS,
                     "S": self.S_allTS,
                     "V": self.V_allTS,
+                    "GR": self.GR_allTS,
+
                     }
 
         self.simDataFromAllTS = pd.DataFrame(allDataTS, index=allTimeSteps)
