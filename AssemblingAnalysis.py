@@ -23,14 +23,26 @@ def SacularAnalysis_f():
 
     for i in range(n):
         currentSimulation = DataExtraction(resultsFolder, i)
-
         AllSimData.append(currentSimulation.simDataFromAllTS)
         AllNames.append(currentSimulation.simName)
 
 
+    # ContactAllSimData = pd.concat(AllSimData, keys=AllNames, axis = 0).reset_index(level=1)
     ContactAllSimData = pd.concat(AllSimData, keys=AllNames, axis = 0).reset_index(level=1)
 
-    ContactAllSimData.to_pickle(analysisFolder+"SacularData1.pickle")
+    ContactAllSimData = ContactAllSimData.rename(columns={"level_1":"TS"})
+
+
+
+    print(ContactAllSimData)
+
+
+    # ContactAllSimData.to_pickle(analysisFolder+"SacularData1.pickle")
+
+    # print(ContactAllSimData)
+
+
+
 
 
 

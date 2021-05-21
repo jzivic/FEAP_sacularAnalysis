@@ -52,7 +52,6 @@ class DataExtraction:
 
 
         while self.nTSt < len(self.chosenTSList):      # as long as there is steps in list
-            # self.SettingStartingLinesA()
             self.SettingAnalysisFiles() #"putanja koja je zapravo simPath uvijek"
 
             if self.SameAsPreviousStep()==True:   #checking if the TS are repeating
@@ -345,10 +344,9 @@ class DataExtraction:
         self.V_allTS.append(self.V)
 
     def DataFrameConstruct(self):
-
         allTimeSteps = pd.Series(self.TSName_allTS)
-
-        dictData = { "D":self.D_allTS,
+        allDataTS = { "D":self.D_allTS,
+                    "d0": self.d0_allTS,
                     "d1": self.d1_allTS,
                     "d2": self.d2_allTS,
                     "d3": self.d3_allTS,
@@ -359,13 +357,7 @@ class DataExtraction:
                     "V": self.V_allTS,
                     }
 
-        self.simDataFromAllTS = pd.DataFrame(dictData, index=allTimeSteps)
-
-        # n = 315
-        # nstr = str(n)
-        # print(self.TSData.loc[nstr])
-
-
+        self.simDataFromAllTS = pd.DataFrame(allDataTS, index=allTimeSteps)
 
 
 # comment if allSimulationsAnalysis=True
