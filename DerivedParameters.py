@@ -28,6 +28,11 @@ def DerivedParameters_f(ulaz):
     allData["NAL"] = allData["L"]*(4*allData["D"]**2-allData["d2"]**2)/allData["d2"]**2
     allData["NAL"] = allData["L"]*(4*allData["D"]**2-allData["d3"]**2)/allData["d3"]**2
 
+    allData["HNeck"] = 160 - allData["H"]
+    allData["Hb"] = allData["H"] + allData["HNeck"]/2
+    allData["Hr"] = allData["HNeck"] / (allData["HNeck"]+allData["H"])
+    allData["HDr"] = allData["H"] / allData["d0"]
+
     flagVector = []
     for i in range(len(allData["S22"])):
         if allData["S22"][i] < flagCondition["S22"][0] and allData["GR"][i] < flagCondition["GR"][0]:
@@ -41,13 +46,13 @@ def DerivedParameters_f(ulaz):
         flagVector.append(flag)
     allData["Flag"] = flagVector
 
-    allData["HNeck"] = 160 - allData["H"]
-    allData["Hb"] = allData["H"] + allData["HNeck"]/2
-    allData["Hr"] = allData["HNeck"] / (allData["HNeck"]+allData["H"])
-    allData["HDr"] = allData["H"] / allData["d0"]
+    cData = allData.loc[allData["Flag"] == "C"]
+    abData = allData.loc[allData["Flag"] != "C"]
 
 
     allData.to_pickle(PickleData_all)
+    abData.to_pickle(PickleData_ab)
+    cData.to_pickle(PickleData_c)
 
 
 

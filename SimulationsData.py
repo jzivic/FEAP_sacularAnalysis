@@ -30,8 +30,10 @@ flagCondition = {"S22":[500, 800], "GR":[5, 10], "D":45}
 resultsFolder = "/home/josip/feap/pocetak/"+parametarskaAnaliza+"/rezultati/sakularna"
 analysisFolder = "/home/josip/feap/pocetak/" + parametarskaAnaliza + "/rezultati/sakularna/analysisData/"
 diagramsFolder = analysisFolder + ("diagrams/")
-PickleData_basic = analysisFolder+"SacularData_basic.pickle"
+PickleData_basic = analysisFolder+"SacularData_0.pickle"
 PickleData_all = analysisFolder+"SacularData_all.pickle"
+PickleData_ab = analysisFolder+"SacularData_ab.pickle"
+PickleData_c= analysisFolder+"SacularData_c.pickle"
 
 
 
