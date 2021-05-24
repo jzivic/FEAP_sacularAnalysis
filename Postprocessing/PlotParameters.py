@@ -84,10 +84,6 @@ def PlotingALLDiagrams():
         fig.savefig(diagramsFolder + value + '.png', dpi=300)
 
 
-
-
-
-
     # for name, values in chosenData.iteritems():
     #     print('{name}: {value}'.format(name=name, value=values[0]))
 

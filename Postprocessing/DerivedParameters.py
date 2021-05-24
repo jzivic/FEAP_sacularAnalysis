@@ -23,9 +23,9 @@ def DerivedParameters_f(ulaz):
     allData["GRPI3"] = allData["L"]**3*(4*allData["D"]**2-allData["d3"]**2)/allData["d3"]**2
 
     allData["NAL"] = allData["L"]*(4*allData["D"]**2-allData["d0"]**2)/allData["d0"]**2
-    allData["NAL"] = allData["L"]*(4*allData["D"]**2-allData["d1"]**2)/allData["d1"]**2
-    allData["NAL"] = allData["L"]*(4*allData["D"]**2-allData["d2"]**2)/allData["d2"]**2
-    allData["NAL"] = allData["L"]*(4*allData["D"]**2-allData["d3"]**2)/allData["d3"]**2
+    allData["NAL1"] = allData["L"]*(4*allData["D"]**2-allData["d1"]**2)/allData["d1"]**2
+    allData["NAL2"] = allData["L"]*(4*allData["D"]**2-allData["d2"]**2)/allData["d2"]**2
+    allData["NAL3"] = allData["L"]*(4*allData["D"]**2-allData["d3"]**2)/allData["d3"]**2
 
     allData["HNeck"] = 160 - allData["H"]
     allData["Hb"] = allData["H"] + allData["HNeck"]/2
