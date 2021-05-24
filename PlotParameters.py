@@ -7,7 +7,7 @@ from scipy.stats import linregress
 from SimulationsData import *
 
 
-allData = pd.read_pickle(PickleData_all)
+
 
 
 
@@ -21,6 +21,11 @@ def MakeFolder_diagrams():
 MakeFolder_diagrams()
 
 
+abData = pd.read_pickle(PickleData_ab)
+cData = pd.read_pickle(PickleData_c)
+allData = pd.read_pickle(PickleData_all)
+
+
 NoPos = 0
 pos0 = "for healthy $d$"
 pos1 = "for $d$ measured at $h$=62 mm"
@@ -28,39 +33,61 @@ pos2 = "for $d$ measured at $h$=55 mm"
 pos3 = "for $d$ measured at $h$=48 mm"
 
 
-velicineSve = [ [allData["T"],"T", "$T$ [-]",NoPos,"b)"],]
-
-velicine = velicineSve
+units = {"r":"mm", "D":"mm", "d0":"mm", "d1":"mm", "d2":"mm", "d3":"mm","S22":"N/mm^2", "H":"mm",
+         "L":"mm", "S":"mm^2", "V":"mm^3", "GR":"mm/y", "P":"-", "Ddr":"-", "Ddr1":"-","Ddr2":"-","Ddr3":"-",
+         "T":"-", "GRPI":"mm^3", "GRPI1":"mm^3", "GRPI2":"mm^3", "GRPI3":"mm^3", "NAL":"mm", "NAL1":"mm", "NAL2":"mm",
+            "NAL3":"mm", "HNeck":"mm", "Hb":"mm", "Hr":"mm", "HDr":"-"
+         }
 
 
 
 def PlotingALLDiagrams():
 
-    for nDiagram in range(len(velicine)):
+    def colorR(radius):
+        if radius == 8:
+            return 'c'
+        elif radius == 10:
+            return "black"
+        elif radius == 12:
+            return "m"
 
-        def IndividualPlot():
-            plt.ylabel("$P$ [-]")
-            plt.xlabel(velicine[nDiagram])  # , **hfont) # ako se želi mijenjati font
+    for value in abData:
+        plt.ylabel("$P$ [-]")
+        plt.xlabel("${}$ {}{}{}"  .format(abData[value].name,"  [", units[abData[value].name], "]"))#, **hfont) # ako se želi mijenjati font
+        xVariable = abData[value]
+        yVariable = abData["P"]
 
-            xVar = velicine[nDiagram][0]
-            yVar = allData["P"]
-            popisRadijusa = []
-
-            # allData.filter()
-
-
-
-
-        IndividualPlot()
-
-    a = allData.filter()
+        rList = []
+        for i in range(len(abData[value])):
+            
+            plt.scatter(abData[value][i], abData["P"][i], c=colorR(abData["r"][i]),
+                        label = ("$r$ = " + str(abData["r"][i]) + " mm") if abData["r"][i] not in rList else "", alpha=0.7)
+            rList.append(abData["r"][i])
 
 
-    print(allData)
 
-    # print(al)
+        plt.legend()
+        plt.show()
+
+
+
+    # for name, values in abData.iteritems():
+    #     print('{name}: {value}'.format(name=name, value=values[0]))
+
+
 
 PlotingALLDiagrams()
+
+
+
+
+
+
+
+
+
+
+
 
 
 def PlotanjeSvega():

@@ -50,7 +50,6 @@ class DataExtraction:
         self.nTSt = 0
         self.Creating_allTS_Vector()
 
-
         while self.nTSt < len(self.chosenTSList):      # as long as there is steps in list
             self.SettingAnalysisFiles() #"putanja koja je zapravo simPath uvijek"
 
@@ -348,19 +347,20 @@ class DataExtraction:
 
     def DataFrameConstruct(self):
         allTimeSteps = pd.Series(self.TSName_allTS)
-        allDataTS = { "D":self.D_allTS,
-                    "d0": self.d0_allTS,
-                    "d1": self.d1_allTS,
-                    "d2": self.d2_allTS,
-                    "d3": self.d3_allTS,
-                    "S22": self.S22_allTS,
-                    "H": self.H_allTS,
-                    "L": self.L_allTS,
-                    "S": self.S_allTS,
-                    "V": self.V_allTS,
-                    "GR": self.GR_allTS,
-
-                    }
+        allDataTS = {
+                        "r": [int(self.simName[2:4]) for i in range(len(self.D_allTS))],
+                        "D": self.D_allTS,
+                        "d0": self.d0_allTS,
+                        "d1": self.d1_allTS,
+                        "d2": self.d2_allTS,
+                        "d3": self.d3_allTS,
+                        "S22": self.S22_allTS,
+                        "H": self.H_allTS,
+                        "L": self.L_allTS,
+                        "S": self.S_allTS,
+                        "V": self.V_allTS,
+                        "GR": self.GR_allTS,
+                      }
 
         self.simDataFromAllTS = pd.DataFrame(allDataTS, index=allTimeSteps)
 

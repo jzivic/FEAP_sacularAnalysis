@@ -46,6 +46,12 @@ def DerivedParameters_f(ulaz):
         flagVector.append(flag)
     allData["Flag"] = flagVector
 
+
+    # allData["r"] = int(allData[""])
+
+
+
+
     cData = allData.loc[allData["Flag"] == "C"]
     abData = allData.loc[allData["Flag"] != "C"]
 
@@ -53,6 +59,7 @@ def DerivedParameters_f(ulaz):
     allData.to_pickle(PickleData_all)
     abData.to_pickle(PickleData_ab)
     cData.to_pickle(PickleData_c)
+
 
 
 
