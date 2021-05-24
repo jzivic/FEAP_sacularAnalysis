@@ -1,10 +1,9 @@
-import shutil, os, matplotlib
-import numpy as np
+import shutil, os
 import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.stats import linregress
 
-from SimulationsData import *
+from Preprocessing.SimulationsData import *
 
 
 
@@ -34,11 +33,12 @@ pos3 = "for $d$ measured at $h$=48 mm"
 
 
 units = {"r":"mm", "D":"mm", "d0":"mm", "d1":"mm", "d2":"mm", "d3":"mm","S22":"N/mm^2", "H":"mm",
-         "L":"mm", "S":"mm^2", "V":"mm^3", "GR":"mm/y", "P":"-", "Ddr":"-", "Ddr1":"-","Ddr2":"-","Ddr3":"-",
-         "T":"-", "GRPI":"mm^3", "GRPI1":"mm^3", "GRPI2":"mm^3", "GRPI3":"mm^3", "NAL":"mm", "NAL1":"mm", "NAL2":"mm",
-            "NAL3":"mm", "HNeck":"mm", "Hb":"mm", "Hr":"mm", "HDr":"-"
+         "L":"mm", "S":"mm$^2$", "V":"mm$^3$", "GR":"mm/y", "P":"-", "Ddr":"-", "Ddr1":"-","Ddr2":"-","Ddr3":"-",
+         "T":"-", "GRPI":"mm$^3$", "GRPI1":"mm$^3$", "GRPI2":"mm$^3$", "GRPI3":"mm$^3$", "NAL":"mm",
+         "NAL1":"mm", "NAL2":"mm","NAL3":"mm", "HNeck":"mm", "Hb":"mm", "Hr":"mm", "HDr":"-"
          }
 
+chosenData = abData
 
 
 def PlotingALLDiagrams():
@@ -51,27 +51,44 @@ def PlotingALLDiagrams():
         elif radius == 12:
             return "m"
 
-    for value in abData:
+    for value in chosenData:
         plt.ylabel("$P$ [-]")
-        plt.xlabel("${}$ {}{}{}"  .format(abData[value].name,"  [", units[abData[value].name], "]"))#, **hfont) # ako se želi mijenjati font
-        xVariable = abData[value]
-        yVariable = abData["P"]
+        plt.xlabel("${}$ {}{}{}"  .format(chosenData[value].name,"  [", units[chosenData[value].name], "]"))#, **hfont) # ako se želi mijenjati font
+        xVariable = chosenData[value]
+        yVariable = chosenData["P"]
 
         rList = []
-        for i in range(len(abData[value])):
+        for i in range(len(chosenData[value])):
             
-            plt.scatter(abData[value][i], abData["P"][i], c=colorR(abData["r"][i]),
-                        label = ("$r$ = " + str(abData["r"][i]) + " mm") if abData["r"][i] not in rList else "", alpha=0.7)
-            rList.append(abData["r"][i])
+            plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["r"][i]),
+                        label = ("$r$ = " + str(chosenData["r"][i]) + " mm") if chosenData["r"][i] not in rList else "", alpha=0.7)
+            rList.append(chosenData["r"][i])
+
+
+        def statText():
+            slope, intercept, r, p, se = linregress(chosenData[value], chosenData["P"])
+            textPosition = (min(chosenData[value]) - (max(chosenData[value]) - min(chosenData[value])) * 0.20)
+            plt.text(textPosition, 0.9,
+                     'r=' + str(format(r, '.3g')) + "\n" + 'p=' + str(format(p, '.3g')) + "\n" + 'se=' + str(
+                         format(se, '.3g')), fontsize=12)
+        # statText()
 
 
 
+        fig = plt.gcf()
+        plt.grid(color='k', linestyle=':', linewidth=0.5)
         plt.legend()
-        plt.show()
+        plt.pause(1)
+        plt.draw()
+        plt.close()
+        fig.savefig(diagramsFolder + value + '.png', dpi=300)
 
 
 
-    # for name, values in abData.iteritems():
+
+
+
+    # for name, values in chosenData.iteritems():
     #     print('{name}: {value}'.format(name=name, value=values[0]))
 
 

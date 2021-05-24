@@ -19,7 +19,7 @@ class FolderSearch:
 
     def __init__(self, directory):
         for root, dirs, files in os.walk(directory):
-            if "iparameters" in files and "PRESKOCI" not in self.pathToStrings(root):   #dobre dat koje se anal
+            if "iparameters" in files and "PRESKOCI" not in self.pathToStrings(root):
                 sufix = self.pathToStrings(root)[-1][:3] if self.pathToStrings(root)[-1] == "orginal" else self.pathToStrings(root)[-1]
                 simName = self.pathToStrings(root)[7] + "_" + sufix
 

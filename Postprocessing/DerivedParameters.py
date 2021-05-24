@@ -1,7 +1,6 @@
-import os
 import pandas as pd
 
-from SimulationsData import *
+from Preprocessing.SimulationsData import *
 
 
 

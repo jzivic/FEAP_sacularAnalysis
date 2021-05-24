@@ -1,15 +1,6 @@
-import os, math#, xlsxwriter, openpyxl
-import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-from scipy.spatial import ConvexHull
 # from openpyxl.styles import Font, PatternFill
-from SimulationsData import *
-
-import xarray as xr
-
-
-
+from Preprocessing.SimulationsData import *
 
 allData = pd.read_pickle(PickleData_all)
 

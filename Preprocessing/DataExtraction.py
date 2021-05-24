@@ -67,7 +67,7 @@ class DataExtraction:
                     self.Calculating_d0_H_L()
                     self.Calculating_D_S22_GR()
                     if self.GR < 0 or self.D < 0:
-                        self.oKorSim[self.bK] -= 1
+                        self.chosenTSList[self.nTSt] -= 1
                         continue
                     self.MainProgram()
                     self.DataStorage()

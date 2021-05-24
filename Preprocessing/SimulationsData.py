@@ -3,14 +3,14 @@
 
 
 # parametarskaAnaliza = "parametarskaAnalizaPojedinacna"
-parametarskaAnaliza="parametarskaAnaliza_2"
-# parametarskaAnaliza = "parametarskaAnalizaSve"
+# parametarskaAnaliza="parametarskaAnaliza_2"
+parametarskaAnaliza = "parametarskaAnalizaSve"
 
 
-# chosenTimeSteps = [190, 208, 226, 244, 262, 280, 298, 316, 334, 352, 370, 388, 406, 424, 442, 460, 478]
+chosenTimeSteps = [190, 208, 226, 244, 262, 280, 298, 316, 334, 352, 370, 388, 406, 424, 442, 460, 478]
 # chosenTimeSteps = [190, 220,280, 316, 350, 666]
 # chosenTimeSteps = [333, 350, 400]
-chosenTimeSteps = [10, 100,300, 333,  666, ]
+# chosenTimeSteps = [10, 100,300, 333,  666, ]
 
 
 
@@ -22,7 +22,7 @@ chosenTimeSteps = [10, 100,300, 333,  666, ]
 allSimulationsAnalysis = True
 
 sameInitalRadius = False
-sigmaCritical = 1000
+sigmaCritical = 800
 TSLeght = 51
 suffixList = ["101-2", "102-3"]
 flagCondition = {"S22":[500, 800], "GR":[5, 10], "D":45}
@@ -30,11 +30,13 @@ flagCondition = {"S22":[500, 800], "GR":[5, 10], "D":45}
 resultsFolder = "/home/josip/feap/pocetak/"+parametarskaAnaliza+"/rezultati/sakularna"
 analysisFolder = "/home/josip/feap/pocetak/" + parametarskaAnaliza + "/rezultati/sakularna/analysisData/"
 diagramsFolder = analysisFolder + ("diagrams/")
+
 PickleData_basic = analysisFolder+"SacularData_0.pickle"
 PickleData_all = analysisFolder+"SacularData_all.pickle"
 PickleData_ab = analysisFolder+"SacularData_ab.pickle"
-PickleData_c= analysisFolder+"SacularData_c.pickle"
+PickleData_c = analysisFolder+"SacularData_c.pickle"
 
+statXlsx = analysisFolder + "statData.xlsx"
 
 
 
