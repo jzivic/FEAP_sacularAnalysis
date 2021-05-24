@@ -15,8 +15,8 @@ def MakeFolder():
 
 
 def SacularAnalysis_f():
-    extractedData = FolderSearch(resultsFolder)        #svako pozivanje FolderSearch klase puni class varijabel ponovno
-    n = len(extractedData.allNames) - 1
+    folderSearch = FolderSearch(resultsFolder)        #svako pozivanje FolderSearch klase puni class varijabel ponovno
+    n = len(folderSearch.allNames) - 1
 
     AllSimData = []
     AllNames = []
@@ -26,11 +26,10 @@ def SacularAnalysis_f():
         AllSimData.append(currentSimulation.simDataFromAllTS)
         AllNames.append(currentSimulation.simName)
 
-
-    ContactAllSimData = pd.concat(AllSimData, keys=AllNames, axis = 0).reset_index(level=1) #create one big dataFrame of all df
-    ContactAllSimData = ContactAllSimData.rename(columns={"level_1":"TS"})                  #column renamed to TS
-    ContactAllSimData.set_index([ContactAllSimData.index, "TS"], inplace=True)              # make indices, 1.(unnamed), 2. TS
-    ContactAllSimData.to_pickle(analysisFolder+"SacularData_basic.pickle")                  # save data to .pickle
+    ContactAllSimData = pd.concat(AllSimData, keys=AllNames, axis = 0).reset_index(level=1)      #create one big dataFrame of all df
+    ContactAllSimData = ContactAllSimData.rename(columns={"level_1":"TS"})                       #column renamed to TS
+    ContactAllSimData.set_index([ContactAllSimData.index, "TS"], inplace=True)                   # make indices, 1.(unnamed), 2. TS
+    ContactAllSimData.to_pickle(PickleData_basic)                       # save data to .pickle
 
 
 
