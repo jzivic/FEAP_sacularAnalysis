@@ -25,12 +25,14 @@ cData = pd.read_pickle(PickleData_c)
 allData = pd.read_pickle(PickleData_all)
 
 
-NoPos = 0
+chosenData = abData
+
+
+NoPos = ""
 pos0 = "for healthy $d$"
 pos1 = "for $d$ measured at $h$=62 mm"
 pos2 = "for $d$ measured at $h$=55 mm"
 pos3 = "for $d$ measured at $h$=48 mm"
-
 
 units = {"r":"mm", "D":"mm", "d0":"mm", "d1":"mm", "d2":"mm", "d3":"mm","S22":"N/mm^2", "H":"mm",
          "L":"mm", "S":"mm$^2$", "V":"mm$^3$", "GR":"mm/y", "P":"-", "Ddr":"-", "Ddr1":"-","Ddr2":"-","Ddr3":"-",
@@ -38,7 +40,16 @@ units = {"r":"mm", "D":"mm", "d0":"mm", "d1":"mm", "d2":"mm", "d3":"mm","S22":"N
          "NAL1":"mm", "NAL2":"mm","NAL3":"mm", "HNeck":"mm", "Hb":"mm", "Hr":"mm", "HDr":"-"
          }
 
-chosenData = abData
+# units = {"r":"mm", "D":"mm", "d0":"mm", "d1":"mm", "d2":"mm", "d3":"mm","S22":"N/mm^2", "H":"mm",
+#          "L":"mm", "S":"mm$^2$", "V":"mm$^3$", "GR":"mm/y", "P":"-", "Ddr":"-", "Ddr1":"-","Ddr2":"-","Ddr3":"-",
+#          "T":"-", "GRPI":"mm$^3$", "GRPI1":"mm$^3$", "GRPI2":"mm$^3$", "GRPI3":"mm$^3$", "NAL":"mm",
+#          "NAL1":"mm", "NAL2":"mm","NAL3":"mm", "HNeck":"mm", "Hb":"mm", "Hr":"mm", "HDr":"-"
+#          }
+
+
+units = {"r":{"valueName":"r","unit":"mm","txt":pos0}, "D":["mm",NoPos],
+         }
+
 
 
 def PlotingALLDiagrams():
@@ -52,36 +63,59 @@ def PlotingALLDiagrams():
             return "m"
 
     for value in chosenData:
-        plt.ylabel("$P$ [-]")
-        plt.xlabel("${}$ {}{}{}"  .format(chosenData[value].name,"  [", units[chosenData[value].name], "]"))#, **hfont) # ako se želi mijenjati font
-        xVariable = chosenData[value]
-        yVariable = chosenData["P"]
+        if value in units.keys():
 
-        rList = []
-        for i in range(len(chosenData[value])):
-            
-            plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["r"][i]),
-                        label = ("$r$ = " + str(chosenData["r"][i]) + " mm") if chosenData["r"][i] not in rList else "", alpha=0.7)
-            rList.append(chosenData["r"][i])
+            print(units[value]["txt"])
+
+            # plt.ylabel("$P$ [-]")
+            # plt.xlabel("${}$ {}{}{}"  .format(chosenData[value].name," [", units[chosenData[value]]["valueName"], "]"))#, **hfont) # ako se želi mijenjati font
+            # xVariable = chosenData[value]
+            # yVariable = chosenData["P"]
+            #
+            # rList = []
+            # for i in range(len(chosenData[value])):
+            #     plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["r"][i]),
+            #                 label = ("$r$ = " + str(chosenData["r"][i]) + " mm") if chosenData["r"][i] not in rList else "", alpha=0.7)
+            #     rList.append(chosenData["r"][i])
+            #
+            #
+            # def statText():
+            #     slope, intercept, r, p, se = linregress(chosenData[value], chosenData["P"])
+            #     textPosition = (min(chosenData[value]) - (max(chosenData[value]) - min(chosenData[value])) * 0.20)
+            #     plt.text(textPosition, 0.9,
+            #              'r=' + str(format(r, '.3g')) + "\n" + 'p=' + str(format(p, '.3g')) + "\n" + 'se=' + str(
+            #                  format(se, '.3g')), fontsize=12)
+            # # statText()
+            #
+            #
+            # def hText():
+            #     print(units[value][1].startswith("for"))
 
 
-        def statText():
-            slope, intercept, r, p, se = linregress(chosenData[value], chosenData["P"])
-            textPosition = (min(chosenData[value]) - (max(chosenData[value]) - min(chosenData[value])) * 0.20)
-            plt.text(textPosition, 0.9,
-                     'r=' + str(format(r, '.3g')) + "\n" + 'p=' + str(format(p, '.3g')) + "\n" + 'se=' + str(
-                         format(se, '.3g')), fontsize=12)
-        # statText()
+            # hText()
 
 
 
-        fig = plt.gcf()
-        plt.grid(color='k', linestyle=':', linewidth=0.5)
-        plt.legend()
-        plt.pause(1)
-        plt.draw()
-        plt.close()
-        fig.savefig(diagramsFolder + value + '.png', dpi=300)
+# """
+#             try:
+#                 if str(velicine[nGrafa][3]).startswith("for "):
+#                     plt.text(min(popisX), 1.05,velicine[nGrafa][3] )
+#             except IndexError:
+#                 pass
+# """
+
+
+
+
+
+
+            # fig = plt.gcf()
+            # plt.grid(color='k', linestyle=':', linewidth=0.5)
+            # plt.legend()
+            # plt.pause(1)
+            # plt.draw()
+            # plt.close()
+            # fig.savefig(diagramsFolder + value + '.png', dpi=300)
 
 
     # for name, values in chosenData.iteritems():
@@ -186,6 +220,83 @@ def PlotanjeSvega():
 
 
 
+
+
+
+
+
+def PlotingALLDiagrams():
+
+    def colorR(radius):
+        if radius == 8:
+            return 'c'
+        elif radius == 10:
+            return "black"
+        elif radius == 12:
+            return "m"
+
+    for value in chosenData:
+        if value in units.keys():
+
+            print(units[value]["txt"])
+
+            # plt.ylabel("$P$ [-]")
+            # plt.xlabel("${}$ {}{}{}"  .format(chosenData[value].name," [", units[chosenData[value]]["valueName"], "]"))#, **hfont) # ako se želi mijenjati font
+            # xVariable = chosenData[value]
+            # yVariable = chosenData["P"]
+            #
+            # rList = []
+            # for i in range(len(chosenData[value])):
+            #     plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["r"][i]),
+            #                 label = ("$r$ = " + str(chosenData["r"][i]) + " mm") if chosenData["r"][i] not in rList else "", alpha=0.7)
+            #     rList.append(chosenData["r"][i])
+            #
+            #
+            # def statText():
+            #     slope, intercept, r, p, se = linregress(chosenData[value], chosenData["P"])
+            #     textPosition = (min(chosenData[value]) - (max(chosenData[value]) - min(chosenData[value])) * 0.20)
+            #     plt.text(textPosition, 0.9,
+            #              'r=' + str(format(r, '.3g')) + "\n" + 'p=' + str(format(p, '.3g')) + "\n" + 'se=' + str(
+            #                  format(se, '.3g')), fontsize=12)
+            # # statText()
+            #
+            #
+            # def hText():
+            #     print(units[value][1].startswith("for"))
+
+
+            # hText()
+
+
+
+# """
+#             try:
+#                 if str(velicine[nGrafa][3]).startswith("for "):
+#                     plt.text(min(popisX), 1.05,velicine[nGrafa][3] )
+#             except IndexError:
+#                 pass
+# """
+
+
+
+
+
+
+            # fig = plt.gcf()
+            # plt.grid(color='k', linestyle=':', linewidth=0.5)
+            # plt.legend()
+            # plt.pause(1)
+            # plt.draw()
+            # plt.close()
+            # fig.savefig(diagramsFolder + value + '.png', dpi=300)
+
+
+    # for name, values in chosenData.iteritems():
+    #     print('{name}: {value}'.format(name=name, value=values[0]))
+
+
+
+# PlotingALLDiagrams()
 
 
 

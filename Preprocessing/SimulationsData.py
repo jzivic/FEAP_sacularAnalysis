@@ -35,7 +35,6 @@ PickleData_basic = analysisFolder+"SacularData_0.pickle"
 PickleData_all = analysisFolder+"SacularData_all.pickle"
 PickleData_ab = analysisFolder+"SacularData_ab.pickle"
 PickleData_c = analysisFolder+"SacularData_c.pickle"
-
 statXlsx = analysisFolder + "statData.xlsx"
 
 
