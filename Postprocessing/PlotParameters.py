@@ -8,8 +8,6 @@ from Preprocessing.SimulationsData import *
 
 
 
-
-
 def MakeFolder_diagrams():
     try:
         shutil.rmtree(diagramsFolder)
@@ -35,16 +33,21 @@ pos2 = "for $d$ measured at $h$=55 mm"
 pos3 = "for $d$ measured at $h$=48 mm"
 
 
-graphData = {"D":{"vName":"D","unit":"mm","txt":NoPos},"H":{"vName":"H","unit":"mm","txt":NoPos},
-         "L":{"vName":"L","unit":"mm","txt":NoPos},"S":{"vName":"S","unit":"$mm^2$","txt":NoPos},
-         "V":{"vName":"V","unit":"$mm^3$","txt":NoPos},
-         "GR":{"vName":"GR","unit":"mm/y","txt":NoPos},
+graphData = {
+         "D":{"vName":"D","unit":"mm","txt":NoPos}, "H":{"vName":"H","unit":"mm","txt":NoPos},
+         "L":{"vName":"L","unit":"mm","txt":NoPos}, "S":{"vName":"S","unit":"$mm^2$","txt":NoPos},
+         "V":{"vName":"V","unit":"$mm^3$","txt":NoPos}, "GR":{"vName":"GR","unit":"mm/y","txt":NoPos},
          "T":{"vName":"T","unit":"-","txt":NoPos},
 
-        "d0":{"vName":"d","unit":"mm","txt":pos0},
-        "d1":{"vName":"d","unit":"mm","txt":pos1},
-        "d2":{"vName":"d","unit":"mm","txt":pos2},
-        "d3":{"vName":"d","unit":"mm","txt":pos3},
+        "d0": {"vName": "d", "unit": "mm", "txt": pos0},
+        "d1": {"vName": "d", "unit": "mm", "txt": pos1},
+        "d2": {"vName": "d", "unit": "mm", "txt": pos2},
+        "d3": {"vName": "d", "unit": "mm", "txt": pos3},
+
+        "Ddr0": {"vName": "Ddr", "unit": "-", "txt": pos0},
+        "Ddr1": {"vName": "Ddr", "unit": "-", "txt": pos1},
+        "Ddr2": {"vName": "Ddr", "unit": "-", "txt": pos2},
+        "Ddr3": {"vName": "Ddr", "unit": "-", "txt": pos3},
 
         "GRPI":{"vName":"GRPI","unit":"$mm^3$","txt":pos0},
         "GRPI1":{"vName":"GRPI","unit":"$mm^3$","txt":pos1},
@@ -55,8 +58,6 @@ graphData = {"D":{"vName":"D","unit":"mm","txt":NoPos},"H":{"vName":"H","unit":"
         "NAL1":{"vName":"NAL","unit":"mm","txt":pos1},
         "NAL2":{"vName":"NAL","unit":"mm","txt":pos2},
         "NAL3":{"vName":"NAL","unit":"mm","txt":pos3},
-
-
          }
 
 
