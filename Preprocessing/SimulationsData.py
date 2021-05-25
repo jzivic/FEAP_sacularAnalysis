@@ -12,7 +12,7 @@ chosenTimeSteps = [190, 208, 226, 244, 262, 280, 298, 316, 334, 352, 370, 388, 4
 # chosenTimeSteps = [333, 350, 400]
 # chosenTimeSteps = [10, 100,300, 333,  666, ]
 
-
+chosenTSContours = [-10]
 
 #################################################################################
 
@@ -30,6 +30,7 @@ flagCondition = {"S22":[500, 800], "GR":[5, 10], "D":45}
 resultsFolder = "/home/josip/feap/pocetak/"+parametarskaAnaliza+"/rezultati/sakularna"
 analysisFolder = "/home/josip/feap/pocetak/" + parametarskaAnaliza + "/rezultati/sakularna/analysisData/"
 diagramsFolder = analysisFolder + ("diagrams/")
+contoursFolder = analysisFolder + ("contours/")
 
 PickleData_basic = analysisFolder+"SacularData_0.pickle"
 PickleData_all = analysisFolder+"SacularData_all.pickle"
