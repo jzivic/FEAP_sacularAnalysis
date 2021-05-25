@@ -75,8 +75,7 @@ def PlotAllCont():
                 plt.plot(r1, z, c="k")
                 plt.plot(r2, z, c="k", label="Inner\ncontours")
                 plt.plot(dy, z, c="r", linestyle='dashed', linewidth=1, label="Centerline")
-                plt.plot(L["r"], L["z"], c="blue", linewidth=2)
-                # plt.plot(dy, z, label ="pero", c="blue")
+                plt.plot(L["r"], L["z"], c="blue", label="L", linewidth=1.5)
                 plt.xlim(-70, 60)
                 plt.ylim(0, 350)
 
@@ -84,7 +83,7 @@ def PlotAllCont():
                 plt.xlabel("Coordinate $x$ [mm]")
                 plt.ylabel("Coordinate $z$ [mm]")
                 plt.legend(framealpha=1)
-                plt.subplots_adjust(left=0.2)
+                # plt.subplots_adjust(left=0.2)
                 fig = plt.gcf()
                 plt.grid(color='k', linestyle=':', linewidth=0.5)
                 plt.legend()
