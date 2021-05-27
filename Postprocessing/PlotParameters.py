@@ -82,6 +82,9 @@ def PlotingALLDiagrams():
 
             rList = []
             for i in range(len(chosenData[value])):
+
+                # if chosenData["S22"][i]<800: # ovo je dodatak da reže sve iznad 1000 (800 iz data) da se dobije kao u članku
+
                 plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["r"][i]),
                             label = ("$r$ = " + str(chosenData["r"][i]) + " mm") if chosenData["r"][i] not in rList else "", alpha=0.7)
                 rList.append(chosenData["r"][i])

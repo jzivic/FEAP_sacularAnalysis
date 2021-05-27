@@ -22,7 +22,7 @@ chosenTSContours = [-50, -30, -10]
 allSimulationsAnalysis = True
 
 sameInitalRadius = False
-sigmaCritical = 800
+sigmaCritical = 1000
 TSLeght = 51
 suffixList = ["101-2", "102-3"]
 flagCondition = {"S22":[500, 800], "GR":[5, 10], "D":45}

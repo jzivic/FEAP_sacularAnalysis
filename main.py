@@ -16,6 +16,5 @@ print(allData)
 ab = allData.loc[allData["Flag"] != "C" ]
 
 
-print(ab)
 
 
