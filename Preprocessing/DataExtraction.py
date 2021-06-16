@@ -158,10 +158,12 @@ class DataExtraction:
                 FileNotFoundError
                 continue
 
+
     # Check whether Timesteps start to repeat
     def SameAsPreviousStep(self):
         if self.chosenTSList[self.nTSt] == self.chosenTSList[self.nTSt-1]:
             return True
+
 
     # Check if AAA has been formed on the maximum diameter condition
     def CheckAAAFormation(self):
@@ -182,6 +184,7 @@ class DataExtraction:
                 return True
         return False
 
+
     # In case AAA is not formed, anaysis is not performed and all parameters are set to None
     def NoAAAFormed(self):
         self.TSName = self.wholeDocument_eIW[self.startLine_eIW: self.startLine_eIW + TSLegnht_eIW][0].strip().split()[1]
@@ -197,9 +200,9 @@ class DataExtraction:
         self.V = None
         self.GR = None
 
+
     # Calculate d0, H, L from readINNERLines file
     def Calculating_d0_H_L(self):
-
         # auxiliary function for calculating average diameter from 3 positions
         def CalculatingDiameter(numberOfLine):
             D = (float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[0]) +
@@ -245,29 +248,31 @@ class DataExtraction:
             slope = (pB[1] - pA[1]) / (pB[0] - pA[0])       # direction slope
 
             dR = pB[0] - 1.05 * self.d0 / 2                 # R addition
-            dH = (dR) * slope                               # R addition
+            dH = (dR) * slope                               # H addition
             dL = np.sqrt(dR ** 2 + dH ** 2) * 2             # *2 becuase of upper and lower halves
             dH *= 2
         except TypeError:
             dH, dL = 0, 0
 
-        # AAA points coordinate
+        # AAA coordinate points
         coordAAA = {"z":[], "y":[]}
-        for indAn in self.vectorAAAIndices:                                                              #iterating over points that fulfill AAA condition, z,y obtained from ctl file !!
-            z = float(self.wholeDocument_ctl[self.startLine_ctl + indAn].strip().split()[0])
+        for indAn in self.vectorAAAIndices:                                                              # iterating over indices of AAA formed points
+            z = float(self.wholeDocument_ctl[self.startLine_ctl + indAn].strip().split()[0])             # z,y obtained from ctl txt file
             y = float(self.wholeDocument_ctl[self.startLine_ctl + indAn].strip().split()[1])
             coordAAA["z"].append(z), coordAAA["y"].append(y)
         try:
-            self.H = (coordAAA["z"][len(coordAAA["y"]) - 1] - coordAAA["z"][0]) + 0
+            self.H = (coordAAA["z"][len(coordAAA["y"]) - 1] - coordAAA["z"][0]) + 0                     # H = coord[z](last)-coord[z](first)
             self.L = 0
             for n in range(0, len(coordAAA["y"]) - 1):
-                self.L += math.sqrt((coordAAA["z"][n + 1] - coordAAA["z"][n]) ** 2 + (coordAAA["y"][n + 1] - coordAAA["y"][n]) ** 2)
+                self.L += math.sqrt((coordAAA["z"][n + 1] - coordAAA["z"][n]) ** 2 + (coordAAA["y"][n + 1] - coordAAA["y"][n]) ** 2)        # dL = (dH**2+dR**)**0.5
         except IndexError:
             self.H, self.L = 0, 0
 
         self.H = self.H + dH        # interpolation addition
         self.L = self.L + dL
 
+
+    # Calculate D, S22(Stress), GR from rN1704 .txt
     def Calculating_D_S22_GR(self):
         if self.chosenTSList[self.nTSt] > 0:
             nLine = self.wholeDocument_rN1704[self.startLine_rN1704 - 1].strip().split()
@@ -277,6 +282,8 @@ class DataExtraction:
         self.D = float(nLine[2]) * 2
         self.GR = float(nLine[3]) * 2
         self.S22 = float(nLine[5]) * 1000  # kPa# Reading D, GR, S22 from r1704 file
+
+
 
     def MainProgram(self):
         self.TSData = {}  # for whole TS points data, made of coordinates in in theta direction  --> Z Lines
