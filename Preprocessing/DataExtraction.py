@@ -45,9 +45,10 @@ class DataExtraction:
     def __init__(self, resultsFolder, nSim=0):
         self.nSim = nSim
 
+        # All simulations analysis
         if allSimulationsAnalysis == True:
-            self.objectDE = FolderSearch(resultsFolder)         # DataExtraction object
-            self.simPath = self.objectDE.allPaths[self.nSim]    # get info from FolderSearch
+            self.objectDE = FolderSearch(resultsFolder)                     # DataExtraction object
+            self.simPath = self.objectDE.allPaths[self.nSim]                # get info from FolderSearch
             self.simName = self.objectDE.allNames[self.nSim]
             os.chdir(self.simPath)
 
@@ -56,14 +57,14 @@ class DataExtraction:
             self.simName = "TestName"
             os.chdir(self.simPath)
 
-        self.chosenTSList = list(chosenTimeSteps)             # copy of selected TimeSteps for analysis in case certain TS is invalid has to change
+        self.chosenTSList = list(chosenTimeSteps)                     # copy of selected TimeSteps for analysis in case certain TS is invalid has to change
         self.nTSt = 0
         self.Creating_allTS_Vector()
 
-        while self.nTSt < len(self.chosenTSList):            # as long as there are TimeSteps in list to analyze
+        while self.nTSt < len(self.chosenTSList):                     # analyze chosen TimeSteps
             self.SettingAnalysisFiles()
 
-            if self.SameAsPreviousStep()==True:
+            if self.SameAsPreviousStep()==True:                       # to prevent unnecessary analysis if chosen TimeStep > maxTS
                 break
 
             if self.CheckAAAFormation() == False:
@@ -72,12 +73,12 @@ class DataExtraction:
                 self.chosenTSList.remove(self.chosenTSList[self.nTSt])
                 continue
 
-            elif self.CheckAAAFormation() == True:          #if AAA formed
-                if self.chosenTSList[self.nTSt] <= self.maxTS:  #used for limiting simulation till last TS
+            elif self.CheckAAAFormation() == True:
+                if self.chosenTSList[self.nTSt] <= self.maxTS:        # used for limiting simulation till last TS
                     self.Calculating_d0_H_L()
                     self.Calculating_D_S22_GR()
-                    if self.GR < 0 or self.D < 0:
-                        self.chosenTSList[self.nTSt] -= 1
+                    if self.GR < 0 or self.D < 0:                     # error in FEAP simulation
+                        self.chosenTSList[self.nTSt] -= 1             # choosing the previous TimeStep
                         continue
                     self.MainProgram()
                     self.DataStorage()
@@ -401,12 +402,11 @@ class DataExtraction:
                         "V": self.V_allTS,
                         "GR": self.GR_allTS,
                       }
-
         self.simDataFromAllTS = pd.DataFrame(allDataTS, index=allTimeSteps)
 
 
 # comment if allSimulationsAnalysis=True
-# proba = DataExtraction(oneSimTestPath)
+# test = DataExtraction(oneSimTestPath)
 
 
 
