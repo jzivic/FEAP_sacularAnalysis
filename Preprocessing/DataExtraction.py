@@ -240,12 +240,12 @@ class DataExtraction:
         try:
             #coordinates of pointA, pointB of line that connects elements before/after condition
             # pA = (rCoord, zCoord)
-            pA = [(float(lineA[0]) + float(lineA[1]) + float(lineA[2])) / 3, (float(lineA[3]) + float(lineA[4]) + float(lineA[5])) / 3]   # AAA formation point radial offset from element before coordinates
-            pB = [(float(lineB[0]) + float(lineB[1]) + float(lineB[2])) / 3, (float(lineB[3]) + float(lineB[4]) + float(lineB[5])) / 3]   # AAA formation point axial offset from element before coordinates
-            slope = (pB[1] - pA[1]) / (pB[0] - pA[0])
+            pA = [(float(lineA[0]) + float(lineA[1]) + float(lineA[2])) / 3, (float(lineA[3]) + float(lineA[4]) + float(lineA[5])) / 3]   # coordinate of point before AAA formation
+            pB = [(float(lineB[0]) + float(lineB[1]) + float(lineB[2])) / 3, (float(lineB[3]) + float(lineB[4]) + float(lineB[5])) / 3]   # coordinate of point after AAA formation
+            slope = (pB[1] - pA[1]) / (pB[0] - pA[0])       # direction slope
 
-            dR = pB[0] - 1.05 * self.d0 / 2
-            dH = (dR) * slope
+            dR = pB[0] - 1.05 * self.d0 / 2                 # R addition
+            dH = (dR) * slope                               # R addition
             dL = np.sqrt(dR ** 2 + dH ** 2) * 2             # *2 becuase of upper and lower halves
             dH *= 2
         except TypeError:
@@ -253,7 +253,7 @@ class DataExtraction:
 
         # AAA points coordinate
         coordAAA = {"z":[], "y":[]}
-        for indAn in self.vectorAAAIndices: #iterating over points that fulfill AAA condition, z,y obtained from ctl file !!
+        for indAn in self.vectorAAAIndices:                                                              #iterating over points that fulfill AAA condition, z,y obtained from ctl file !!
             z = float(self.wholeDocument_ctl[self.startLine_ctl + indAn].strip().split()[0])
             y = float(self.wholeDocument_ctl[self.startLine_ctl + indAn].strip().split()[1])
             coordAAA["z"].append(z), coordAAA["y"].append(y)
