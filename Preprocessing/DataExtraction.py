@@ -87,6 +87,8 @@ class DataExtraction:
         self.DataFrameConstruct()
 
 
+
+
     #Create lists/vectors to store data
     def Creating_allTS_Vector(self):
         self.TSName_allTS = []
@@ -284,49 +286,55 @@ class DataExtraction:
         self.S22 = float(nLine[5]) * 1000  # kPa# Reading D, GR, S22 from r1704 file
 
 
-
+    # Iterates over eIW file where are coordinates stored in theta->Z order, all TimeSteps written together
     def MainProgram(self):
-        self.TSData = {}  # for whole TS points data, made of coordinates in in theta direction  --> Z Lines
+        self.TSData = {}                     # whole TimeStep data, made of coordinates in in theta direction  --> Z Lines
         n_eIW = -1  #
 
-        #firstly, iteerating every cut that represents first radial layer
+        # iteerating every line that represents first radial layer
         for line in self.wholeDocument_eIW[self.startLine_eIW: self.startLine_eIW + TSLegnht_eIW]:
-            line = line.strip().split()  # red teksta
-            if line == []: continue  # preskakanje praznih redova, ne ulaze u brojac_eIW
+            line = line.strip().split()                                 # txt line
+            if line == []: continue                                     # skipping empty lines, not counted in n_eIW
             n_eIW += 1
 
-            if n_eIW == 0:  # ==Timestep: red
-                self.TSName = line[1]  # New TS
-                self.ZLines = []
-                continue                # to exclude empty lines
-            # iteerating every arc line (Theta line)
-            thetaLine, pointCoord = [],[]
-            for number in line:             #iterating every line. Points are constructed as (x1,y1,z1, x2,y2,z2...)
+            if n_eIW == 0:                                              # New TS
+                self.TSName = line[1]                                   # TimeStep written in txt
+                self.ZLines = []                                        # List of lines in Z direction
+                continue
+
+            # Iteerates every arc line (Theta line)
+            thetaLine, pointCoord = [],[]                               # thetaLine is made of points. Points are made of 3 coordinates
+
+            # iterating every line. Points are constructed as (x1,y1,z1, x2,y2,z2...)
+            for number in line:
                 number = float(number)
                 pointCoord.append(number)
-                if len(pointCoord) == 3:        #constructing one points coordinate for every 3 coordinates
-                    thetaLine.append(pointCoord)
-                    pointCoord = []
-            self.ZLines.append(thetaLine)  # when all theta lines are over appending last line
+                if len(pointCoord) == 3:                                # constructing one point of 3 coordinates
+                    thetaLine.append(pointCoord)                        # point is added to thetaLine  when constructed (has 3 coordinates)
+                    pointCoord = []                                     # reset point
+            self.ZLines.append(thetaLine)                               # adding last line when all theta lines are over
 
-            if n_eIW == self.nZ:                # if counter n_eIW==nZ, Timestep is over
+            if n_eIW == self.nZ:                                        # if n_eIW==nZ, Timestep is over
                 self.Calculating_S_V()
-                self.brojac_eIW = -1
-                self.TSData[self.TSName] = self.ZLines      #filling TSData#Reading eIW (table of data)
+                self.TSData[self.TSName] = self.ZLines                  # filling TSData
 
+
+    #
     def Calculating_S_V(self):
-        S0 = self.d0 * math.pi * self.HVainTotal * (178 / 180) * 0.9988         #inital surface. 178 deg, straight edgges
+        S0 = self.d0 * math.pi * self.HVainTotal * (178 / 180) * 0.9988         # inital surface. 178 deg, straight edgges
         self.S = -S0
-        V0 = 1/4*(self.d0)**2*math.pi*self.HVainTotal*((178/180)**2)*(0.9941)
+        V0 = 1/4*(self.d0)**2*math.pi*self.HVainTotal*((178/180)**2)*(0.9941)   # initil volume
         self.V = -V0
 
-        for nThL in range(len(self.ZLines)):    #iterating every cut
-            STh = 0
-            pointsOfElement = []
+        # Iterating every layer
+        for nThL in range(len(self.ZLines)):
+            STh = 0                                                             # theta layer surface
+            pointsOfElement = []                                                # quadrangle
 
-            for nPoint in range(len(self.ZLines[nThL])):  # iterating the theta line in cut
+            # Iterating the theta line
+            for nPoint in range(len(self.ZLines[nThL])):
                 try:
-                    A = self.ZLines[nThL][nPoint]
+                    A = self.ZLines[nThL][nPoint]                               # quadrangle is made from  A,B,C,D coordinates
                     B = self.ZLines[nThL + 1][nPoint]
                     C = self.ZLines[nThL][nPoint + 1]
                     D = self.ZLines[nThL + 1][nPoint + 1]
@@ -336,14 +344,14 @@ class DataExtraction:
                 except IndexError:
                     break
                 try:
-                    vTheta1 = np.subtract(C, A)  # vektori izmedu tocaka
+                    vTheta1 = np.subtract(C, A)                                 # vector C->A
                     vZ1 = np.subtract(B, A)
                     vTheta2 = np.subtract(B, C)
                     vZ2 = np.subtract(D, C)
-                    vProdukt1 = np.cross(vZ1, vTheta1)  # == vektorska površina 1. trokuta
-                    vProdukt2 = np.cross(vTheta2, vZ2)  # == vektorska površina 2.
-                    vProduktSuma = (vProdukt1 + vProdukt2) / 2  # jer će četverokuti bit nepravilni
-                    SEl = np.linalg.norm(vProduktSuma)  # povrsina elementa, kvadratica
+                    vProduct1 = np.cross(vZ1, vTheta1)                          # first triangle vector product
+                    vProduct2 = np.cross(vTheta2, vZ2)
+                    vProductSum = (vProduct1 + vProduct2) / 2
+                    SEl = np.linalg.norm(vProductSum)                           # (quad) element surface
                     STh += SEl  # povrsina theta snite
                 except ValueError:
                     continue
