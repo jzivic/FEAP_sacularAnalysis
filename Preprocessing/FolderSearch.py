@@ -1,11 +1,20 @@
+"""
+Class made to iterate over listed dirs and all subdirs:
+
+    1. Iterates over all dirs and subdirs
+    2. Simulations is not analyzed if it is in the "PRESKOCI" dir
+    3. Dir is classified as simulations dir if there are "iparameters" file. Analysis starts
+    4. Get simulations path and name, store it into  FolderSearch.allPaths and FolderSearch.allNames
+
+"""
+
 import os
 
-
 class FolderSearch:
-    allPaths, allNames = [], []
+    allPaths, allNames = [], []         # class variables
 
     def pathToStrings(self, path):
-        path = path[1::] if path[0] == "/" else path[0::]
+        path = path[1::] if path[0] == "/" else path[0::]           # throws out "/" from name
         l, lDirString, s = [],[], None
         for ch in [i for i in path]:
             if ch != "/":
@@ -16,6 +25,7 @@ class FolderSearch:
                 l = []
         lDirString.append(s)
         return lDirString
+
 
     def __init__(self, directory):
         for root, dirs, files in os.walk(directory):

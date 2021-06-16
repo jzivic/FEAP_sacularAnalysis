@@ -15,6 +15,3 @@ print(allData)
 # c = allData.loc[allData["Flag"] == "C"]
 ab = allData.loc[allData["Flag"] != "C" ]
 
-
-
-

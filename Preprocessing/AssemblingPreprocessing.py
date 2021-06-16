@@ -5,7 +5,7 @@ from SimulationsData import *
 import pandas as pd
 
 
-
+# function to delete existing folder and make a new one
 def MakeFolder():
     try:
         shutil.rmtree(analysisFolder)
@@ -15,7 +15,7 @@ def MakeFolder():
 
 
 def SacularAnalysis_f():
-    folderSearch = FolderSearch(resultsFolder)        #svako pozivanje FolderSearch klase puni class varijabel ponovno
+    folderSearch = FolderSearch(resultsFolder)
     n = len(folderSearch.allNames) - 1
 
     AllSimData = []

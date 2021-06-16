@@ -1,10 +1,19 @@
-import os, math#, xlsxwriter, openpyxl
-import ssl
+"""
+Class made to analyze every simulation. After FolderSearch, sim path and name is passed to every simulation dir
 
+
+"""
+
+
+
+
+
+
+
+
+import os, math
 import numpy as np
 import pandas as pd
-import xarray as xr
-import matplotlib.pyplot as plt
 from scipy.spatial import ConvexHull
 # from openpyxl.styles import Font, PatternFill
 
@@ -18,9 +27,10 @@ from SimulationsData import *
 
 ###################################################################################################################
 # analyzing just one simulation for testing
-oneSimTestPath = "/home/josip/feap/pocetak/" + parametarskaAnaliza + "/rezultati/sakularna/r=10/parametar_k1/k1=1.06"
+oneSimTestPath = "/home/josip/feapMoje/pocetak/" + parametarskaAnaliza + "/rezultati/sakularna/r=10/parametar_k1/k1=1.06"
 ###################################################################################################################
 
+#TSLenght depends on number of mesh elements. Same for all simulations
 TSLenght = 51
 TSLegnht_eIW = TSLenght + 3
 TSLegnht_rIl = TSLenght + 1
@@ -35,7 +45,7 @@ class DataExtraction:
     def __init__(self, resultsFolder, nSim=0):
         self.nSim = nSim
 
-        if allSimulationsAnalysis == True:               # ovo se tek poslije konstruktora izvodi ????
+        if allSimulationsAnalysis == True:
             self.objectDE = FolderSearch(resultsFolder)  # putanjaSakularne
             self.simPath = self.objectDE.allPaths[self.nSim]
             self.simName = self.objectDE.allNames[self.nSim]
