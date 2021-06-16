@@ -319,7 +319,9 @@ class DataExtraction:
                 self.TSData[self.TSName] = self.ZLines                  # filling TSData
 
 
-    #
+    # Calculate surface and volume
+        # Surface - sum of vector products each element, developed
+        # Volume - ConvexHull function
     def Calculating_S_V(self):
         S0 = self.d0 * math.pi * self.HVainTotal * (178 / 180) * 0.9988         # inital surface. 178 deg, straight edgges
         self.S = -S0
@@ -352,18 +354,18 @@ class DataExtraction:
                     vProduct2 = np.cross(vTheta2, vZ2)
                     vProductSum = (vProduct1 + vProduct2) / 2
                     SEl = np.linalg.norm(vProductSum)                           # (quad) element surface
-                    STh += SEl  # povrsina theta snite
+                    STh += SEl                                                  # theta layer surface is made of elements surface
                 except ValueError:
                     continue
 
-            self.S += STh*2
+            self.S += STh*2                                                     # 180 -> 360
 
-            pointsOfElementArray = np.array(pointsOfElement, dtype="object")
+            pointsOfElementArray = np.array(pointsOfElement, dtype="object")    # for ConvexHull to work
             try:
-                VTh = ConvexHull(pointsOfElementArray).volume  # ugradena funkcija za V kao array[tocke]
+                VTh = ConvexHull(pointsOfElementArray).volume                   # theta volume
             except:
-                VTh = False  # ako se dogodi da ne valja volumen
-            self.V += VTh*2
+                VTh = False                                                     # invalid volume
+            self.V += VTh*2                                                     # 180 -> 360
 
     def DataStorage(self):
         self.TSName_allTS.append(self.TSName)
