@@ -367,6 +367,8 @@ class DataExtraction:
                 VTh = False                                                     # invalid volume
             self.V += VTh*2                                                     # 180 -> 360
 
+
+    # Each value all TimeSteps data
     def DataStorage(self):
         self.TSName_allTS.append(self.TSName)
         self.D_allTS.append(self.D)
@@ -381,6 +383,8 @@ class DataExtraction:
         self.V_allTS.append(self.V)
         self.GR_allTS.append(self.GR)
 
+
+    # Create DataFrame to store data from all TimeSteps
     def DataFrameConstruct(self):
         allTimeSteps = pd.Series(self.TSName_allTS)
         allDataTS = {
