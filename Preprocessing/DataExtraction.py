@@ -57,9 +57,10 @@ class DataExtraction:
             self.simName = "TestName"
             os.chdir(self.simPath)
 
-        self.chosenTSList = list(chosenTimeSteps)                     # copy of selected TimeSteps for analysis in case certain TS is invalid has to change
+        self.chosenTSList = list(chosenTimeSteps)                     # copy of chosen TimeSteps;  in case TimeStep is invalid and has to change
         self.nTSt = 0
         self.Creating_allTS_Vector()
+
 
         while self.nTSt < len(self.chosenTSList):                     # analyze chosen TimeSteps
             self.SettingAnalysisFiles()
@@ -369,7 +370,7 @@ class DataExtraction:
             self.V += VTh*2                                                     # 180 -> 360
 
 
-    # Each value all TimeSteps data
+    # Each value is being updated after each TimeStep
     def DataStorage(self):
         self.TSName_allTS.append(self.TSName)
         self.D_allTS.append(self.D)
@@ -402,7 +403,7 @@ class DataExtraction:
                         "V": self.V_allTS,
                         "GR": self.GR_allTS,
                       }
-        self.simDataFromAllTS = pd.DataFrame(allDataTS, index=allTimeSteps)
+        self.simDataFromAllTS = pd.DataFrame(allDataTS, index=allTimeSteps)             # all data (all timeSteps) from one simulation
 
 
 # comment if allSimulationsAnalysis=True

@@ -5,7 +5,7 @@ from SimulationsData import *
 import pandas as pd
 
 
-# function to delete existing folder and make a new one
+# Function to delete existing folder and make a new one
 def MakeFolder():
     try:
         shutil.rmtree(analysisFolder)
@@ -15,14 +15,14 @@ def MakeFolder():
 
 
 def SacularAnalysis_f():
-    folderSearch = FolderSearch(resultsFolder)
+    folderSearch = FolderSearch(resultsFolder)                                                   # all search data
     n = len(folderSearch.allNames) - 1
 
-    AllSimData = []
+    AllSimData = []                                                                             # data from all simulatons
     AllNames = []
 
     for i in range(n):
-        currentSimulation = DataExtraction(resultsFolder, i)
+        currentSimulation = DataExtraction(resultsFolder, i)                                     # each simulation analysis
         AllSimData.append(currentSimulation.simDataFromAllTS)
         AllNames.append(currentSimulation.simName)
 
