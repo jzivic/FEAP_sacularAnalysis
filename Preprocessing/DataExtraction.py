@@ -173,7 +173,7 @@ class DataExtraction:
                        float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[2])) * 2 / 3
 
         # iterating over chosen TimeStep lines, checking in AAA condition is fulfilled
-        nLine_rIL = self.startLine_rIL
+        nLine_rIL = self.startLine_rIL                                                              # copy because it changes
         for line in self.wholeDocument_rIl[self.startLine_rIL: (self.startLine_rIL + TSLegnht_rIl - 1)]:
             nLine_rIL += 1
             line = line.strip().split()
@@ -240,14 +240,14 @@ class DataExtraction:
         try:
             #coordinates of pointA, pointB of line that connects elements before/after condition
             # pA = (rCoord, zCoord)
-            pA = [(float(lineA[0]) + float(lineA[1]) + float(lineA[2])) / 3, (float(lineA[3]) + float(lineA[4]) + float(lineA[5])) / 3]
-            pB = [(float(lineB[0]) + float(lineB[1]) + float(lineB[2])) / 3, (float(lineB[3]) + float(lineB[4]) + float(lineB[5])) / 3]
+            pA = [(float(lineA[0]) + float(lineA[1]) + float(lineA[2])) / 3, (float(lineA[3]) + float(lineA[4]) + float(lineA[5])) / 3]   # AAA formation point radial offset from element before coordinates
+            pB = [(float(lineB[0]) + float(lineB[1]) + float(lineB[2])) / 3, (float(lineB[3]) + float(lineB[4]) + float(lineB[5])) / 3]   # AAA formation point axial offset from element before coordinates
             slope = (pB[1] - pA[1]) / (pB[0] - pA[0])
 
-            dR = pB[0] - 1.05 * self.d0 / 2                                       # AAA formation point radial offset from element before coordinates
-            dH = (dR) * slope                                                     # AAA formation point axial offset from element before coordinates
-            dL = np.sqrt(dR ** 2 + dH ** 2) * 2
-            dH *= 2                                                               # becuase of upper and lower halves
+            dR = pB[0] - 1.05 * self.d0 / 2
+            dH = (dR) * slope
+            dL = np.sqrt(dR ** 2 + dH ** 2) * 2             # *2 becuase of upper and lower halves
+            dH *= 2
         except TypeError:
             dH, dL = 0, 0
 
