@@ -46,24 +46,24 @@ class DataExtraction:
         self.nSim = nSim
 
         if allSimulationsAnalysis == True:
-            self.objectDE = FolderSearch(resultsFolder)  # putanjaSakularne
-            self.simPath = self.objectDE.allPaths[self.nSim]
+            self.objectDE = FolderSearch(resultsFolder)         # DataExtraction object
+            self.simPath = self.objectDE.allPaths[self.nSim]    # get info from FolderSearch
             self.simName = self.objectDE.allNames[self.nSim]
             os.chdir(self.simPath)
 
-        elif allSimulationsAnalysis == False:
+        elif allSimulationsAnalysis == False:                   # for test case
             self.simPath = oneSimTestPath
             self.simName = "TestName"
             os.chdir(self.simPath)
 
-        self.chosenTSList = list(chosenTimeSteps)
+        self.chosenTSList = list(chosenTimeSteps)             # copy of selected TimeSteps for analysis in case certain TS is invalid has to change
         self.nTSt = 0
         self.Creating_allTS_Vector()
 
-        while self.nTSt < len(self.chosenTSList):      # as long as there is steps in list
-            self.SettingAnalysisFiles() #"putanja koja je zapravo simPath uvijek"
+        while self.nTSt < len(self.chosenTSList):            # as long as there are TimeSteps in list to analyze
+            self.SettingAnalysisFiles()
 
-            if self.SameAsPreviousStep()==True:   #checking if the TS are repeating
+            if self.SameAsPreviousStep()==True:
                 break
 
             if self.CheckAAAFormation() == False:
@@ -87,7 +87,8 @@ class DataExtraction:
         self.DataFrameConstruct()
 
 
-    def Creating_allTS_Vector(self):                    # vectors to store data
+    #Create lists/vectors to store data
+    def Creating_allTS_Vector(self):
         self.TSName_allTS = []
         self.D_allTS = []
         self.d0_allTS = []
@@ -101,29 +102,32 @@ class DataExtraction:
         self.V_allTS = []
         self.GR_allTS = []
 
+
+    # Set and load the .txt files.
+    # Set the starting lines depending on the chosen TimeStep
     def SettingAnalysisFiles(self):
-        os.chdir(self.simPath)
-        for suffix in suffixList:
+        # os.chdir(self.simPath)
+        for suffix in suffixList:                                               # suffix name added to simulation name
             try:
                 opening_eIW = open("export__INNER_WALL__" + suffix, "r")
                 self.wholeDocument_eIW = opening_eIW.readlines()                                # whole txt read
-                self.nl_eIW = sum(1 for line in open("export__INNER_WALL__" + suffix))          #number of lines in export Inner Wall
-                self.maxTS = int(self.wholeDocument_eIW[-TSLegnht_eIW + 1].strip().split()[1])  #last TimeStep in simulation
+                self.nl_eIW = sum(1 for line in open("export__INNER_WALL__" + suffix))          # number of lines in export Inner Wall
+                self.maxTS = int(self.wholeDocument_eIW[-TSLegnht_eIW + 1].strip().split()[1])  # last TimeStep in simulation
 
-                if self.chosenTSList[self.nTSt] <= self.maxTS:                                     #chosenTimeStep = chosen or  maxTS if chosen bigger
+                if self.chosenTSList[self.nTSt] <= self.maxTS:                                  # chosenTimeStep = chosen or  maxTS if chosen is bigger
                     chosenTimeStep = self.chosenTSList[self.nTSt]
                 elif self.chosenTSList[self.nTSt] > self.maxTS:
                     chosenTimeStep = self.maxTS
                     self.chosenTSList[self.nTSt] = self.maxTS
 
-                if chosenTimeStep > 0:      # in past : def SettingChosenTimeStep(self)       # setting starting line in each document
-                    startLine_eIW = 68 + TSLegnht_eIW * (chosenTimeStep - 0)    #00
+                if chosenTimeStep > 0:
+                    startLine_eIW = 68 + TSLegnht_eIW * (chosenTimeStep - 0)                   # staring line in each .txt file
                     startLine_rIL = 5 + TSLegnht_rIl * (chosenTimeStep - 0)
                     startLine_ctl = 4 + TSLegnht_ctl * (chosenTimeStep - 0)
                     startLine_rN1704 = 5 + TSLegnht_rN1704 * (chosenTimeStep - 0)
 
-                elif chosenTimeStep < 0:  # negative timesteps counts from the last
-                    startLine_eIW = 1 + TSLegnht_eIW * chosenTimeStep  # number of line in
+                elif chosenTimeStep < 0:                                                        # negative timesteps counts from the last
+                    startLine_eIW = 1 + TSLegnht_eIW * chosenTimeStep
                     startLine_rIL = 0 + TSLegnht_rIl * chosenTimeStep
                     startLine_ctl = 0 + TSLegnht_ctl * chosenTimeStep
                     startLine_rN1704 = 0 + TSLegnht_rN1704 * chosenTimeStep
@@ -131,9 +135,9 @@ class DataExtraction:
                 if self.SameAsPreviousStep() == True:
                     break
 
-                self.startLine_eIW = startLine_eIW % self.nl_eIW
-                nNodes = self.wholeDocument_eIW[2].strip().split()                      # number of nodes, written in eIW file
-                self.nTheta, self.nZ = int(nNodes[0]), int(nNodes[1])
+                self.startLine_eIW = startLine_eIW % self.nl_eIW                                # to convert negative starting line to positive
+                nNodes = self.wholeDocument_eIW[2].strip().split()                              # number of nodes, written in eIW file
+                self.nTheta, self.nZ = int(nNodes[0]), int(nNodes[1])                           # number of elements in theta / Z direction
 
                 opening_rIL = open("res__INNER_lines__" + suffix, "r")
                 self.wholeDocument_rIl = opening_rIL.readlines()
@@ -150,23 +154,25 @@ class DataExtraction:
                 self.nl_rN1704 = sum(1 for line in open("res__NODE_1704_" + suffix))
                 self.startLine_rN1704 = startLine_rN1704 #% self.nl_rN1704
 
-            except:
+            except:                                                                            # skip if there is no files in dir
                 FileNotFoundError
                 continue
 
+    # Check whether Timesteps start to repeat
     def SameAsPreviousStep(self):
         if self.chosenTSList[self.nTSt] == self.chosenTSList[self.nTSt-1]:
             return True
 
+    # Check if AAA has been formed on the maximum diameter condition
     def CheckAAAFormation(self):
-        if sameInitalRadius == True:
-            self.d0 = float(self.wholeDocument_rIl[5].strip().split()[0]) * 2               # initial radius D0, deformed or non deformed
-        elif sameInitalRadius == False:
+        if sameInitalRadius == True:                                                                 # healthy radius d0 calculated from initial mesh
+            self.d0 = float(self.wholeDocument_rIl[5].strip().split()[0]) * 2
+        elif sameInitalRadius == False:                                                              # healthy radius d0 calculated from current, deformed mesh
             self.d0 = (float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[0]) +
                        float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[1]) +
                        float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[2])) * 2 / 3
 
-        # iterating over TS, checking in AAA condition is fulfilled
+        # iterating over chosen TimeStep lines, checking in AAA condition is fulfilled
         nLine_rIL = self.startLine_rIL
         for line in self.wholeDocument_rIl[self.startLine_rIL: (self.startLine_rIL + TSLegnht_rIl - 1)]:
             nLine_rIL += 1
@@ -176,6 +182,7 @@ class DataExtraction:
                 return True
         return False
 
+    # In case AAA is not formed, anaysis is not performed and all parameters are set to None
     def NoAAAFormed(self):
         self.TSName = self.wholeDocument_eIW[self.startLine_eIW: self.startLine_eIW + TSLegnht_eIW][0].strip().split()[1]
         self.D = None
@@ -190,40 +197,42 @@ class DataExtraction:
         self.V = None
         self.GR = None
 
+    # Calculate d0, H, L from readINNERLines file
     def Calculating_d0_H_L(self):
-        # auxiliary function for calculating diameter
+
+        # auxiliary function for calculating average diameter from 3 positions
         def CalculatingDiameter(numberOfLine):
             D = (float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[0]) +
                  float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[1]) +
                  float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[2])) * 2 / 3
             return D
 
-        if sameInitalRadius == True:    #undeformed inital shape
+        if sameInitalRadius == True:                                                      # healthy radius d0 calculated from initial mesh
             self.d0 = float(self.wholeDocument_rIl[5].strip().split()[0]) * 2
-        elif sameInitalRadius == False:     #deformed inital shape
+        elif sameInitalRadius == False:                                                   # healthy radius d0 calculated from current, deformed mesh
             self.d0 =  CalculatingDiameter(numberOfLine=0)
-        self.d1 =  CalculatingDiameter(numberOfLine=20)          #proximal diameter at height 55m from center
-        self.d2 =  CalculatingDiameter(numberOfLine=21)
-        self.d3 =  CalculatingDiameter(numberOfLine=22)
-        self.HVainTotal = float(self.wholeDocument_rIl[self.startLine_rIL + TSLegnht_rIl - 2].strip().split()[5]) #total vain leght
 
-        # auxiliary lines to find before/after AAA formation lines
-        lineA, lineB = 0, 0
+        self.d1 =  CalculatingDiameter(numberOfLine=20)                                   # proximal diameter at height 62mm from AAA apex
+        self.d2 =  CalculatingDiameter(numberOfLine=21)                                   # proximal diameter at height 55mm from AAA apex
+        self.d3 =  CalculatingDiameter(numberOfLine=22)                                   # proximal diameter at height 48mm from AAA apex
+        self.HVainTotal = float(self.wholeDocument_rIl[self.startLine_rIL + TSLegnht_rIl - 2].strip().split()[5])  # total vain leght
+
+
+        lineA, lineB = 0, 0                                                               # auxiliary indices to find before/after AAA formation start lines
         lineBefore = [0, 0, 0]
-        self.vectorAAAIndices = []          # AAA formed lines in TS
-        nLine_rIL = self.startLine_rIL      # starting line in rIL
+        self.vectorAAAIndices = []                                                        # elements indices where AAA is formed
+        nLine_rIL = self.startLine_rIL                                                    # starting line in rIL
 
-        # checking Diameter at every hight to fullfill condition
+        # checking AAA formation condition at every hight/line
         for line in self.wholeDocument_rIl[self.startLine_rIL: (self.startLine_rIL + TSLegnht_rIl-1)]:
-            nLine_rIL += 1                                                                              # number of line in rIL
+            nLine_rIL += 1                                                                # number of line in chosen TimeStep in rIL txt
             line = line.strip().split()
-            D_ = (float(line[0]) + float(line[1]) + float(line[2])) * 2 / 3             # D in every line / height
-            # Z_ = float(line[4])
+            D_ = (float(line[0]) + float(line[1]) + float(line[2])) * 2 / 3               # D in every line / height
 
             if D_ > self.d0 * 1.05:
                 self.vectorAAAIndices.append((nLine_rIL-6) % TSLegnht_rIl)
                 if lineB == 0:
-                    lineA = lineBefore                  # made to collect elements/heights before and after condition
+                    lineA = lineBefore                                                    # collect elements before and after condition
                     lineB = line
             lineBefore = line
 
@@ -235,10 +244,10 @@ class DataExtraction:
             pB = [(float(lineB[0]) + float(lineB[1]) + float(lineB[2])) / 3, (float(lineB[3]) + float(lineB[4]) + float(lineB[5])) / 3]
             slope = (pB[1] - pA[1]) / (pB[0] - pA[0])
 
-            dR = pB[0] - 1.05 * self.d0 / 2             # AAA forming point radial offset from coordinates element before
-            dH = (dR) * slope                           # AAA forming point axial offset from coordinates element before
-            dL = np.sqrt(dR ** 2 + dH ** 2) * 2         #
-            dH *= 2                                     # becuase of upper and lower halves
+            dR = pB[0] - 1.05 * self.d0 / 2                                       # AAA formation point radial offset from element before coordinates
+            dH = (dR) * slope                                                     # AAA formation point axial offset from element before coordinates
+            dL = np.sqrt(dR ** 2 + dH ** 2) * 2
+            dH *= 2                                                               # becuase of upper and lower halves
         except TypeError:
             dH, dL = 0, 0
 
