@@ -11,8 +11,8 @@ Everything is chosen from here:
 parametarskaAnaliza = "parametarskaAnalizaSve"
 
 
-# chosenTimeSteps = [190, 208, 226, 244, 262, 280, 298, 316, 334, 352, 370, 388, 406, 424, 442, 460, 478]
-chosenTimeSteps = [333,  666, ]
+chosenTimeSteps = [190, 208, 226, 244, 262, 280, 298, 316, 334, 352, 370, 388, 406, 424, 442, 460, 478]
+# chosenTimeSteps = [333,  666, ]
 
 chosenTSContours = [-50, -30, -10]
 

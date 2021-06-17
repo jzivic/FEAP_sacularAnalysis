@@ -21,7 +21,6 @@ oneSimTestPath = "/home/josip/feapMoje/pocetak/" + parametarskaAnaliza + "/rezul
 TSLenght = 51
 suffixList = ["101-2", "102-3"]
 
-
 TSLegnht_eIW = TSLenght + 3
 TSLegnht_rIl = TSLenght + 1
 TSLegnht_ctl = TSLenght + 1
