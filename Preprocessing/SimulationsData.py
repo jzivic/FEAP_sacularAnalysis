@@ -37,10 +37,12 @@ contoursDir = analysisDir + ("contours/")
 
 PickleData_basic = analysisDir+"SacularData_basic.pickle"                       # just read parameters
 PickleData_all = analysisDir+"SacularData_all.pickle"                           # derived parameters (A+B+C)
-PickleData_AB = analysisDir+"SacularData_ab.pickle"
-PickleData_C = analysisDir+"SacularData_c.pickle"
+PickleData_AB = analysisDir+"SacularData_AB.pickle"
+PickleData_C = analysisDir+"SacularData_C.pickle"
+
 statXlsx = analysisDir + "statData.xlsx"
 
 
+chosenFlag = "AB"
 
 

@@ -14,15 +14,21 @@ def MakeDir_diagrams():
     except:
         FileNotFoundError
     os.mkdir(diagramsDir)
-# MakeDir_diagrams()
 
+def chosenData_f():
+    if chosenFlag =="AB":
+        AB_Data = pd.read_pickle(PickleData_AB)
+        return AB_Data
 
-abData = pd.read_pickle(PickleData_AB)                      # load the data
-cData = pd.read_pickle(PickleData_C)
-allData = pd.read_pickle(PickleData_all)
+    elif chosenFlag =="C":
+        C_Data = pd.read_pickle(PickleData_C)
+        return C_Data
 
+    elif chosenFlag =="all":
+        all_Data = pd.read_pickle(PickleData_all)
+        return all_Data
+chosenData = chosenData_f()
 
-chosenData = abData                                         # choose data Flag to be analyzed
 
 
 NoPos = ""                                                  # descriptive text for selected diagram height
@@ -38,6 +44,7 @@ graphData:
         vName - value name on x axis
         txt - additional description in the corner if required
 """
+
 graphData = {
          "D":{"vName":"D","unit":"mm","txt":NoPos}, "H":{"vName":"H","unit":"mm","txt":NoPos},
          "L":{"vName":"L","unit":"mm","txt":NoPos}, "S":{"vName":"S","unit":"$mm^2$","txt":NoPos},
@@ -66,8 +73,8 @@ graphData = {
          }
 
 
-# Plot all diagrams in loop
-def PlotingALLDiagrams():
+# Plot all values in chosen TimeSteps in loop
+def PlotingAllDiagrams():
 
     # Determine dot color depending on radius size
     def colorR(radius):
@@ -106,7 +113,7 @@ def PlotingALLDiagrams():
             # # statText()
 
 
-            plt.text(min(chosenData[value]), max(chosenData["P"])+0.1, graphData[value]["txt"])
+            plt.text(min(chosenData[value]), max(chosenData["P"])+0.1, graphData[value]["txt"])             # position of x label text
             fig = plt.gcf()
             plt.grid(color='k', linestyle=':', linewidth=0.5)
             plt.legend()
@@ -115,13 +122,7 @@ def PlotingALLDiagrams():
             plt.close()
             fig.savefig(diagramsDir + value + '.png', dpi=300)
 
-
-    # for name, values in chosenData.iteritems():
-    #     print('{name}: {value}'.format(name=name, value=values[0]))
-
-
-
-# PlotingALLDiagrams()
+PlotingAllDiagrams()
 
 
 

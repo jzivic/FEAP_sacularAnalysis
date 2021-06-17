@@ -60,8 +60,6 @@ def PlotAllContours():
             df_ctl.rename(columns={list(df_ctl)[0]: "z", list(df_ctl)[1]: "y"}, inplace=True)
 
 
-
-
             dy = -df_ctl.iloc[:, [1]]                                                       # offstet from centerline
             dyList = [float(dy.iloc[i]) for i in range(len(dy))]                            # list of dy data
 
@@ -85,7 +83,6 @@ def PlotAllContours():
                 plt.xlim(-70, 60)
                 plt.ylim(0, 350)
 
-                # plt.title("Outer contour curves")
                 plt.xlabel("Coordinate $x$ [mm]")
                 plt.ylabel("Coordinate $z$ [mm]")
                 plt.legend(framealpha=1)

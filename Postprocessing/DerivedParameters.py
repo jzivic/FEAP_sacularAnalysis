@@ -1,5 +1,7 @@
 """
 Calculate all derived from basic parameters
+Devide all data by flags to separate pickles
+
 """
 
 import pandas as pd
@@ -47,12 +49,12 @@ def DerivedParameters_f(basicPickle):
         flagVector.append(flag)
     allData["Flag"] = flagVector
 
-    cData = allData.loc[allData["Flag"] == "C"]             # Flag C represents surely ruptured AAA
-    abData = allData.loc[allData["Flag"] != "C"]            # Flags A,B represents AAA that should not rupture
+    C_Data = allData.loc[allData["Flag"] == "C"]             # Flag C represents surely ruptured AAA
+    AB_Data = allData.loc[allData["Flag"] != "C"]            # Flags A,B represents AAA that should not rupture
 
 
     allData.to_pickle(PickleData_all)                       # storing data into separate pickles
-    abData.to_pickle(PickleData_AB)
-    cData.to_pickle(PickleData_C)
+    AB_Data.to_pickle(PickleData_AB)
+    C_Data.to_pickle(PickleData_C)
 
 # DerivedParameters_f(PickleData_basic)
