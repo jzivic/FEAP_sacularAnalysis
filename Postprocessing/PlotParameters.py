@@ -15,6 +15,8 @@ def MakeDir_diagrams():
         FileNotFoundError
     os.mkdir(diagramsDir)
 
+
+# Load chosen data
 def chosenData_f():
     if chosenFlag =="AB":
         AB_Data = pd.read_pickle(PickleData_AB)
@@ -122,7 +124,7 @@ def PlotingAllDiagrams():
             plt.close()
             fig.savefig(diagramsDir + value + '.png', dpi=300)
 
-PlotingAllDiagrams()
+# PlotingAllDiagrams()
 
 
 

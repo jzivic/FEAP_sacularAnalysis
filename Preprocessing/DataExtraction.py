@@ -19,6 +19,9 @@ oneSimTestPath = "/home/josip/feapMoje/pocetak/" + parametarskaAnaliza + "/rezul
 
 #TSLenght depends on number of mesh elements. Same for all simulations
 TSLenght = 51
+suffixList = ["101-2", "102-3"]
+
+
 TSLegnht_eIW = TSLenght + 3
 TSLegnht_rIl = TSLenght + 1
 TSLegnht_ctl = TSLenght + 1

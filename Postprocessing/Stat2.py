@@ -3,9 +3,12 @@ import pandas as pd
 from scipy.stats import linregress
 from Preprocessing.SimulationsData import *
 
-abData = pd.read_pickle(PickleData_ab)
-cData = pd.read_pickle(PickleData_c)
-allData = pd.read_pickle(PickleData_all)
+# abData = pd.read_pickle(PickleData_AB)
+# cData = pd.read_pickle(PickleData_C)
+# allData = pd.read_pickle(PickleData_all)
+
+
+from PlotParameters import chosenData
 
 chosenData = abData
 

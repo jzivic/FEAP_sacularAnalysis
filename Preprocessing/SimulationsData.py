@@ -24,9 +24,11 @@ chosenTSContours = [-50, -30, -10]
 allSimulationsAnalysis = True                      # if allSimulationsAnalysis==False: only one listed sim will be analyses
 sameInitalRadius = False
 sigmaCritical = 1000
-TSLeght = 51
-suffixList = ["101-2", "102-3"]
+# TSLeght = 51
+# suffixList = ["101-2", "102-3"]
 flagCondition = {"S22":[500, 800], "GR":[5, 10], "D":45}
+chosenFlag = "AB"
+
 
 
 resultsDir = "/home/josip/feap/pocetak/"+parametarskaAnaliza+"/rezultati/sakularna"                          #path to analysis dir
@@ -36,6 +38,7 @@ diagramsDir = analysisDir + ("diagrams/")
 contoursDir = analysisDir + ("contours/")
 
 PickleData_basic = analysisDir+"SacularData_basic.pickle"                       # just read parameters
+
 PickleData_all = analysisDir+"SacularData_all.pickle"                           # derived parameters (A+B+C)
 PickleData_AB = analysisDir+"SacularData_AB.pickle"
 PickleData_C = analysisDir+"SacularData_C.pickle"
@@ -43,6 +46,5 @@ PickleData_C = analysisDir+"SacularData_C.pickle"
 statXlsx = analysisDir + "statData.xlsx"
 
 
-chosenFlag = "AB"
 
 

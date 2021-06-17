@@ -11,21 +11,20 @@ import matplotlib.pyplot as plt
 from Preprocessing.SimulationsData import *
 from Preprocessing.DirectorySearch import DirectorySearch
 
+
 # Make "contours" dir to save contour pictures
 def MakeDir_contours():
     try:
         shutil.rmtree(contoursDir)
-    except: FileNotFoundError
+    except:
+        FileNotFoundError
     os.mkdir(contoursDir)
-
-MakeDir_contours()
-
+# MakeDir_contours()
 
 allPath = DirectorySearch(resultsDir).allPaths
 allNames = DirectorySearch(resultsDir).allNames
 
-
-
+TSLenght = 51
 # Function to plot all contours at chosen TimeSteps in a loop
 def PlotAllContours():
 
@@ -41,8 +40,8 @@ def PlotAllContours():
         for nTS in range(len(chosenTSContours)):
 
             # Set the rIL file
-            startLine_rIL = -2 + (TSLeght+1) * chosenTSContours[nTS] + nl_rIL
-            chosenL_rIL = [i for i in range(startLine_rIL, (startLine_rIL + TSLeght + 1))]      # actually used lines indices
+            startLine_rIL = -2 + (TSLenght+1) * chosenTSContours[nTS] + nl_rIL
+            chosenL_rIL = [i for i in range(startLine_rIL, (startLine_rIL + TSLenght + 1))]      # actually used lines indices
             rmLine_rIL = list(cut_rIL)                                                          # lines to be removed
             for i in chosenL_rIL:                                                               # leave only lines that has to be deleted
                 rmLine_rIL.remove(i)
@@ -51,8 +50,8 @@ def PlotAllContours():
 
 
             # Set the ctl file
-            startLine_ctl = -2 + (TSLeght+1) * chosenTSContours[nTS] + nl_ctl
-            chosenL_ctl = [i for i in range(startLine_ctl, (startLine_ctl + TSLeght + 1))]
+            startLine_ctl = -2 + (TSLenght+1) * chosenTSContours[nTS] + nl_ctl
+            chosenL_ctl = [i for i in range(startLine_ctl, (startLine_ctl + TSLenght + 1))]
             rmLine_ctl = list(cut_ctl)
             for i in chosenL_ctl:
                 rmLine_ctl.remove(i)
