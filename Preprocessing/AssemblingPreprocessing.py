@@ -1,40 +1,38 @@
 import os, shutil
-from FolderSearch import FolderSearch
+from DirectorySearch import DirectorySearch
 from DataExtraction import DataExtraction
 from SimulationsData import *
 import pandas as pd
 
 
-# Function to delete existing folder and make a new one
-def MakeFolder():
+# Function to delete existing Dir and make a new one
+def MakeDir():
     try:
-        shutil.rmtree(analysisFolder)
+        shutil.rmtree(analysisDir)
     except:
         FileNotFoundError
-    os.mkdir(analysisFolder)
+    os.mkdir(analysisDir)
 
-
+# Analysis function
 def SacularAnalysis_f():
-    folderSearch = FolderSearch(resultsFolder)                                                   # all search data
-    n = len(folderSearch.allNames) - 1
+    directorySearch = DirectorySearch(resultsDir)                                                # all search data
+    n = len(DirectorySearch.allNames) - 1
 
-    AllSimData = []                                                                             # data from all simulatons
+    AllSimData = []                                                                              # data from all simulatons
     AllNames = []
 
     for i in range(n):
-        currentSimulation = DataExtraction(resultsFolder, i)                                     # each simulation analysis
-        AllSimData.append(currentSimulation.simDataFromAllTS)
+        currentSimulation = DataExtraction(resultsDir, i)                                        # each simulation analysis
+        AllSimData.append(currentSimulation.simDataFromAllTS)                                    # collecting every simulations data (all TimeSteps)
         AllNames.append(currentSimulation.simName)
 
-    ContactAllSimData = pd.concat(AllSimData, keys=AllNames, axis = 0).reset_index(level=1)      #create one big dataFrame of all df
-    ContactAllSimData = ContactAllSimData.rename(columns={"level_1":"TS"})                       #column renamed to TS
+    ContactAllSimData = pd.concat(AllSimData, keys=AllNames, axis = 0).reset_index(level=1)      # create one big DataFrame of all df
+    ContactAllSimData = ContactAllSimData.rename(columns={"level_1":"TS"})                       # column with number renamed to TimeStep (as it is)
     ContactAllSimData.set_index([ContactAllSimData.index, "TS"], inplace=True)                   # make indices, 1.(unnamed), 2. TS
-    ContactAllSimData.to_pickle(PickleData_basic)                       # save data to .pickle
+    ContactAllSimData.to_pickle(PickleData_basic)                                                # save data to .pickle (as sql)
 
 
-
-MakeFolder()
+MakeDir()
 SacularAnalysis_f()
 
-# nova = pd.concat(l, keys=imena, axis=0).reset_index(level=1)
 

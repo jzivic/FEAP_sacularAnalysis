@@ -4,8 +4,8 @@ from Preprocessing.SimulationsData import *
 
 
 
-def DerivedParameters_f(ulaz):
-    allData = pd.read_pickle(ulaz)
+def DerivedParameters_f(inputPickle):
+    allData = pd.read_pickle(inputPickle)
     allData = allData.dropna()
 
     allData["P"] = allData["S22"] / sigmaCritical
@@ -50,8 +50,8 @@ def DerivedParameters_f(ulaz):
 
 
     allData.to_pickle(PickleData_all)
-    abData.to_pickle(PickleData_ab)
-    cData.to_pickle(PickleData_c)
+    abData.to_pickle(PickleData_AB)
+    cData.to_pickle(PickleData_C)
 
 
 

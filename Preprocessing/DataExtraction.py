@@ -1,32 +1,19 @@
 """
-Class made to analyze every simulation. After FolderSearch, sim path and name is passed to every simulation dir
-
-
+Class made to analyze every simulation. After DirectorySearch, sim path and name is passed to every simulation dir
 """
-
-
-
-
-
-
-
 
 import os, math
 import numpy as np
 import pandas as pd
 from scipy.spatial import ConvexHull
-# from openpyxl.styles import Font, PatternFill
 
-from FolderSearch import FolderSearch
+from DirectorySearch import DirectorySearch
 from SimulationsData import *
-
-
-# chosenTimeSteps = [190, 220,280, 316, 350]
-
 
 
 ###################################################################################################################
 # analyzing just one simulation for testing
+# chosenTimeSteps = [190, 220,280, 316, 350]
 oneSimTestPath = "/home/josip/feapMoje/pocetak/" + parametarskaAnaliza + "/rezultati/sakularna/r=10/parametar_k1/k1=1.06"
 ###################################################################################################################
 
@@ -42,13 +29,13 @@ TSLegnht_rN1704 = 1
 
 class DataExtraction:
 
-    def __init__(self, resultsFolder, nSim=0):
+    def __init__(self, resultsDir, nSim=0):
         self.nSim = nSim
 
         # All simulations analysis
         if allSimulationsAnalysis == True:
-            self.objectDE = FolderSearch(resultsFolder)                     # DataExtraction object
-            self.simPath = self.objectDE.allPaths[self.nSim]                # get info from FolderSearch
+            self.objectDE = DirectorySearch(resultsDir)                     # DataExtraction object
+            self.simPath = self.objectDE.allPaths[self.nSim]                # get info from DirectorySearch
             self.simName = self.objectDE.allNames[self.nSim]
             os.chdir(self.simPath)
 

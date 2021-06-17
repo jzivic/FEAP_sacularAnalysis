@@ -1,7 +1,7 @@
 """
 Everything is chosen from here:
-   -simulation folder
-   -timesteps
+   -simulation Dir
+   - chosen TimeSteps
 
 
 """
@@ -11,8 +11,8 @@ Everything is chosen from here:
 parametarskaAnaliza = "parametarskaAnalizaSve"
 
 
-chosenTimeSteps = [190, 208, 226, 244, 262, 280, 298, 316, 334, 352, 370, 388, 406, 424, 442, 460, 478]
-# chosenTimeSteps = [10, 100,300, 333,  666, ]
+# chosenTimeSteps = [190, 208, 226, 244, 262, 280, 298, 316, 334, 352, 370, 388, 406, 424, 442, 460, 478]
+chosenTimeSteps = [333,  666, ]
 
 chosenTSContours = [-50, -30, -10]
 
@@ -28,35 +28,19 @@ TSLeght = 51
 suffixList = ["101-2", "102-3"]
 flagCondition = {"S22":[500, 800], "GR":[5, 10], "D":45}
 
-resultsFolder = "/home/josip/feap/pocetak/"+parametarskaAnaliza+"/rezultati/sakularna"                          #
-analysisFolder = "/home/josip/feap/pocetak/" + parametarskaAnaliza + "/rezultati/sakularna/analysisData/"
-diagramsFolder = analysisFolder + ("diagrams/")
-contoursFolder = analysisFolder + ("contours/")
 
-PickleData_basic = analysisFolder+"SacularData_0.pickle"
-PickleData_all = analysisFolder+"SacularData_all.pickle"
-PickleData_ab = analysisFolder+"SacularData_ab.pickle"
-PickleData_c = analysisFolder+"SacularData_c.pickle"
-statXlsx = analysisFolder + "statData.xlsx"
+resultsDir = "/home/josip/feap/pocetak/"+parametarskaAnaliza+"/rezultati/sakularna"                          #path to analysis dir
 
+analysisDir = resultsDir + "/analysisData/"
+diagramsDir = analysisDir + ("diagrams/")
+contoursDir = analysisDir + ("contours/")
 
-
-
+PickleData_basic = analysisDir+"SacularData_basic.pickle"                       # just read parameters
+PickleData_all = analysisDir+"SacularData_all.pickle"                           # derived parameters (A+B+C)
+PickleData_AB = analysisDir+"SacularData_ab.pickle"
+PickleData_C = analysisDir+"SacularData_c.pickle"
+statXlsx = analysisDir + "statData.xlsx"
 
 
-"""
-/home/josip/PycharmProjects/racunanjeFEAP/venv/bin/python /home/josip/PycharmProjects/racunanjeFEAP/racunanjeSakularna/sklapanjeAnalizeSakularne.py
-Traceback (most recent call last):
-  File "/home/josip/PycharmProjects/racunanjeFEAP/racunanjeSakularna/sklapanjeAnalizeSakularne.py", line 332, in <module>
-    SakularnaFunkcija_TS()
-  File "/home/josip/PycharmProjects/racunanjeFEAP/racunanjeSakularna/sklapanjeAnalizeSakularne.py", line 81, in SakularnaFunkcija_TS
-    simulacija_TS = SakularnaAnaliza_TS(rezultatiFolder, i)  # simulacija_TS je objekt koji ima sve izračunato za tu simulaciju u sebi
-  File "/home/josip/PycharmProjects/racunanjeFEAP/racunanjeSakularna/RacunanjeSakularna.py", line 49, in __init__
-    if self.ProvjeraNastankaAAA()==False: #provjerava jel nastala AAA
-  File "/home/josip/PycharmProjects/racunanjeFEAP/racunanjeSakularna/RacunanjeSakularna.py", line 181, in ProvjeraNastankaAAA
-    self.D0 = (float(self.cijeli_tekst_rIL[self.startniRed_rIL].strip().split()[0]) +
-AttributeError: 'SakularnaAnaliza_TS' object has no attribute 'cijeli_tekst_rIL'
 
-Process finished with exit code 1
 
-"""

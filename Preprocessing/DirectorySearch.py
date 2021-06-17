@@ -4,13 +4,13 @@ Class made to iterate over listed dirs and all subdirs:
     1. Iterates over all dirs and subdirs
     2. Simulations is not analyzed if it is in the "PRESKOCI" dir
     3. Dir is classified as simulations dir if there are "iparameters" file. Analysis starts
-    4. Get simulations path and name, store it into  FolderSearch.allPaths and FolderSearch.allNames
+    4. Get simulations path and name, store it into  DirectorySearch.allPaths and DirectorySearch.allNames
 
 """
 
 import os
 
-class FolderSearch:
+class DirectorySearch:
     allPaths, allNames = [], []         # class variables
 
     def pathToStrings(self, path):
@@ -33,10 +33,10 @@ class FolderSearch:
                 sufix = self.pathToStrings(root)[-1][:3] if self.pathToStrings(root)[-1] == "orginal" else self.pathToStrings(root)[-1]
                 simName = self.pathToStrings(root)[7] + "_" + sufix
 
-                FolderSearch.allPaths.append(root)
-                FolderSearch.allNames.append(simName)
+                DirectorySearch.allPaths.append(root)
+                DirectorySearch.allNames.append(simName)
 
-# a = FolderSearch(resultsFolder)
+# a = DirectorySearch(resultsDir)
 # for i in a.allNames:
 #     print(i)
 
