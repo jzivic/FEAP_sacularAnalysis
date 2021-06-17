@@ -1,11 +1,13 @@
-import pandas as pd
+"""
+Calculate all derived from basic parameters
+"""
 
+import pandas as pd
 from Preprocessing.SimulationsData import *
 
 
-
-def DerivedParameters_f(inputPickle):
-    allData = pd.read_pickle(inputPickle)
+def DerivedParameters_f(basicPickle):
+    allData = pd.read_pickle(basicPickle)
     allData = allData.dropna()
 
     allData["P"] = allData["S22"] / sigmaCritical
@@ -45,15 +47,12 @@ def DerivedParameters_f(inputPickle):
         flagVector.append(flag)
     allData["Flag"] = flagVector
 
-    cData = allData.loc[allData["Flag"] == "C"]
-    abData = allData.loc[allData["Flag"] != "C"]
+    cData = allData.loc[allData["Flag"] == "C"]             # Flag C represents surely ruptured AAA
+    abData = allData.loc[allData["Flag"] != "C"]            # Flags A,B represents AAA that should not rupture
 
 
-    allData.to_pickle(PickleData_all)
+    allData.to_pickle(PickleData_all)                       # storing data into separate pickles
     abData.to_pickle(PickleData_AB)
     cData.to_pickle(PickleData_C)
 
-
-
-
-DerivedParameters_f(PickleData_basic)
+# DerivedParameters_f(PickleData_basic)

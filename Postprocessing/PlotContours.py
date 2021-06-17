@@ -1,3 +1,8 @@
+"""
+
+
+"""
+
 import shutil, os
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -61,10 +66,8 @@ def PlotAllCont():
 
             r1 = -df_rIL["r"] + dy["y"] / 2                                                 # left radius
             r2 = df_rIL["r"] + dy["y"] / 2                                                  # left radius
-            z = df_rIL["z"]
+            z = df_rIL["z"]                                                                 # height
             L = {"r": [], "z": []}                                                          # data for L, contains "r" and "z" data
-
-
 
             for i in range(len(r2)):
                 if (r2[i] - r1[i]) > (r2[0] - r1[0]) * 1.05:                                # AAA definition condition

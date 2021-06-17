@@ -5,5 +5,5 @@ from DerivedParameters import DerivedParameters_f
 from PlotParameters import MakeFolder_diagrams
 
 
-DerivedParameters_f(PickleData_basic) #makes
+DerivedParameters_f(PickleData_basic)       # calculates derived parameters
 
