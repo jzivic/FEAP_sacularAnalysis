@@ -31,20 +31,20 @@ def PlotAllCont():
         cut_rIL = [i for i in range(nl_rIL)]                            # copy of lines indices to be excluded
         cut_ctl = [i for i in range(nl_ctl)]
 
-        #Iterate over chosenTSContours for each simulation
+        #Iterate over chosen TimeSteps in each simulation
         for nTS in range(len(chosenTSContours)):
 
-            #
+            # Set the rIL file
             startLine_rIL = -2 + (TSLeght+1) * chosenTSContours[nTS] + nl_rIL
-            chosenL_rIL = [i for i in range(startLine_rIL, (startLine_rIL + TSLeght + 1))]        # actually used lines indices
-            rmLine_rIL = list(cut_rIL)                                                           # lines to remove
-            for i in chosenL_rIL:                                                       # leave only lines that has to be deleted
+            chosenL_rIL = [i for i in range(startLine_rIL, (startLine_rIL + TSLeght + 1))]      # actually used lines indices
+            rmLine_rIL = list(cut_rIL)                                                          # lines to be removed
+            for i in chosenL_rIL:                                                               # leave only lines that has to be deleted
                 rmLine_rIL.remove(i)
-            df_rIL = pd.read_csv("res__INNER_lines__101-2", sep='    ', skiprows=rmLine_rIL)    # create DataFrame from rIL
+            df_rIL = pd.read_csv("res__INNER_lines__101-2", sep='    ', skiprows=rmLine_rIL)    # create DataFrame from rIL, only needed lines
             df_rIL.rename(columns={list(df_rIL)[1]: "r", list(df_rIL)[4]: "z"}, inplace=True)   # (re)name the columns
 
 
-
+            # Set the ctl file
             startLine_ctl = -2 + (TSLeght+1) * chosenTSContours[nTS] + nl_ctl
             chosenL_ctl = [i for i in range(startLine_ctl, (startLine_ctl + TSLeght + 1))]
             rmLine_ctl = list(cut_ctl)
@@ -56,18 +56,17 @@ def PlotAllCont():
 
 
 
+            dy = -df_ctl.iloc[:, [1]]                                                       # offstet from centerline
+            dyList = [float(dy.iloc[i]) for i in range(len(dy))]                            # list of dy data
 
-            dy = -df_ctl.iloc[:, [1]]
-            dy_p = [float(dy.iloc[i]) for i in range(len(dy))]
             r1 = -df_rIL["r"] + dy["y"] / 2
             r2 = df_rIL["r"] + dy["y"] / 2
             z = df_rIL["z"]
+            L = {"r": [], "z": []}                                                          # data for L, contains "r" and "z" data
 
-            # dodatak za plotanje L po sredini
-            L = {"r": [], "z": []}
             for i in range(len(r2)):
-                if (r2[i] - r1[i]) > (r2[0] - r1[0]) * 1.05:
-                    L["r"].append(dy_p[i])
+                if (r2[i] - r1[i]) > (r2[0] - r1[0]) * 1.05:                                # AAA definition condition
+                    L["r"].append(dyList[i])
                     L["z"].append(df_rIL["z"][i])
 
 
