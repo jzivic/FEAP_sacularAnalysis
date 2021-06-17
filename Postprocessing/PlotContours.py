@@ -59,10 +59,12 @@ def PlotAllCont():
             dy = -df_ctl.iloc[:, [1]]                                                       # offstet from centerline
             dyList = [float(dy.iloc[i]) for i in range(len(dy))]                            # list of dy data
 
-            r1 = -df_rIL["r"] + dy["y"] / 2
-            r2 = df_rIL["r"] + dy["y"] / 2
+            r1 = -df_rIL["r"] + dy["y"] / 2                                                 # left radius
+            r2 = df_rIL["r"] + dy["y"] / 2                                                  # left radius
             z = df_rIL["z"]
             L = {"r": [], "z": []}                                                          # data for L, contains "r" and "z" data
+
+
 
             for i in range(len(r2)):
                 if (r2[i] - r1[i]) > (r2[0] - r1[0]) * 1.05:                                # AAA definition condition
@@ -90,7 +92,7 @@ def PlotAllCont():
                 plt.pause(1)
                 plt.draw()
                 plt.close()
-                fig.savefig(contoursDir + allNames[n] + "_" + str(chosenTSContours[nTS])  + '.png', dpi=300)
+                fig.savefig(contoursDir + allNames[n] + " " + str(chosenTSContours[nTS])  + '.png', dpi=300)
 
             onePlot()
 
