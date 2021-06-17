@@ -1,5 +1,6 @@
 """
-
+Plot all countours in a loop for chosen TimeSteps.
+Saves pictures to dir
 
 """
 
@@ -11,13 +12,13 @@ from Preprocessing.SimulationsData import *
 from Preprocessing.DirectorySearch import DirectorySearch
 
 # Make "contours" dir to save contour pictures
-def MakeFolder_contours():
+def MakeDir_contours():
     try:
         shutil.rmtree(contoursDir)
     except: FileNotFoundError
     os.mkdir(contoursDir)
 
-MakeFolder_contours()
+MakeDir_contours()
 
 
 allPath = DirectorySearch(resultsDir).allPaths
@@ -26,7 +27,7 @@ allNames = DirectorySearch(resultsDir).allNames
 
 
 # Function to plot all contours at chosen TimeSteps in a loop
-def PlotAllCont():
+def PlotAllContours():
 
     for n in range(len(allPath)):
         os.chdir(allPath[n])
@@ -96,8 +97,6 @@ def PlotAllCont():
                 plt.draw()
                 plt.close()
                 fig.savefig(contoursDir + allNames[n] + " " + str(chosenTSContours[nTS])  + '.png', dpi=300)
-
             onePlot()
 
-
-PlotAllCont()
+# PlotAllContours()
