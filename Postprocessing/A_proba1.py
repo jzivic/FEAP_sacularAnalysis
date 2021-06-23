@@ -16,20 +16,20 @@ def MakeDir_diagrams():
     os.mkdir(diagramsDir)
 
 
-# Load chosen data
-def chosenData_f():
-    if chosenFlag =="AB":
-        AB_Data = pd.read_pickle(PickleData_AB)
-        return AB_Data
 
-    elif chosenFlag =="C":
-        C_Data = pd.read_pickle(PickleData_C)
-        return C_Data
 
-    elif chosenFlag =="all":
-        all_Data = pd.read_pickle(PickleData_all)
-        return all_Data
-chosenData = chosenData_f()
+
+ABData2 = pd.read_pickle(PickleData_AB)
+
+
+
+# ABData2["p1"] = ABData2["L"]**3*(5*ABData2["Ddr2"]**2 -1)
+
+ABData2["p1"] = ABData2["V"] / (ABData2["L"]*ABData2["d2"]**2)
+
+ABData2["p1"] = ABData2["V"] / (ABData2["d2"]**2)
+
+
 
 
 
@@ -40,15 +40,9 @@ pos2 = "for $d$ measured at $h$=55 mm"
 pos3 = "for $d$ measured at $h$=48 mm"
 
 
-"""
-graphData: 
-    Describing each value, additional informations
-        vName - value name on x axis
-        txt - additional description in the corner if required
-"""
 
 graphData = {
-         "D":{"vName":"D","unit":"mm","txt":NoPos},# "H":{"vName":"H","unit":"mm","txt":NoPos},
+         # "D":{"vName":"D","unit":"mm","txt":NoPos},"H":{"vName":"H","unit":"mm","txt":NoPos},
         #  "L":{"vName":"L","unit":"mm","txt":NoPos}, "S":{"vName":"S","unit":"$mm^2$","txt":NoPos},
         #  "V":{"vName":"V","unit":"$mm^3$","txt":NoPos}, "GR":{"vName":"GR","unit":"mm/y","txt":NoPos},
         #  "T":{"vName":"T","unit":"-","txt":NoPos},
@@ -72,7 +66,11 @@ graphData = {
         # "NAL1":{"vName":"NAL","unit":"mm","txt":pos1},
         # "NAL2":{"vName":"NAL","unit":"mm","txt":pos2},
         # "NAL3":{"vName":"NAL","unit":"mm","txt":pos3},
+        "p1":{"vName":"p1","unit":"mm","txt":pos3},
+
          }
+
+chosenData = ABData2
 
 
 # Plot all values in chosen TimeSteps in loop
@@ -99,7 +97,7 @@ def TestPlot():
             rList = []      # aid, made to store radius of analyzed simulations
             for i in range(len(chosenData[value])):
 
-                if chosenData["S22"][i]<800: # additional condition to exclude higher values
+                if chosenData["S22"][i]<sigmaCritical: # additional condition to exclude higher values
 
                 #legend is like here to avoid multiple unnecessary dot plotting in legend box
                     plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["r"][i]),
@@ -125,7 +123,7 @@ def TestPlot():
             fig.savefig(diagramsDir + value + '.png', dpi=300)
 
 
-MakeDir_diagrams()
+# MakeDir_diagrams()
 TestPlot()
 
 
