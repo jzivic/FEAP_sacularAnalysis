@@ -1,7 +1,7 @@
 import shutil, os
 import pandas as pd
 import matplotlib.pyplot as plt
-from scipy.stats import linregress
+# from scipy.stats import linregress
 
 from Preprocessing.SimulationsData import *
 
@@ -48,35 +48,35 @@ graphData:
 """
 
 graphData = {
-         "D":{"vName":"D","unit":"mm","txt":NoPos}, "H":{"vName":"H","unit":"mm","txt":NoPos},
-         "L":{"vName":"L","unit":"mm","txt":NoPos}, "S":{"vName":"S","unit":"$mm^2$","txt":NoPos},
-         "V":{"vName":"V","unit":"$mm^3$","txt":NoPos}, "GR":{"vName":"GR","unit":"mm/y","txt":NoPos},
-         "T":{"vName":"T","unit":"-","txt":NoPos},
+         "D":{"vName":"D","unit":"mm","txt":NoPos},# "H":{"vName":"H","unit":"mm","txt":NoPos},
+        #  "L":{"vName":"L","unit":"mm","txt":NoPos}, "S":{"vName":"S","unit":"$mm^2$","txt":NoPos},
+        #  "V":{"vName":"V","unit":"$mm^3$","txt":NoPos}, "GR":{"vName":"GR","unit":"mm/y","txt":NoPos},
+        #  "T":{"vName":"T","unit":"-","txt":NoPos},
+        #
+        # "d0": {"vName": "d", "unit": "mm", "txt": pos0},
+        # "d1": {"vName": "d", "unit": "mm", "txt": pos1},
+        # "d2": {"vName": "d", "unit": "mm", "txt": pos2},
+        # "d3": {"vName": "d", "unit": "mm", "txt": pos3},
+        #
+        # "Ddr0": {"vName": "Ddr", "unit": "-", "txt": pos0},
+        # "Ddr1": {"vName": "Ddr", "unit": "-", "txt": pos1},
+        # "Ddr2": {"vName": "Ddr", "unit": "-", "txt": pos2},
+        # "Ddr3": {"vName": "Ddr", "unit": "-", "txt": pos3},
 
-        "d0": {"vName": "d", "unit": "mm", "txt": pos0},
-        "d1": {"vName": "d", "unit": "mm", "txt": pos1},
-        "d2": {"vName": "d", "unit": "mm", "txt": pos2},
-        "d3": {"vName": "d", "unit": "mm", "txt": pos3},
+        # "GRPI":{"vName":"GRPI","unit":"$mm^3$","txt":pos0},
+        # "GRPI1":{"vName":"GRPI","unit":"$mm^3$","txt":pos1},
+        # "GRPI2":{"vName":"GRPI","unit":"$mm^3$","txt":pos2},
+        # "GRPI3":{"vName":"GRPI","unit":"$mm^3$","txt":pos3},
 
-        "Ddr0": {"vName": "Ddr", "unit": "-", "txt": pos0},
-        "Ddr1": {"vName": "Ddr", "unit": "-", "txt": pos1},
-        "Ddr2": {"vName": "Ddr", "unit": "-", "txt": pos2},
-        "Ddr3": {"vName": "Ddr", "unit": "-", "txt": pos3},
-
-        "GRPI":{"vName":"GRPI","unit":"$mm^3$","txt":pos0},
-        "GRPI1":{"vName":"GRPI","unit":"$mm^3$","txt":pos1},
-        "GRPI2":{"vName":"GRPI","unit":"$mm^3$","txt":pos2},
-        "GRPI3":{"vName":"GRPI","unit":"$mm^3$","txt":pos3},
-
-        "NAL":{"vName":"NAL","unit":"mm","txt":pos0},
-        "NAL1":{"vName":"NAL","unit":"mm","txt":pos1},
-        "NAL2":{"vName":"NAL","unit":"mm","txt":pos2},
-        "NAL3":{"vName":"NAL","unit":"mm","txt":pos3},
+        # "NAL":{"vName":"NAL","unit":"mm","txt":pos0},
+        # "NAL1":{"vName":"NAL","unit":"mm","txt":pos1},
+        # "NAL2":{"vName":"NAL","unit":"mm","txt":pos2},
+        # "NAL3":{"vName":"NAL","unit":"mm","txt":pos3},
          }
 
 
 # Plot all values in chosen TimeSteps in loop
-def PlotingAllDiagrams():
+def TestPlot():
 
     # Determine dot color depending on radius size
     def colorR(radius):
@@ -99,12 +99,12 @@ def PlotingAllDiagrams():
             rList = []      # aid, made to store radius of analyzed simulations
             for i in range(len(chosenData[value])):
 
-                # if chosenData["S22"][i]<800: # additional condition to exclude higher values
+                if chosenData["S22"][i]<800: # additional condition to exclude higher values
 
                 #legend is like here to avoid multiple unnecessary dot plotting in legend box
-                plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["r"][i]),
-                            label = ("$r$ = " + str(chosenData["r"][i]) + " mm") if chosenData["r"][i] not in rList else "", alpha=0.7)
-                rList.append(chosenData["r"][i])
+                    plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["r"][i]),
+                                label = ("$r$ = " + str(chosenData["r"][i]) + " mm") if chosenData["r"][i] not in rList else "", alpha=0.7)
+                    rList.append(chosenData["r"][i])
 
             # def statText():
             #     slope, intercept, r, p, se = linregress(chosenData[value], chosenData["P"])
@@ -125,8 +125,8 @@ def PlotingAllDiagrams():
             fig.savefig(diagramsDir + value + '.png', dpi=300)
 
 
-# MakeDir_diagrams()
-# PlotingAllDiagrams()
+MakeDir_diagrams()
+TestPlot()
 
 
 

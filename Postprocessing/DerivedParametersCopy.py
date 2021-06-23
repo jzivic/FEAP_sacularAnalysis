@@ -38,13 +38,13 @@ def DerivedParameters_f(basicPickle):
 
     flagVector = []
     for i in range(len(allData["S22"])):
-        if allData["S22"][i] < flagCondition["S22"]["A-B"] and allData["GR"][i] < flagCondition["GR"]["A-B"]:
+        if allData["S22"][i] < flagCondition["S22"][0] and allData["GR"][i] < flagCondition["GR"][0]:
             flag = "A"
-        elif allData["S22"][i] < flagCondition["S22"]["B-C"] and allData["GR"][i] < flagCondition["GR"]["B-C"]:
+        elif allData["S22"][i] < flagCondition["S22"][1] and allData["GR"][i] < flagCondition["GR"][1]:
             flag = "B"
-        elif allData["S22"][i] >= flagCondition["S22"]["B-C"] and allData["GR"][i] >= flagCondition["GR"]["A-B"]:
+        elif allData["S22"][i] >= flagCondition["S22"][1] and allData["GR"][i] >= flagCondition["GR"][0]:
             flag = "C"
-        # else:
+        else:
             flag = "NE ZNAM"
         flagVector.append(flag)
 

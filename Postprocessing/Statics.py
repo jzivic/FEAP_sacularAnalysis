@@ -23,7 +23,6 @@ def CalculateStatistic():
     df_variance = pd.DataFrame(varianceDict, index=["variance"])
 
 
-
     statData = pd.concat([statData,df_variance, df_rValue])
     statData.to_excel(statXlsx)
 
