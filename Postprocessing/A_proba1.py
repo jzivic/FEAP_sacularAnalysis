@@ -25,19 +25,23 @@ ABData2 = pd.read_pickle(PickleData_AB)
 
 # ABData2["p1"] = ABData2["L"]**3*(5*ABData2["Ddr2"]**2 -1)
 
-ABData2["p1"] = ABData2["V"] / (ABData2["L"]*ABData2["d2"]**2)
+# ABData2["p1"] = ABData2["V"] / (ABData2["L"]*ABData2["d2"]**2)
 
-ABData2["p1"] = ABData2["V"] / (ABData2["d2"]**2)
-
-
+ABData2["p1"] = ABData2["L"]**3 #* ( ABData2["D"]**2 - ABData2["d2"]**2/20) / ABData2["d2"]**2
 
 
 
-NoPos = ""                                                  # descriptive text for selected diagram height
-pos0 = "for healthy $d$"
-pos1 = "for $d$ measured at $h$=62 mm"
-pos2 = "for $d$ measured at $h$=55 mm"
-pos3 = "for $d$ measured at $h$=48 mm"
+
+
+
+
+
+
+# NoPos = ""                                                  # descriptive text for selected diagram height
+# pos0 = "for healthy $d$"
+# pos1 = "for $d$ measured at $h$=62 mm"
+# pos2 = "for $d$ measured at $h$=55 mm"
+# pos3 = "for $d$ measured at $h$=48 mm"
 
 
 
@@ -66,7 +70,7 @@ graphData = {
         # "NAL1":{"vName":"NAL","unit":"mm","txt":pos1},
         # "NAL2":{"vName":"NAL","unit":"mm","txt":pos2},
         # "NAL3":{"vName":"NAL","unit":"mm","txt":pos3},
-        "p1":{"vName":"p1","unit":"mm","txt":pos3},
+        "p1":{"vName":"p1","unit":"mm","txt":""},
 
          }
 
@@ -104,6 +108,9 @@ def TestPlot():
                                 label = ("$r$ = " + str(chosenData["r"][i]) + " mm") if chosenData["r"][i] not in rList else "", alpha=0.7)
                     rList.append(chosenData["r"][i])
 
+
+
+
             # def statText():
             #     slope, intercept, r, p, se = linregress(chosenData[value], chosenData["P"])
             #     textPosition = (min(chosenData[value]) - (max(chosenData[value]) - min(chosenData[value])) * 0.20)
@@ -122,8 +129,7 @@ def TestPlot():
             plt.close()
             fig.savefig(diagramsDir + value + '.png', dpi=300)
 
-
-# MakeDir_diagrams()
+MakeDir_diagrams()
 TestPlot()
 
 
