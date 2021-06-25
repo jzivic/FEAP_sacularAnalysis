@@ -127,8 +127,8 @@ def PlotingAllDiagrams():
             fig.savefig(diagramsDir + value + '.png', dpi=300)
 
 
-MakeDir_diagrams()
-PlotingAllDiagrams()
+# MakeDir_diagrams()
+# PlotingAllDiagrams()
 
 
 
