@@ -67,17 +67,15 @@ def DerivedParameters_f(basicPickle):
 
     allData["Flag"] = flagVector
 
-
-
-
     C_Data = allData.loc[allData["Flag"] == "C"]             # Flag C represents surely ruptured AAA
     AB_Data = allData.loc[allData["Flag"] != "C"]            # Flags A,B represents AAA that should not rupture
-
-
 
     allData.to_pickle(PickleData_all)                       # storing data into separate pickles
     AB_Data.to_pickle(PickleData_AB)
     C_Data.to_pickle(PickleData_C)
+
+    shutil.copyfile(basicPickle,  picklesDir+"SacularData_basicCopy.pickle")
+
 
 # MakeDir_pickles()
 # DerivedParameters_f(PickleData_basic)

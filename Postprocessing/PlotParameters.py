@@ -117,7 +117,7 @@ def PlotingAllDiagrams():
             # # statText()
 
 
-            plt.text(min(chosenData[value]), max(chosenData["P"])+0.1, graphData[value]["txt"])             # position of x label text
+            plt.text(min(chosenData[value]), max(chosenData["P"]) + (max(chosenData["P"])-min(chosenData["P"]))*0.1, graphData[value]["txt"])             # position of x label text
             fig = plt.gcf()
             plt.grid(color='k', linestyle=':', linewidth=0.5)
             plt.legend()
