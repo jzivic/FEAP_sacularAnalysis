@@ -21,8 +21,8 @@ def MakeDir_contours():
     os.mkdir(contoursDir)
 # MakeDir_contours()
 
-allPath = DirectorySearch(resultsDir).allPaths
-allNames = DirectorySearch(resultsDir).allNames
+allPath = DirectorySearch(resultsDir+"r=10/").allPaths
+allNames = DirectorySearch(resultsDir+"r=10/").allNames
 
 TSLenght = 51
 # Function to plot all contours at chosen TimeSteps in a loop

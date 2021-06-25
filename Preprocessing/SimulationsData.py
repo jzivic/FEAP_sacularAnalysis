@@ -22,28 +22,26 @@ chosenTSContours = [-50, -30, -10]
 allSimulationsAnalysis = True                      # if allSimulationsAnalysis==False: only one listed sim will be analyses
 sameInitalRadius = False
 sigmaCritical = 1000
-# TSLeght = 51
-# suffixList = ["101-2", "102-3"]
-# flagCondition = {"S22":[500, 800], "GR":[5, 10], "Dg":45}
-flagCondition = {"S22":{"A-B":500, "B-C":800}, "GR":{"A-B":500, "B-C":800}, "Dg":45}
-chosenFlag = "AB"
+chosenFlag = "AB"                                  # "AB" or "C"
+
+flagCondition = {"S22":{"A-B":500, "B-C":800}, "GR":{"A-B":500, "B-C":800}, "D":55}
 
 
 
-resultsDir = "/home/josip/feap/pocetak/"+parametarskaAnaliza+"/rezultati/sakularna"                          #path to analysis dir
+resultsDir = "/home/josip/feap/pocetak/"+parametarskaAnaliza+"/rezultati/sakularna/"                          #path to analysis dir
 
-analysisDir = resultsDir + "/analysisData/"
+analysisDir = resultsDir + "analysisData/"
 diagramsDir = analysisDir + ("diagrams/")
 contoursDir = analysisDir + ("contours/")
+picklesDir = analysisDir + ("pickles/")
 
 PickleData_basic = analysisDir+"SacularData_basic.pickle"                       # just read parameters
 
-PickleData_all = analysisDir+"SacularData_all.pickle"                           # derived parameters (A+B+C)
-PickleData_AB = analysisDir+"SacularData_AB.pickle"
-PickleData_C = analysisDir+"SacularData_C.pickle"
+PickleData_all = picklesDir+"SacularData_all.pickle"                           # derived parameters (A+B+C)
+PickleData_AB = picklesDir+"SacularData_AB.pickle"
+PickleData_C = picklesDir+"SacularData_C.pickle"
 
 statXlsx = analysisDir + "statData.xlsx"
-
 
 
 

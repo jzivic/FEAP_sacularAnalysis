@@ -8,13 +8,7 @@ from Preprocessing.SimulationsData import *
 # df.loc[df['column_name'] == some_value]
 
 
+a = 12
 
+assert a == 2 or a == 1
 
-
-
-
-a = [1,2,3,4,5,6,7,8,9,]
-
-
-for i in a:
-    print(i)

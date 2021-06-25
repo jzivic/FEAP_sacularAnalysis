@@ -1,7 +1,8 @@
 import pandas as pd
 from Preprocessing.SimulationsData import *
 
-from DerivedParameters import DerivedParameters_f
+from DerivedParameters import DerivedParameters_f, MakeDir_pickles
+MakeDir_pickles()
 DerivedParameters_f(PickleData_basic)       # calculates derived parameters
 
 

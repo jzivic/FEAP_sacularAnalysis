@@ -5,7 +5,20 @@ Devide all data by flags to separate pickles
 """
 
 import pandas as pd
+import shutil, os
 from Preprocessing.SimulationsData import *
+
+
+def MakeDir_pickles():
+    try:
+        shutil.rmtree(picklesDir)
+    except:
+        FileNotFoundError
+    os.mkdir(picklesDir)
+
+
+
+
 
 
 def DerivedParameters_f(basicPickle):
@@ -38,24 +51,33 @@ def DerivedParameters_f(basicPickle):
 
     flagVector = []
     for i in range(len(allData["S22"])):
+
+        # if allData["D"][i] < flagCondition["D"]:
+
         if allData["S22"][i] < flagCondition["S22"]["A-B"] and allData["GR"][i] < flagCondition["GR"]["A-B"]:
             flag = "A"
         elif allData["S22"][i] < flagCondition["S22"]["B-C"] and allData["GR"][i] < flagCondition["GR"]["B-C"]:
             flag = "B"
-        elif allData["S22"][i] >= flagCondition["S22"]["B-C"] and allData["GR"][i] >= flagCondition["GR"]["A-B"]:
+
+        # elif allData["S22"][i] >= flagCondition["S22"]["B-C"] and allData["GR"][i] >= flagCondition["GR"]["A-B"]:
+        #     flag = "C"
+        else:
             flag = "C"
-        # else:
-            flag = "NE ZNAM"
         flagVector.append(flag)
 
     allData["Flag"] = flagVector
 
+
+
+
     C_Data = allData.loc[allData["Flag"] == "C"]             # Flag C represents surely ruptured AAA
     AB_Data = allData.loc[allData["Flag"] != "C"]            # Flags A,B represents AAA that should not rupture
+
 
 
     allData.to_pickle(PickleData_all)                       # storing data into separate pickles
     AB_Data.to_pickle(PickleData_AB)
     C_Data.to_pickle(PickleData_C)
 
-DerivedParameters_f(PickleData_basic)
+# MakeDir_pickles()
+# DerivedParameters_f(PickleData_basic)

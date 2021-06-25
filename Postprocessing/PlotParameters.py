@@ -29,7 +29,9 @@ def chosenData_f():
     elif chosenFlag =="all":
         all_Data = pd.read_pickle(PickleData_all)
         return all_Data
+
 chosenData = chosenData_f()
+
 
 
 
@@ -125,8 +127,8 @@ def PlotingAllDiagrams():
             fig.savefig(diagramsDir + value + '.png', dpi=300)
 
 
-# MakeDir_diagrams()
-# PlotingAllDiagrams()
+MakeDir_diagrams()
+PlotingAllDiagrams()
 
 
 

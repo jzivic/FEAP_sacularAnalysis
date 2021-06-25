@@ -27,7 +27,14 @@ ABData2 = pd.read_pickle(PickleData_AB)
 
 # ABData2["p1"] = ABData2["V"] / (ABData2["L"]*ABData2["d2"]**2)
 
-ABData2["p1"] = ABData2["L"]**3 #* ( ABData2["D"]**2 - ABData2["d2"]**2/20) / ABData2["d2"]**2
+# ABData2["p1"] = ABData2["L"]**3 * (1* ABData2["D"]**2 - ABData2["d2"]**2) / ABData2["d2"]**2
+# ABData2["p2"] = ABData2["L"]**3 * (2* ABData2["D"]**2 - ABData2["d2"]**2) / ABData2["d2"]**2
+# ABData2["p4"] = ABData2["L"]**3 * (4* ABData2["D"]**2 - ABData2["d2"]**2) / ABData2["d2"]**2
+
+
+# ABData2["p"] = ABData2["L"]**3 * (4* ABData2["D"]**2 - ABData2["d2"]**2)**2 / ABData2["d2"]**2
+
+# ABData2["p"] = ABData2["L"]**3 * (4*ABData2["D"]**2 - ABData2["d2"]**2)**1 / ABData2["d2"]**2
 
 
 
@@ -46,7 +53,8 @@ ABData2["p1"] = ABData2["L"]**3 #* ( ABData2["D"]**2 - ABData2["d2"]**2/20) / AB
 
 
 graphData = {
-         # "D":{"vName":"D","unit":"mm","txt":NoPos},"H":{"vName":"H","unit":"mm","txt":NoPos},
+         "D":{"vName":"D","unit":"mm","txt":"NoPos"},
+        # "H":{"vName":"H","unit":"mm","txt":NoPos},
         #  "L":{"vName":"L","unit":"mm","txt":NoPos}, "S":{"vName":"S","unit":"$mm^2$","txt":NoPos},
         #  "V":{"vName":"V","unit":"$mm^3$","txt":NoPos}, "GR":{"vName":"GR","unit":"mm/y","txt":NoPos},
         #  "T":{"vName":"T","unit":"-","txt":NoPos},
@@ -70,7 +78,12 @@ graphData = {
         # "NAL1":{"vName":"NAL","unit":"mm","txt":pos1},
         # "NAL2":{"vName":"NAL","unit":"mm","txt":pos2},
         # "NAL3":{"vName":"NAL","unit":"mm","txt":pos3},
-        "p1":{"vName":"p1","unit":"mm","txt":""},
+
+
+        # "p1":{"vName":"p1","unit":"mm","txt":""},
+        # "p2":{"vName":"p2","unit":"mm","txt":""},
+        # "p4":{"vName":"p4","unit":"mm","txt":""},
+        "p":{"vName":"p","unit":"mm","txt":""},
 
          }
 
@@ -124,10 +137,10 @@ def TestPlot():
             fig = plt.gcf()
             plt.grid(color='k', linestyle=':', linewidth=0.5)
             plt.legend()
-            plt.pause(1)
+            plt.pause(10)
             plt.draw()
             plt.close()
-            fig.savefig(diagramsDir + value + '.png', dpi=300)
+            fig.savefig(diagramsDir + value + '.png', dpi=100)
 
 MakeDir_diagrams()
 TestPlot()
