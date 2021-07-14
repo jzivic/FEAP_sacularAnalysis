@@ -29,6 +29,7 @@ TSLenght = 51                                                           # define
 # Function to plot all contours at chosen TimeSteps in a loop
 def PlotAllContours():
 
+    # iterate over every simulation
     for n in range(len(allPath)):
         os.chdir(allPath[n])
 
@@ -37,12 +38,12 @@ def PlotAllContours():
         cut_rIL = [i for i in range(nl_rIL)]                            # copy of lines indices to be excluded
         cut_ctl = [i for i in range(nl_ctl)]
 
-        #Iterate over chosen TimeSteps in each simulation
+        # Iterate over chosen TimeSteps in each simulation
         for nTS in range(len(chosenTSContours)):
 
             # Set the rIL file
             startLine_rIL = -2 + (TSLenght+1) * chosenTSContours[nTS] + nl_rIL
-            chosenL_rIL = [i for i in range(startLine_rIL, (startLine_rIL + TSLenght + 1))]      # actually used lines indices
+            chosenL_rIL = [i for i in range(startLine_rIL, (startLine_rIL + TSLenght + 1))]     # actually used lines indices
             rmLine_rIL = list(cut_rIL)                                                          # lines to be removed
             for i in chosenL_rIL:                                                               # leave only lines that has to be deleted
                 rmLine_rIL.remove(i)
@@ -60,20 +61,21 @@ def PlotAllContours():
             df_ctl.rename(columns={list(df_ctl)[0]: "z", list(df_ctl)[1]: "y"}, inplace=True)
 
 
-            dy = -df_ctl.iloc[:, [1]]                                                       # offstet from centerline
-            dyList = [float(dy.iloc[i]) for i in range(len(dy))]                            # list of dy data
+            dy = -df_ctl.iloc[:, [1]]                                                           # offstet from centerline
+            dyList = [float(dy.iloc[i]) for i in range(len(dy))]                                # list of dy data
 
-            r1 = -df_rIL["r"] + dy["y"] / 2                                                 # left radius
-            r2 = df_rIL["r"] + dy["y"] / 2                                                  # left radius
-            z = df_rIL["z"]                                                                 # height
-            L = {"r": [], "z": []}                                                          # data for L, contains "r" and "z" data
+            r1 = -df_rIL["r"] + dy["y"] / 2                                                     # left radius
+            r2 = df_rIL["r"] + dy["y"] / 2                                                      # left radius
+            z = df_rIL["z"]                                                                     # height
+            L = {"r": [], "z": []}                                                              # data for L, contains "r" and "z" data
 
             for i in range(len(r2)):
-                if (r2[i] - r1[i]) > (r2[0] - r1[0]) * 1.05:                                # AAA definition condition
+                if (r2[i] - r1[i]) > (r2[0] - r1[0]) * 1.05:                                    # AAA definition condition
                     L["r"].append(dyList[i])
                     L["z"].append(df_rIL["z"][i])
 
 
+            # Plot one contour
             def onePlot():
                 plt.grid(color='k', linestyle=':', linewidth=0.5)
                 plt.plot(r1, z, c="k")
@@ -90,7 +92,7 @@ def PlotAllContours():
                 fig = plt.gcf()
                 plt.grid(color='k', linestyle=':', linewidth=0.5)
                 plt.legend()
-                plt.pause(1)
+                plt.pause(1)                                                                   # one pictuer is diplayed only second and program move to next
                 plt.draw()
                 plt.close()
                 fig.savefig(contoursDir + allNames[n] + " " + str(chosenTSContours[nTS])  + '.png', dpi=300)
