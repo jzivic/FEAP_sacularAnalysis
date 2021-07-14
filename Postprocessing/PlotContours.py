@@ -1,6 +1,6 @@
 """
 Plot all countours in a loop for chosen TimeSteps.
-Saves pictures to dir
+Saves pictures to contour dir
 
 """
 
@@ -19,12 +19,13 @@ def MakeDir_contours():
     except:
         FileNotFoundError
     os.mkdir(contoursDir)
-# MakeDir_contours()
 
-allPath = DirectorySearch(resultsDir+"r=10/").allPaths
+
+allPath = DirectorySearch(resultsDir+"r=10/").allPaths                  # plot only simulaitons with one radius
 allNames = DirectorySearch(resultsDir+"r=10/").allNames
 
-TSLenght = 51
+TSLenght = 51                                                           # defined in FEAP
+
 # Function to plot all contours at chosen TimeSteps in a loop
 def PlotAllContours():
 

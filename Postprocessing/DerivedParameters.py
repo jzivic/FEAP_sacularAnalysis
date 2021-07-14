@@ -23,9 +23,9 @@ def MakeDir_pickles():
 
 def DerivedParameters_f(basicPickle):
     allData = pd.read_pickle(basicPickle)
-    allData = allData.dropna()
+    allData = allData.dropna()                                                       # exclude data where AAA is not formed
 
-    allData["P"] = allData["S22"] / sigmaCritical
+    allData["P"] = allData["S22"] / sigmaCritical                                    # probability of rupture
 
     allData["Ddr"] = allData["D"] / allData["d0"]
     allData["Ddr1"] = allData["D"] / allData["d1"]
@@ -49,8 +49,11 @@ def DerivedParameters_f(basicPickle):
     allData["Hr"] = allData["HNeck"] / (allData["HNeck"]+allData["H"])
     allData["HDr"] = allData["H"] / allData["d0"]
 
-    flagVector = []
 
+    flagVector = []
+    # iterate over all data, divide into A,B,C flags
+    # Flag C represents surely ruptured AAA
+    # Flags A,B represents AAA that should not rupture
     for i in range(len(allData["S22"])):
 
         # if allData["D"][i] < flagCondition["D"]:
@@ -69,18 +72,16 @@ def DerivedParameters_f(basicPickle):
 
 
 
-
-
     allData["Flag"] = flagVector
 
-    C_Data = allData.loc[allData["Flag"] == "C"]             # Flag C represents surely ruptured AAA
-    AB_Data = allData.loc[allData["Flag"] != "C"]            # Flags A,B represents AAA that should not rupture
+    C_Data = allData.loc[allData["Flag"] == "C"]
+    AB_Data = allData.loc[allData["Flag"] != "C"]
 
     allData.to_pickle(PickleData_all)                       # storing data into separate pickles
     AB_Data.to_pickle(PickleData_AB)
     C_Data.to_pickle(PickleData_C)
 
-    shutil.copyfile(basicPickle,  picklesDir+"SacularData_basicCopy.pickle")
+    shutil.copyfile(basicPickle,  picklesDir+"SacularData_basicCopy.pickle")            # copy and move to pickles dir
 
 
 MakeDir_pickles()

@@ -1,5 +1,5 @@
 """
-Everything is chosen from here:
+TimeSteps, dir and data names, critical values are selected here:
    -simulation Dir
    - chosen TimeSteps
 
@@ -7,12 +7,11 @@ Everything is chosen from here:
 """
 
 
-parametarskaAnaliza = "parametarskaAnalizaSve"
+parametarskaAnaliza = "parametarskaAnalizaSve"              # main dir with results
 
 
-chosenTimeSteps = [190, 208, 226, 244, 262, 280, 298, 316, 334, 352, 370, 388, 406, 424, 442, 460, 478]
-# chosenTimeSteps = [333,  666, ]
-chosenTSContours = [-50, -30, -10]
+chosenTSContours = [-50, -30, -10]                          # contours drawn at these TS
+chosenTimeSteps = [190, 208, 226, 244, 262, 280, 298, 316, 334, 352, 370, 388, 406, 424, 442, 460, 478] # TS analyzed
 
 #################################################################################
 
@@ -22,7 +21,7 @@ chosenTSContours = [-50, -30, -10]
 allSimulationsAnalysis = True                      # if allSimulationsAnalysis==False: only one listed sim will be analyses
 sameInitalRadius = False
 sigmaCritical = 1000
-chosenFlag = "AB"                                  # "AB" or "C"
+chosenFlag = "AB"                                  # "AB" or "C" or "all
 
 flagCondition = {"S22":{"A-B":500, "B-C":1000}, "GR":{"A-B":5, "B-C":10}, "D":55}
 
