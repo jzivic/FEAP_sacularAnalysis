@@ -50,6 +50,7 @@ def DerivedParameters_f(basicPickle):
     allData["HDr"] = allData["H"] / allData["d0"]
 
     flagVector = []
+
     for i in range(len(allData["S22"])):
 
         # if allData["D"][i] < flagCondition["D"]:
@@ -63,7 +64,12 @@ def DerivedParameters_f(basicPickle):
         #     flag = "C"
         else:
             flag = "C"
+
         flagVector.append(flag)
+
+
+
+
 
     allData["Flag"] = flagVector
 
@@ -77,5 +83,5 @@ def DerivedParameters_f(basicPickle):
     shutil.copyfile(basicPickle,  picklesDir+"SacularData_basicCopy.pickle")
 
 
-# MakeDir_pickles()
-# DerivedParameters_f(PickleData_basic)
+MakeDir_pickles()
+DerivedParameters_f(PickleData_basic)

@@ -24,7 +24,7 @@ sameInitalRadius = False
 sigmaCritical = 1000
 chosenFlag = "AB"                                  # "AB" or "C"
 
-flagCondition = {"S22":{"A-B":500, "B-C":800}, "GR":{"A-B":500, "B-C":800}, "D":55}
+flagCondition = {"S22":{"A-B":500, "B-C":1000}, "GR":{"A-B":5, "B-C":10}, "D":55}
 
 
 

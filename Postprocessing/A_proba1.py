@@ -1,7 +1,7 @@
 import shutil, os
 import pandas as pd
 import matplotlib.pyplot as plt
-# from scipy.stats import linregress
+from scipy.stats import linregress
 
 from Preprocessing.SimulationsData import *
 
@@ -16,35 +16,68 @@ def MakeDir_diagrams():
     os.mkdir(diagramsDir)
 
 
-
-
-
 ABData2 = pd.read_pickle(PickleData_AB)
 
 
 
-# ABData2["p1"] = ABData2["L"]**3*(5*ABData2["Ddr2"]**2 -1)
+# ABData2["p"] = L**1*(D-d)**2/d**2
+# ABData2["p"] = (d3-d2)/(55-48)*H*(D/d2)**2
+# ABData2["p"] = (D-d)/(H/2)/d
 
-# ABData2["p1"] = ABData2["V"] / (ABData2["L"]*ABData2["d2"]**2)
-
-# ABData2["p1"] = ABData2["L"]**3 * (1* ABData2["D"]**2 - ABData2["d2"]**2) / ABData2["d2"]**2
-# ABData2["p2"] = ABData2["L"]**3 * (2* ABData2["D"]**2 - ABData2["d2"]**2) / ABData2["d2"]**2
-# ABData2["p4"] = ABData2["L"]**3 * (4* ABData2["D"]**2 - ABData2["d2"]**2) / ABData2["d2"]**2
-
-
-# ABData2["p"] = ABData2["L"]**3 * (4* ABData2["D"]**2 - ABData2["d2"]**2)**2 / ABData2["d2"]**2
-
-# ABData2["p"] = ABData2["L"]**3 * (4*ABData2["D"]**2 - ABData2["d2"]**2)**1 / ABData2["d2"]**2
+# ABData2["p"] = ((D-d)/(H/2))/d
+# ABData2["p"] = ((D**2)-(D-d)**2)/(D**2)/L
+# ABData2["p"] = (d/D)/L**2
+# ABData2["p"] = (d/D)/L**2
 
 
 
+L = ABData2["L"]
+H = ABData2["H"]
+S = ABData2["S"]
+V = ABData2["V"]
+T = ABData2["T"]
+D = ABData2["D"]
+d0 = ABData2["d0"]
+d1 = ABData2["d1"]
+d2 = ABData2["d2"]
+d3 = ABData2["d3"]
+
+
+
+d = d2
+
+# ABData2["LDd0r"] = L*(D/d0)
+# ABData2["LDd1r"] = L*(D/d1)
+# ABData2["LDd2r"] = L*(D/d2)
+# ABData2["LDd3r"] = L*(D/d3)
+
+# ABData2["1\(LDd0r)"] = 1/(L*(D/d0))
+# ABData2["1\(LDd1r)"] = 1/(L*(D/d1))
+# ABData2["1\(LDd2r)"] = 1/(L*(D/d2))
+# ABData2["1\(LDd3r)"] = 1/(L*(D/d3))
+
+# ABData2["L^2Dd0r"] = L**2*(D/d0)
+# ABData2["L^2Dd1r"] = L**2*(D/d1)
+# ABData2["L^2Dd2r"] = L**2*(D/d2)
+# ABData2["L^2Dd3r"] = L**2*(D/d3)
+
+# ABData2["1\(L^2*Dd0r)"] = 1/(L**2*(D/d0))
+# ABData2["1\(L^2*Dd1r)"] = 1/(L**2*(D/d1))
+# ABData2["1\(L^2*Dd2r)"] = 1/(L**2*(D/d2))
+# ABData2["1\(L^2*Dd3r)"] = 1/(L**2*(D/d3))
+
+
+ABData2["p"] = 1/(L*(D/d))
 
 
 
 
 
 
-# NoPos = ""                                                  # descriptive text for selected diagram height
+
+
+
+# doPos = ""                                                  # descriptive text for selected diagram height
 # pos0 = "for healthy $d$"
 # pos1 = "for $d$ measured at $h$=62 mm"
 # pos2 = "for $d$ measured at $h$=55 mm"
@@ -53,42 +86,35 @@ ABData2 = pd.read_pickle(PickleData_AB)
 
 
 graphData = {
-         "D":{"vName":"D","unit":"mm","txt":"NoPos"},
-        # "H":{"vName":"H","unit":"mm","txt":NoPos},
-        #  "L":{"vName":"L","unit":"mm","txt":NoPos}, "S":{"vName":"S","unit":"$mm^2$","txt":NoPos},
-        #  "V":{"vName":"V","unit":"$mm^3$","txt":NoPos}, "GR":{"vName":"GR","unit":"mm/y","txt":NoPos},
-        #  "T":{"vName":"T","unit":"-","txt":NoPos},
-        #
-        # "d0": {"vName": "d", "unit": "mm", "txt": pos0},
-        # "d1": {"vName": "d", "unit": "mm", "txt": pos1},
-        # "d2": {"vName": "d", "unit": "mm", "txt": pos2},
-        # "d3": {"vName": "d", "unit": "mm", "txt": pos3},
-        #
-        # "Ddr0": {"vName": "Ddr", "unit": "-", "txt": pos0},
-        # "Ddr1": {"vName": "Ddr", "unit": "-", "txt": pos1},
-        # "Ddr2": {"vName": "Ddr", "unit": "-", "txt": pos2},
-        # "Ddr3": {"vName": "Ddr", "unit": "-", "txt": pos3},
 
-        # "GRPI":{"vName":"GRPI","unit":"$mm^3$","txt":pos0},
-        # "GRPI1":{"vName":"GRPI","unit":"$mm^3$","txt":pos1},
-        # "GRPI2":{"vName":"GRPI","unit":"$mm^3$","txt":pos2},
-        # "GRPI3":{"vName":"GRPI","unit":"$mm^3$","txt":pos3},
+        "p": {"vName": "p", "unit": "mm", "txt": ""},
 
-        # "NAL":{"vName":"NAL","unit":"mm","txt":pos0},
-        # "NAL1":{"vName":"NAL","unit":"mm","txt":pos1},
-        # "NAL2":{"vName":"NAL","unit":"mm","txt":pos2},
-        # "NAL3":{"vName":"NAL","unit":"mm","txt":pos3},
+        "LDd0r":{"vName":"LDd0r","unit":"mm","txt":""},
+        "LDd1r":{"vName":"LDd1r","unit":"mm","txt":""},
+        "LDd2r":{"vName":"LDd2r","unit":"mm","txt":""},
+        "LDd3r":{"vName":"LDd2r","unit":"mm","txt":""},
+
+        "1\(LDd0r)":{"vName":"1/(LDd0r)","unit":"mm","txt":""},
+        "1\(LDd1r)":{"vName":"1/(LDd1r)","unit":"mm","txt":""},
+        "1\(LDd2r)":{"vName":"1/(LDd2r)","unit":"mm","txt":""},
+        "1\(LDd3r)":{"vName":"1/(LDd3r)","unit":"mm","txt":""},
+
+        "L^2Dd0r": {"vName": "L^2Dd0r", "unit": "mm", "txt": ""},
+        "L^2Dd1r": {"vName": "L^2Dd1r", "unit": "mm", "txt": ""},
+        "L^2Dd2r": {"vName": "L^2Dd2r", "unit": "mm", "txt": ""},
+        "L^2Dd3r": {"vName": "L^2Dd2r", "unit": "mm", "txt": ""},
+
+        "1\(L^2*Dd0r)": {"vName": "1/(L^2*Dd0r)", "unit": "mm", "txt": ""},
+        "1\(L^2*Dd1r)": {"vName": "1/(L^2*Dd1r)", "unit": "mm", "txt": ""},
+        "1\(L^2*Dd2r)": {"vName": "1/(L^2*Dd2r)", "unit": "mm", "txt": ""},
+        "1\(L^2*Dd3r)": {"vName": "1/(L^2*Dd3r)", "unit": "mm", "txt": ""},
 
 
-        # "p1":{"vName":"p1","unit":"mm","txt":""},
-        # "p2":{"vName":"p2","unit":"mm","txt":""},
-        # "p4":{"vName":"p4","unit":"mm","txt":""},
-        "p":{"vName":"p","unit":"mm","txt":""},
+
 
          }
 
 chosenData = ABData2
-
 
 # Plot all values in chosen TimeSteps in loop
 def TestPlot():
@@ -114,33 +140,37 @@ def TestPlot():
             rList = []      # aid, made to store radius of analyzed simulations
             for i in range(len(chosenData[value])):
 
-                if chosenData["S22"][i]<sigmaCritical: # additional condition to exclude higher values
+                # if chosenData["S22"][i]<sigmaCritical: # additional condition to exclude higher values
 
-                #legend is like here to avoid multiple unnecessary dot plotting in legend box
-                    plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["r"][i]),
-                                label = ("$r$ = " + str(chosenData["r"][i]) + " mm") if chosenData["r"][i] not in rList else "", alpha=0.7)
-                    rList.append(chosenData["r"][i])
-
-
+            #legend is like here to avoid multiple unnecessary dot plotting in legend box
+                plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["r"][i]),
+                            label = ("$r$ = " + str(chosenData["r"][i]) + " mm") if chosenData["r"][i] not in rList else "", alpha=0.7)
+                rList.append(chosenData["r"][i])
 
 
-            # def statText():
-            #     slope, intercept, r, p, se = linregress(chosenData[value], chosenData["P"])
-            #     textPosition = (min(chosenData[value]) - (max(chosenData[value]) - min(chosenData[value])) * 0.20)
-            #     plt.text(textPosition, 0.9,
-            #              'r=' + str(format(r, '.3g')) + "\n" + 'p=' + str(format(p, '.3g')) + "\n" + 'se=' + str(
-            #                  format(se, '.3g')), fontsize=12)
-            # # statText()
 
 
-            plt.text(min(chosenData[value]), max(chosenData["P"])+0.1, graphData[value]["txt"])             # position of x label text
-            fig = plt.gcf()
+            def statText():
+                slope, intercept, r, p, se = linregress(chosenData[value], chosenData["P"])
+                print(r)
+                textPosition = (min(chosenData[value]) - (max(chosenData[value]) - min(chosenData[value])) * 0.20)
+                plt.text(textPosition, 1.05,
+                         'r=' + str(format(r, '.3g')) + "\n" + 'p=' + str(format(p, '.3g')) , fontsize=12)
+            statText()
+
+
+            # plt.text(min(chosenData[value]), max(chosenData["P"])+0.1, graphData[value]["txt"])             # position of x label text
+            # fig = plt.gcf()
+            # plt.grid(color='k', linestyle=':', linewidth=0.5)
+            # plt.legend()
+            # plt.pause(1)
+            # plt.draw()
+            # plt.close()
+            # fig.savefig(diagramsDir + str(value) + '.png', dpi=100)
+
             plt.grid(color='k', linestyle=':', linewidth=0.5)
-            plt.legend()
-            plt.pause(10)
-            plt.draw()
-            plt.close()
-            fig.savefig(diagramsDir + value + '.png', dpi=100)
+            plt.show()
+
 
 MakeDir_diagrams()
 TestPlot()

@@ -10,5 +10,16 @@ from Preprocessing.SimulationsData import *
 
 a = 12
 
-assert a == 2 or a == 1
+# assert a == 2 or a == 1
+
+
+
+rj = {"a":2, "b":3}
+
+
+for i in rj:
+    print(rj[i])
+
+
+
 

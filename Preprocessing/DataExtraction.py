@@ -1,5 +1,6 @@
 """
 Class made to analyze every simulation. After DirectorySearch, sim path and name is passed to every simulation dir
+
 """
 
 import os, math
@@ -31,27 +32,29 @@ TSLegnht_rN1704 = 1
 
 class DataExtraction:
 
+    # gets input from DirectorySeatch
     def __init__(self, resultsDir, nSim=0):
         self.nSim = nSim
 
         # All simulations analysis
         if allSimulationsAnalysis == True:
-            self.objectDE = DirectorySearch(resultsDir)                     # DataExtraction object
-            self.simPath = self.objectDE.allPaths[self.nSim]                # get info from DirectorySearch
+            self.objectDE = DirectorySearch(resultsDir)                     # DataExtraction object constructed
+            self.simPath = self.objectDE.allPaths[self.nSim]
             self.simName = self.objectDE.allNames[self.nSim]
             os.chdir(self.simPath)
 
-        elif allSimulationsAnalysis == False:                   # for test case
+        elif allSimulationsAnalysis == False:                         # for test case
             self.simPath = oneSimTestPath
             self.simName = "TestName"
             os.chdir(self.simPath)
 
-        self.chosenTSList = list(chosenTimeSteps)                     # copy of chosen TimeSteps;  in case TimeStep is invalid and has to change
-        self.nTSt = 0
+        self.chosenTSList = list(chosenTimeSteps)                     # creates copy of chosen TimeSteps;  in case TimeStep is invalid and has to change
+        self.nTSt = 0                                                 # number of TimeStep
         self.Creating_allTS_Vector()
 
 
-        while self.nTSt < len(self.chosenTSList):                     # analyze chosen TimeSteps
+        # Made this way to avoid FEAP errors or unformed AAA
+        while self.nTSt < len(self.chosenTSList):
             self.SettingAnalysisFiles()
 
             if self.SameAsPreviousStep()==True:                       # to prevent unnecessary analysis if chosen TimeStep > maxTS
@@ -60,11 +63,11 @@ class DataExtraction:
             if self.CheckAAAFormation() == False:
                 self.NoAAAFormed()
                 self.DataStorage()
-                self.chosenTSList.remove(self.chosenTSList[self.nTSt])
+                self.chosenTSList.remove(self.chosenTSList[self.nTSt])  # get rid of TS with no AAA formed
                 continue
 
             elif self.CheckAAAFormation() == True:
-                if self.chosenTSList[self.nTSt] <= self.maxTS:        # used for limiting simulation till last TS
+                if self.chosenTSList[self.nTSt] <= self.maxTS:        # used for limiting simulation until last TS
                     self.Calculating_d0_H_L()
                     self.Calculating_D_S22_GR()
                     if self.GR < 0 or self.D < 0:                     # error in FEAP simulation
@@ -74,7 +77,8 @@ class DataExtraction:
                     self.DataStorage()
                 else:
                     break
-                self.nTSt += 1
+                self.nTSt += 1                                          # analyze next TS
+
         self.DataFrameConstruct()
 
 
@@ -99,15 +103,14 @@ class DataExtraction:
     # Set and load the .txt files.
     # Set the starting lines depending on the chosen TimeStep
     def SettingAnalysisFiles(self):
-        # os.chdir(self.simPath)
-        for suffix in suffixList:                                               # suffix name added to simulation name
+        for suffix in suffixList:                                                               # suffix name added to simulation name in FEAP
             try:
-                opening_eIW = open("export__INNER_WALL__" + suffix, "r")
-                self.wholeDocument_eIW = opening_eIW.readlines()                                # whole txt read
+                opening_eIW = open("export__INNER_WALL__" + suffix, "r")                        # open txt file
+                self.wholeDocument_eIW = opening_eIW.readlines()                                # whole txt read in self.wholeDocument_eIW
                 self.nl_eIW = sum(1 for line in open("export__INNER_WALL__" + suffix))          # number of lines in export Inner Wall
                 self.maxTS = int(self.wholeDocument_eIW[-TSLegnht_eIW + 1].strip().split()[1])  # last TimeStep in simulation
 
-                if self.chosenTSList[self.nTSt] <= self.maxTS:                                  # chosenTimeStep = chosen or  maxTS if chosen is bigger
+                if self.chosenTSList[self.nTSt] <= self.maxTS:                                  # chosenTimeStep = chosen or maxTS if chosen is bigger
                     chosenTimeStep = self.chosenTSList[self.nTSt]
                 elif self.chosenTSList[self.nTSt] > self.maxTS:
                     chosenTimeStep = self.maxTS
@@ -125,11 +128,11 @@ class DataExtraction:
                     startLine_ctl = 0 + TSLegnht_ctl * chosenTimeStep
                     startLine_rN1704 = 0 + TSLegnht_rN1704 * chosenTimeStep
 
-                if self.SameAsPreviousStep() == True:
+                if self.SameAsPreviousStep() == True:                                          # stopping analysis
                     break
 
                 self.startLine_eIW = startLine_eIW % self.nl_eIW                                # to convert negative starting line to positive
-                nNodes = self.wholeDocument_eIW[2].strip().split()                              # number of nodes, written in eIW file
+                nNodes = self.wholeDocument_eIW[2].strip().split()                              # number of nodes, written in eIW file from FEAP
                 self.nTheta, self.nZ = int(nNodes[0]), int(nNodes[1])                           # number of elements in theta / Z direction
 
                 opening_rIL = open("res__INNER_lines__" + suffix, "r")
@@ -152,7 +155,7 @@ class DataExtraction:
                 continue
 
 
-    # Check whether Timesteps start to repeat
+    # Check whether Timesteps are repeating
     def SameAsPreviousStep(self):
         if self.chosenTSList[self.nTSt] == self.chosenTSList[self.nTSt-1]:
             return True
@@ -167,7 +170,7 @@ class DataExtraction:
                        float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[1]) +
                        float(self.wholeDocument_rIl[self.startLine_rIL].strip().split()[2])) * 2 / 3
 
-        # iterating over chosen TimeStep lines, checking in AAA condition is fulfilled
+        # iterating over chosen TimeStep lines, checking if AAA condition is fulfilled
         nLine_rIL = self.startLine_rIL                                                              # copy because it changes
         for line in self.wholeDocument_rIl[self.startLine_rIL: (self.startLine_rIL + TSLegnht_rIl - 1)]:
             nLine_rIL += 1
@@ -203,7 +206,7 @@ class DataExtraction:
                  float(self.wholeDocument_rIl[self.startLine_rIL + numberOfLine].strip().split()[2])) * 2 / 3
             return D
 
-        if sameInitalRadius == True:                                                      # healthy radius d0 calculated from initial mesh
+        if sameInitalRadius == True:                                                      # healthy radius d0 calculated from initial, undeformed mesh
             self.d0 = float(self.wholeDocument_rIl[5].strip().split()[0]) * 2
         elif sameInitalRadius == False:                                                   # healthy radius d0 calculated from current, deformed mesh
             self.d0 =  CalculatingDiameter(numberOfLine=0)
@@ -216,21 +219,22 @@ class DataExtraction:
 
         lineA, lineB = 0, 0                                                               # auxiliary indices to find before/after AAA formation start lines
         lineBefore = [0, 0, 0]
-        self.vectorAAAIndices = []                                                        # elements indices where AAA is formed
-        nLine_rIL = self.startLine_rIL                                                    # starting line in rIL
+        self.vectorAAAIndices = []                                                        # elements indices where AAA exists
+        nLine_rIL = self.startLine_rIL                                                    # starting line in rIL file
 
-        # checking AAA formation condition at every hight/line
+        # checking AAA formation condition at every hight/line in chosen TS
         for line in self.wholeDocument_rIl[self.startLine_rIL: (self.startLine_rIL + TSLegnht_rIl-1)]:
             nLine_rIL += 1                                                                # number of line in chosen TimeStep in rIL txt
             line = line.strip().split()
             D_ = (float(line[0]) + float(line[1]) + float(line[2])) * 2 / 3               # D in every line / height
 
-            if D_ > self.d0 * 1.05:
-                self.vectorAAAIndices.append((nLine_rIL-6) % TSLegnht_rIl)
+            if D_ > self.d0 * 1.05:                                                       # AAA condition
+                self.vectorAAAIndices.append((nLine_rIL-6) % TSLegnht_rIl)                # storing indices where AAA exists
                 if lineB == 0:
                     lineA = lineBefore                                                    # collect elements before and after condition
                     lineB = line
             lineBefore = line
+
 
         # linear inteerpolation between before/after forming AAA elements
         try:
