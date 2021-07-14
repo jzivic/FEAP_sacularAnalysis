@@ -56,11 +56,14 @@ def DerivedParameters_f(basicPickle):
     # Flags A,B represents AAA that should not rupture
     for i in range(len(allData["S22"])):
 
-        # if allData["D"][i] < flagCondition["D"]:
+        # if allData["D"][i] > flagCondition["D"]:
+        #     flag = "C"
+        #     continue
 
-        if allData["S22"][i] < flagCondition["S22"]["A-B"] and allData["GR"][i] < flagCondition["GR"]["A-B"]:
+
+        if allData["S22"][i] < flagCondition["S22"]["A-B"] and allData["GR"][i] < flagCondition["GR"]["A-B"] and allData["D"][i] < flagCondition["D"]:
             flag = "A"
-        elif allData["S22"][i] < flagCondition["S22"]["B-C"] and allData["GR"][i] < flagCondition["GR"]["B-C"]:
+        elif allData["S22"][i] < flagCondition["S22"]["B-C"] and allData["GR"][i] < flagCondition["GR"]["B-C"] and allData["D"][i] < flagCondition["D"]:
             flag = "B"
 
         # elif allData["S22"][i] >= flagCondition["S22"]["B-C"] and allData["GR"][i] >= flagCondition["GR"]["A-B"]:
@@ -72,10 +75,28 @@ def DerivedParameters_f(basicPickle):
 
 
 
+    allData = allData.dropna()                                                       # exclude data where AAA is not formed
+
+
     allData["Flag"] = flagVector
 
-    C_Data = allData.loc[allData["Flag"] == "C"]
-    AB_Data = allData.loc[allData["Flag"] != "C"]
+
+    print(len(allData["Flag"]))
+
+
+    C_Data = allData.loc[allData["Flag"] == "C"]             # Flag C represents surely ruptured AAA
+    AB_Data = allData.loc[allData["Flag"] != "C"]            # Flags A,B represents AAA that should not rupture
+
+    print(type(C_Data))
+
+
+    # A_Data = allData.loc[allData["Flag"] == "A"]
+    # B_Data = allData.loc[allData["Flag"] == "B"]
+    # C_Data = allData.loc[allData["Flag"] == "C"]
+
+    # AB_Data = allData.loc[allData["Flag"] != "C"]
+
+
 
     allData.to_pickle(PickleData_all)                       # storing data into separate pickles
     AB_Data.to_pickle(PickleData_AB)
@@ -84,5 +105,5 @@ def DerivedParameters_f(basicPickle):
     shutil.copyfile(basicPickle,  picklesDir+"SacularData_basicCopy.pickle")            # copy and move to pickles dir
 
 
-MakeDir_pickles()
-DerivedParameters_f(PickleData_basic)
+# MakeDir_pickles()
+# DerivedParameters_f(PickleData_basic)
