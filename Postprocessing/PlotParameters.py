@@ -1,3 +1,7 @@
+"""
+Plot all diagrams in a loop.
+"""
+
 import shutil, os
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -16,7 +20,7 @@ def MakeDir_diagrams():
     os.mkdir(diagramsDir)
 
 
-# Load chosen data
+# Load chosen data depending on flag
 def chosenData_f():
     if chosenFlag =="AB":
         AB_Data = pd.read_pickle(PickleData_AB)
@@ -29,7 +33,6 @@ def chosenData_f():
     elif chosenFlag =="all":
         all_Data = pd.read_pickle(PickleData_all)
         return all_Data
-
 chosenData = chosenData_f()
 
 
@@ -46,7 +49,7 @@ pos3 = "for $d$ measured at $h$=48 mm"
 graphData: 
     Describing each value, additional informations
         vName - value name on x axis
-        txt - additional description in the corner if required
+        txt - additional description in the corner if necessary
 """
 
 graphData = {
@@ -89,35 +92,38 @@ def PlotingAllDiagrams():
         elif radius == 12:
             return "m"
 
-    # Iterate all values
+    # Iterate over all values
     for value in chosenData:
-        if value in graphData.keys():                    # made to exclude logistic values
+        if value in graphData.keys():               # made to exclude logistic values (flag)
 
             plt.ylabel("$P$ [-]")
             plt.xlabel("${}$ {}{}{}"  .format(graphData[value]["vName"]," [", graphData[value]["unit"], "]"))       # x axis line
             xVariable = chosenData[value]
             yVariable = chosenData["P"]
 
-            rList = []      # aid, made to store radius of analyzed simulations
+            # iterates over all points to get color and get rid of unnecessary legend data
+            rList = []                                                                 # aid, made to store radius of analyzed simulations
             for i in range(len(chosenData[value])):
 
+                # ??
                 # if chosenData["S22"][i]<800: # additional condition to exclude higher values
 
-                #legend is like here to avoid multiple unnecessary dot plotting in legend box
+                # legend to avoid multiple unnecessary dot plotting in legend box
                 plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["r"][i]),
                             label = ("$r$ = " + str(chosenData["r"][i]) + " mm") if chosenData["r"][i] not in rList else "", alpha=0.7)
                 rList.append(chosenData["r"][i])
 
-            # def statText():
-            #     slope, intercept, r, p, se = linregress(chosenData[value], chosenData["P"])
-            #     textPosition = (min(chosenData[value]) - (max(chosenData[value]) - min(chosenData[value])) * 0.20)
-            #     plt.text(textPosition, 0.9,
-            #              'r=' + str(format(r, '.3g')) + "\n" + 'p=' + str(format(p, '.3g')) + "\n" + 'se=' + str(
-            #                  format(se, '.3g')), fontsize=12)
+            # Statistical values written on upper left corner
+            def statText():
+                slope, intercept, r, p, se = linregress(chosenData[value], chosenData["P"])
+                textPosition = (min(chosenData[value]) - (max(chosenData[value]) - min(chosenData[value])) * 0.20)
+                plt.text(textPosition, 0.9,
+                         'r=' + str(format(r, '.3g')) + "\n" + 'p=' + str(format(p, '.3g')) + "\n" + 'se=' + str(
+                             format(se, '.3g')), fontsize=12)
             # # statText()
 
 
-            plt.text(min(chosenData[value]), max(chosenData["P"]) + (max(chosenData["P"])-min(chosenData["P"]))*0.1, graphData[value]["txt"])             # position of x label text
+            plt.text(min(chosenData[value]), max(chosenData["P"]) + (max(chosenData["P"])-min(chosenData["P"]))*0.1, graphData[value]["txt"])  # position of x label text
             fig = plt.gcf()
             plt.grid(color='k', linestyle=':', linewidth=0.5)
             plt.legend()

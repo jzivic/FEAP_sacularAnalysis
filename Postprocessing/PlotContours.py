@@ -1,5 +1,5 @@
 """
-Plot all countours in a loop for chosen TimeSteps.
+Plot all countours from all simulations in a loop for chosen TimeSteps.
 Saves pictures to contour dir
 
 """
