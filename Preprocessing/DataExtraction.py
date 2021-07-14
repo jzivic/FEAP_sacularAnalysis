@@ -84,7 +84,7 @@ class DataExtraction:
 
 
 
-    #Create lists/vectors to store data
+    #Create lists/vectors to store data from all TimeSteps
     def Creating_allTS_Vector(self):
         self.TSName_allTS = []
         self.D_allTS = []
@@ -222,7 +222,7 @@ class DataExtraction:
         self.vectorAAAIndices = []                                                        # elements indices where AAA exists
         nLine_rIL = self.startLine_rIL                                                    # starting line in rIL file
 
-        # checking AAA formation condition at every hight/line in chosen TS
+        # checking AAA formation condition at every hight/line (0-max height) in chosen TS
         for line in self.wholeDocument_rIl[self.startLine_rIL: (self.startLine_rIL + TSLegnht_rIl-1)]:
             nLine_rIL += 1                                                                # number of line in chosen TimeStep in rIL txt
             line = line.strip().split()
@@ -236,9 +236,9 @@ class DataExtraction:
             lineBefore = line
 
 
-        # linear inteerpolation between before/after forming AAA elements
+        # linear interpolation between before/after forming AAA elements because of linear growth
         try:
-            #coordinates of pointA, pointB of line that connects elements before/after condition
+            # coordinates of pointA, pointB of line that connects elements before/after condition
             # pA = (rCoord, zCoord)
             pA = [(float(lineA[0]) + float(lineA[1]) + float(lineA[2])) / 3, (float(lineA[3]) + float(lineA[4]) + float(lineA[5])) / 3]   # coordinate of point before AAA formation
             pB = [(float(lineB[0]) + float(lineB[1]) + float(lineB[2])) / 3, (float(lineB[3]) + float(lineB[4]) + float(lineB[5])) / 3]   # coordinate of point after AAA formation
@@ -251,17 +251,17 @@ class DataExtraction:
         except TypeError:
             dH, dL = 0, 0
 
-        # AAA coordinate points
+        # just AAA coordinate points
         coordAAA = {"z":[], "y":[]}
-        for indAn in self.vectorAAAIndices:                                                              # iterating over indices of AAA formed points
-            z = float(self.wholeDocument_ctl[self.startLine_ctl + indAn].strip().split()[0])             # z,y obtained from ctl txt file
-            y = float(self.wholeDocument_ctl[self.startLine_ctl + indAn].strip().split()[1])
+        for indAAA in self.vectorAAAIndices:                                                              # iterating over indices of AAA formed points
+            z = float(self.wholeDocument_ctl[self.startLine_ctl + indAAA].strip().split()[0])             # z,y obtained from ctl txt file
+            y = float(self.wholeDocument_ctl[self.startLine_ctl + indAAA].strip().split()[1])
             coordAAA["z"].append(z), coordAAA["y"].append(y)
         try:
             self.H = (coordAAA["z"][len(coordAAA["y"]) - 1] - coordAAA["z"][0]) + 0                     # H = coord[z](last)-coord[z](first)
             self.L = 0
             for n in range(0, len(coordAAA["y"]) - 1):
-                self.L += math.sqrt((coordAAA["z"][n + 1] - coordAAA["z"][n]) ** 2 + (coordAAA["y"][n + 1] - coordAAA["y"][n]) ** 2)        # dL = (dH**2+dR**)**0.5
+                self.L += math.sqrt((coordAAA["z"][n + 1] - coordAAA["z"][n]) ** 2 + (coordAAA["y"][n + 1] - coordAAA["y"][n]) ** 2)    # dL = (dH**2+dR**2)**0.5
         except IndexError:
             self.H, self.L = 0, 0
 
@@ -272,7 +272,7 @@ class DataExtraction:
     # Calculate D, S22(Stress), GR from rN1704 .txt
     def Calculating_D_S22_GR(self):
         if self.chosenTSList[self.nTSt] > 0:
-            nLine = self.wholeDocument_rN1704[self.startLine_rN1704 - 1].strip().split()
+            nLine = self.wholeDocument_rN1704[self.startLine_rN1704 - 1].strip().split()        # number of lines in rN1704 txt file
         elif self.chosenTSList[self.nTSt] < 0:
             nLine = self.wholeDocument_rN1704[self.startLine_rN1704].strip().split()
 
@@ -281,10 +281,11 @@ class DataExtraction:
         self.S22 = float(nLine[5]) * 1000  # kPa# Reading D, GR, S22 from r1704 file
 
 
-    # Iterates over eIW file where are coordinates stored in theta->Z order, all TimeSteps written together
+    # Iterates over eIW file where are coordinates stored in coordinatePoint -> points -> theta->Z order
+    # All TimeSteps written together
     def MainProgram(self):
         self.TSData = {}                     # whole TimeStep data, made of coordinates in in theta direction  --> Z Lines
-        n_eIW = -1  #
+        n_eIW = -1                           # to skip first line
 
         # iteerating every line that represents first radial layer
         for line in self.wholeDocument_eIW[self.startLine_eIW: self.startLine_eIW + TSLegnht_eIW]:
@@ -315,7 +316,7 @@ class DataExtraction:
 
 
     # Calculate surface and volume
-        # Surface - sum of vector products each element, developed
+        # Surface - sum of vector products each element, written by hand
         # Volume - ConvexHull function
     def Calculating_S_V(self):
         S0 = self.d0 * math.pi * self.HVainTotal * (178 / 180) * 0.9988         # inital surface. 178 deg, straight edgges
@@ -331,7 +332,7 @@ class DataExtraction:
             # Iterating the theta line
             for nPoint in range(len(self.ZLines[nThL])):
                 try:
-                    A = self.ZLines[nThL][nPoint]                               # quadrangle is made from  A,B,C,D coordinates
+                    A = self.ZLines[nThL][nPoint]                               # quadrangle is made of A,B,C,D coordinates
                     B = self.ZLines[nThL + 1][nPoint]
                     C = self.ZLines[nThL][nPoint + 1]
                     D = self.ZLines[nThL + 1][nPoint + 1]
