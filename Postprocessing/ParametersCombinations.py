@@ -37,20 +37,7 @@ allCoeffNames = []
 rVal_all = []
 
 allCoeffs = {"coeffName":[], "r_d0":[], "coeffDict":[]}
-
-
 goodCoeffs = {"coeffName":[], "r_d0":[], "r_d1":[], "r_d2":[], "r_d3":[], "coeffDict":[]}
-
-
-
-
-
-# goodCoeffname = []
-# goodCoeff_Dict = []
-# rVal_good = { "r_d0":[], "r_d1":[], "r_d2":[], "r_d3":[], "coeffs":[]}
-
-
-
 
 
 for iL in range_1:
@@ -82,36 +69,30 @@ for iL in range_1:
 
             if abs(rValue) > 0.85:
 
+                goodCoeffs["coeffName"].append(coeffName)
+                goodCoeffs["r_d0"].append(rValue)
+                goodCoeffs["coeffDict"].append(coeffName_Dict)
 
 
+                par_d1 = L**iL * D**iD * d1**id
+                slope, intercept, rValue1, pValue, se = linregress(par_d1, P)
+                goodCoeffs["r_d1"].append(rValue1)
+
+                par_d2 = L**iL * D**iD * d2**id
+                slope, intercept, rValue2, pValue, se = linregress(par_d2, P)
+                goodCoeffs["r_d2"].append(rValue)
+
+                par_d3 = L**iL * D**iD * d3**id
+                slope, intercept, rValue3, pValue, se = linregress(par_d3, P)
+                goodCoeffs["r_d3"].append(rValue3)
 
 
-
-
-                # goodCoeffname.append(coeffName_String)
-                #
-                # rVal_good["coeffs"].append(coeffName_Dict)
-                #
-                # rVal_good["r_d0"].append(rValue)
-                #
-                # par_d1 = L**iL * D**iD * d1**id
-                # slope, intercept, rValue, pValue, se = linregress(par_d1, P)
-                # rVal_good["r_d1"].append(rValue)
-                #
-                # par_d2 = L**iL * D**iD * d2**id
-                # slope, intercept, rValue, pValue, se = linregress(par_d2, P)
-                # rVal_good["r_d2"].append(rValue)
-                #
-                # par_d3 = L**iL * D**iD * d3**id
-                # slope, intercept, rValue, pValue, se = linregress(par_d3, P)
-                # rVal_good["r_d3"].append(rValue)
-
-
-            df_high = pd.DataFrame( rVal_good, index=goodCoeffname)
+            df_high = pd.DataFrame(goodCoeffs)
 
 
 
 print(df_high)
+
 # print(df_all)
 
 
