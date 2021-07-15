@@ -3,22 +3,12 @@ import pandas as pd
 from Preprocessing.SimulationsData import *
 
 
-
-
-# df.loc[df['column_name'] == some_value]
-
-
-a = 12
-
-# assert a == 2 or a == 1
-
-
-
-rj = {"a":2, "b":3}
-
-
-for i in rj:
-    print(rj[i])
+def f(x):
+    match x:
+        case 'a':
+            return 1
+        case 'b':
+            return 2
 
 
 

@@ -92,7 +92,7 @@ graphData = {
         "LDd0r":{"vName":"LDd0r","unit":"mm","txt":""},
         "LDd1r":{"vName":"LDd1r","unit":"mm","txt":""},
         "LDd2r":{"vName":"LDd2r","unit":"mm","txt":""},
-        "LDd3r":{"vName":"LDd2r","unit":"mm","txt":""},
+        "LDd3r":{"vName":"LDd3r","unit":"mm","txt":""},
 
         "1\(LDd0r)":{"vName":"1/(LDd0r)","unit":"mm","txt":""},
         "1\(LDd1r)":{"vName":"1/(LDd1r)","unit":"mm","txt":""},
@@ -102,15 +102,21 @@ graphData = {
         "L^2Dd0r": {"vName": "L^2Dd0r", "unit": "mm", "txt": ""},
         "L^2Dd1r": {"vName": "L^2Dd1r", "unit": "mm", "txt": ""},
         "L^2Dd2r": {"vName": "L^2Dd2r", "unit": "mm", "txt": ""},
-        "L^2Dd3r": {"vName": "L^2Dd2r", "unit": "mm", "txt": ""},
+        "L^2Dd3r": {"vName": "L^2Dd3r", "unit": "mm", "txt": ""},
 
         "1\(L^2*Dd0r)": {"vName": "1/(L^2*Dd0r)", "unit": "mm", "txt": ""},
         "1\(L^2*Dd1r)": {"vName": "1/(L^2*Dd1r)", "unit": "mm", "txt": ""},
         "1\(L^2*Dd2r)": {"vName": "1/(L^2*Dd2r)", "unit": "mm", "txt": ""},
         "1\(L^2*Dd3r)": {"vName": "1/(L^2*Dd3r)", "unit": "mm", "txt": ""},
 
-
-
+        # allData["GRPI"] = allData["L"] ** 3 * (4 * allData["D"] ** 2 - allData["d0"] ** 2) / allData["d0"] ** 2
+        # allData["GRPI1"] = allData["L"] ** 3 * (4 * allData["D"] ** 2 - allData["d1"] ** 2) / allData["d1"] ** 2
+        # allData["GRPI2"] = allData["L"] ** 3 * (4 * allData["D"] ** 2 - allData["d2"] ** 2) / allData["d2"] ** 2
+        # allData["GRPI3"] = allData["L"] ** 3 * (4 * allData["D"] ** 2 - allData["d3"] ** 2) / allData["d3"] ** 2
+        # allData["NAL"] = allData["L"] * (4 * allData["D"] ** 2 - allData["d0"] ** 2) / allData["d0"] ** 2
+        # allData["NAL1"] = allData["L"] * (4 * allData["D"] ** 2 - allData["d1"] ** 2) / allData["d1"] ** 2
+        # allData["NAL2"] = allData["L"] * (4 * allData["D"] ** 2 - allData["d2"] ** 2) / allData["d2"] ** 2
+        # allData["NAL3"] = allData["L"] * (4 * allData["D"] ** 2 - allData["d3"] ** 2) / allData["d3"] ** 2
 
          }
 
