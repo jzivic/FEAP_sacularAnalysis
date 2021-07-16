@@ -6,9 +6,7 @@ from Preprocessing.SimulationsData import *
 
 
 
-
-
-class ParameterCombinations:
+class MakeCombinations:
     def __init__(self, inputPickle):
 
         self.inputData = pd.read_pickle(inputPickle)
@@ -90,7 +88,7 @@ class ParameterCombinations:
 
 
 
-ParameterCombinations(PickleData_AB)
+# MakeCombinations(PickleData_AB)
 
 
 
