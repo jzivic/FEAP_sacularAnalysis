@@ -20,7 +20,7 @@ class CombAn:
     allParameters = pd.read_pickle(PickleParamCombinations)
 
 
-    def __init__(self, sortingKey):
+    def __init__(self, sortingKey, nBest=3):
         assert sortingKey in ["rAvg", "r_d0", "r_d1", "r_d2","r_d3"],\
             "sortingKey should be: rAvg, r_d0, r_d1, r_d2, r_d3"
 
@@ -28,7 +28,7 @@ class CombAn:
 
 
         self.SortingMethod()
-        self.Iteration(nBest=2)
+        self.Iteration(nBest)
 
 
     def SortingMethod(self):
@@ -53,10 +53,13 @@ class CombAn:
             N = paramDict["N"]
 
 
+            parName = self.allParameters.iloc[ind]["paramName"]
+
 
             def Parameter(diameter):
                 parameter = CombAn.L**iL * CombAn.D**jD * diameter**kd * \
                             (N * CombAn.D**mD_d - diameter**mD_d)
+
                 return parameter
 
 
@@ -65,11 +68,31 @@ class CombAn:
                 parameter = Parameter(diameter)
 
                 slope, intercept, rValue, pValue, se = linregress(parameter, CombAn.P)
-                # print(rValue)
 
+                fig = plt.gcf()
                 plt.scatter(parameter, CombAn.P)
 
-                plt.show()
+                plt.grid(color='k', linestyle=':', linewidth=0.5)
+                plt.pause(0.1)
+                plt.draw()
+                plt.close()
+
+                plt.title(parName + ",   d=" + str(i))
+                # plt.show()
+
+
+
+
+
+
+            # plt.text(min(chosenData[value]), max(chosenData["P"]) + (max(chosenData["P"])-min(chosenData["P"]))*0.1, graphData[value]["txt"])  # position of x label text
+            # fig = plt.gcf()
+            # plt.grid(color='k', linestyle=':', linewidth=0.5)
+            # plt.legend()
+            # plt.pause(100)
+            # plt.draw()
+            # plt.close()
+            # fig.savefig(diagramsDir + value + '.png', dpi=300)
 
 
 
@@ -77,7 +100,7 @@ class CombAn:
 
 
 # CombAn("r_d0")
-CombAn("rAvg")
+CombAn("rAvg", 10)
 
 
 
