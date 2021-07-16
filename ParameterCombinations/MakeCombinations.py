@@ -76,6 +76,8 @@ class MakeCombinations:
                                 self.goodCoeffs["r_d3"].append(rSvi[3 - 1])
 
                                 rA = (sum([abs(i) for i in rSvi]) + abs(rValue))/4
+                                rA = (sum([i for i in rSvi]) + rValue)/4
+
                                 self.goodCoeffs["rAvg"].append(rA)
 
 

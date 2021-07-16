@@ -56,7 +56,7 @@ from Preprocessing.SimulationsData import *
 
 
 
-class CombinationAnalysis:
+class CombAn:
     abData = pd.read_pickle(PickleData_AB)
     P = abData["P"]
     L = abData["L"]
@@ -71,18 +71,19 @@ class CombinationAnalysis:
 
 
     def __init__(self, sortingKey):
-        assert sortingKey in ["rAvg", "r_d0", "r_d1", "r_d2","r_d2"],\
-            "sortingKey should be: rAvg, r_d0, r_d1, r_d2, r_d2"
+        assert sortingKey in ["rAvg", "r_d0", "r_d1", "r_d2","r_d3"],\
+            "sortingKey should be: rAvg, r_d0, r_d1, r_d2, r_d3"
 
         self.sortingKey = sortingKey
 
 
         self.SortingMethod()
-        self.Iteration(2)
+        self.Iteration(nBest=2)
 
 
     def SortingMethod(self):
-        self.indSorted = list(CombinationAnalysis.goodParameters.sort_values(by=self.sortingKey, ascending=True).index)
+        self.indSorted = list(CombAn.goodParameters.sort_values(by=self.sortingKey, ascending=False).index)
+        print(self.indSorted)
 
 
     def Iteration(self, nBest):
@@ -101,6 +102,23 @@ class CombinationAnalysis:
 
 
 
+            def Parameter(diameter):
+                parameter = CombAn.L**iL * CombAn.D**jD * diameter**kd * \
+                            (N * CombAn.D**mD_d - diameter**mD_d)
+                return parameter
+
+
+            for i in range(len(CombAn.dSvi)):
+                diameter = CombAn.dSvi[i]
+                parameter = Parameter(diameter)
+
+                print(parameter[11])
+
+                slope, intercept, rValue, pValue, se = linregress(parameter, CombAn.P)
+                print(rValue)
+
+                plt.scatter(parameter, CombAn.P)
+                plt.show()
 
 
 
@@ -116,8 +134,8 @@ class CombinationAnalysis:
 
 
 
-
-CombinationAnalysis("rAvg")
+# CombAn("r_d3")
+CombAn("rAvg")
 
 
 
