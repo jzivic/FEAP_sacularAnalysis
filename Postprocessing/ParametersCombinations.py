@@ -24,7 +24,7 @@ class ParameterCombinations:
         self.range_2 = [1, 2, 4]
 
         self.allCoeffs = {"coeffName":[], "r_d0":[], "coeffDict":[]}
-        self.goodCoeffs = {"coeffName":[], "r_d0":[], "r_d1":[], "r_d2":[], "r_d3":[], "rSuma":[], "coeffDict":[]}
+        self.goodCoeffs = {"coeffName":[], "r_d0":[], "r_d1":[], "r_d2":[], "r_d3":[], "rAvg":[], "coeffDict":[]}
 
 
         self.P = self.inputData["P"]
@@ -77,31 +77,16 @@ class ParameterCombinations:
                                 self.goodCoeffs["r_d2"].append(rSvi[2 - 1])
                                 self.goodCoeffs["r_d3"].append(rSvi[3 - 1])
 
-                                rS = (sum([abs(i) for i in rSvi]) + abs(rValue))/4
-                                self.goodCoeffs["rSuma"].append(rS)
-
-
-
+                                rA = (sum([abs(i) for i in rSvi]) + abs(rValue))/4
+                                self.goodCoeffs["rAvg"].append(rA)
 
 
 
         df_all = pd.DataFrame(self.allCoeffs)
-
-
+        df_all.to_pickle(ParametersCombinations_all)
 
         df_good = pd.DataFrame(self.goodCoeffs)
-
-
-        # print(len(self.goodCoeffs["r_d0"]))
-        # print(len(self.goodCoeffs["r_d1"]))
-        # print(len(self.goodCoeffs["r_d2"]))
-        # print(len(self.goodCoeffs["r_d3"]))
-        # print(len(self.goodCoeffs["rSuma"]))
-
-
-        df_all.to_pickle(ParametersCombinations_all)
         df_good.to_pickle(ParametersCombinations_good)
-
 
 
 
