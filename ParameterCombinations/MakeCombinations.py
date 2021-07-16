@@ -48,6 +48,7 @@ class MakeCombinations:
 
                             parameter = self.L ** iL * self.D ** jD * self.dSvi[0] ** kd * (N * self.D ** mD_d - self.dSvi[0] ** mD_d)
                             slope, intercept, rValue, pValue, se = linregress(parameter, self.P)
+                            rValue = abs(rValue)
 
                             paramName = "iL=" + str(iL) + " jD=" + str(jD) + " kd=" + str(kd) + " mD_d=" + str(
                                         mD_d) + " N=" + str(N)
@@ -63,14 +64,15 @@ class MakeCombinations:
                                                 ( N * self.D ** mD_d - self.dSvi[i] ** mD_d)
 
                                 slope, intercept, rValueRest, p, se = linregress(parameterGood, self.P)
+                                rValueRest = abs(rValueRest)
                                 rAll.append(rValueRest)
 
                             self.allParameters["r_d1"].append(rAll[1 - 1])
                             self.allParameters["r_d2"].append(rAll[2 - 1])
                             self.allParameters["r_d3"].append(rAll[3 - 1])
 
-                            rA = (sum([abs(i) for i in rAll]) + abs(rValue))/4
-                            # rA = (sum([i for i in rAll]) + rValue)/4
+                            # rA = (sum([abs(i) for i in rAll]) + abs(rValue))/4
+                            rA = (sum([i for i in rAll]) + rValue)/4
 
                             self.allParameters["rAvg"].append(rA)
 

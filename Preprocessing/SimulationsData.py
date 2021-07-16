@@ -47,7 +47,7 @@ PickleParamCombinations = picklesDir + "ParametersCombinations.pickle"
 # ParametersCombinations_good = picklesDir + "ParametersCombinations_good.pickle"
 
 statXlsx = analysisDir + "statData.xlsx"
-paramXlsx = analysisDir + "paramData.xlsx"
+paramXlsx = paramCombDir + "paramData.xlsx"
 
 
 

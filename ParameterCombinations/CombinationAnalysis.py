@@ -5,10 +5,10 @@ from matplotlib import pyplot as plt
 from Preprocessing.SimulationsData import *
 
 
-def MakeDir_diagrams():
+def MakeDir_combParam():
     try:
         shutil.rmtree(paramCombDir)
-        shutil.rmtree(paramXlsx)
+        # shutil.rmtree(paramXlsx)
     except:
         FileNotFoundError
     os.mkdir(paramCombDir)
@@ -47,10 +47,10 @@ class CombAn:
 
     def ParameterIteration(self, nBestParams):
 
-        for indParam in range(nBestParams):
+        for nParam in range(nBestParams):
 
-            ind = self.indSorted[indParam]
-            parameter = self.allParameters.iloc[ind]
+            indParam = self.indSorted[nParam]
+            parameter = self.allParameters.iloc[indParam]
             paramDict = parameter["paramDict"]
 
             iL = paramDict["iL"]
@@ -58,7 +58,8 @@ class CombAn:
             kd = paramDict["kd"]
             mD_d = paramDict["mD_d"]
             N = paramDict["N"]
-            parName = self.allParameters.iloc[ind]["paramName"]
+            self.parName = self.allParameters.iloc[indParam]["paramName"]
+
             def Parameter(diameter):
                 parameter = CombAn.L**iL * CombAn.D**jD * diameter**kd * \
                             (N * CombAn.D**mD_d - diameter**mD_d)
@@ -66,24 +67,23 @@ class CombAn:
 
 
 
-            self.MakeParDir(indParam)
+            self.MakeParDir(nParam)
 
             for i in range(len(CombAn.dSvi)):
                 diameter = CombAn.dSvi[i]
-                parameter = Parameter(diameter)
 
-                slope, intercept, rValue, pValue, se = linregress(parameter, CombAn.P)
+                slope, intercept, rValue, pValue, se = linregress(Parameter(diameter), CombAn.P)
 
                 fig = plt.gcf()
-                plt.scatter(parameter, CombAn.P)
+                plt.scatter(Parameter(diameter), CombAn.P)
 
                 plt.grid(color='k', linestyle=':', linewidth=0.5)
                 plt.pause(0.1)
                 plt.draw()
                 plt.close()
 
-                plt.title(parName + ",   d=" + str(i))
-                fig.savefig(self.parDir + "d= "+str(i) +"    " + parName)
+                plt.title(self.parName + ",   d=" + str(i))     #ZAŠTOime par OVO NE RADI U 0. FOLDERU??
+                fig.savefig(self.parDir + "d= "+str(i) +"    " + self.parName)
 
 
 
@@ -103,41 +103,10 @@ class CombAn:
 
 
 
-MakeDir_diagrams()
+MakeDir_combParam()
 
 # CombAn("r_d0")
 CombAn("rAvg", 10)
-
-
-
-
-
-
-# allParameters = pd.read_pickle(picklesDir + "ParametersCombinations_good.pickle")
-#
-# r0 = allParameters["rAvg"]
-# r1 = allParameters["r_d1"]
-# r2 = allParameters["r_d2"]
-# r3 = allParameters["r_d3"]
-#
-# b =0
-# for i in range(len(r0)):
-#
-#     pred = lambda x: "p" if x >=0 else "m"
-#
-#
-#
-#     if pred(r0[i]) == pred(r1[i]) == pred(r2[i]) == pred(r3[i]):
-#         pass
-#     else:
-#         b+=1
-#         # print("nema")
-#
-#
-# print(b, len(r0))
-
-
-
 
 
 
