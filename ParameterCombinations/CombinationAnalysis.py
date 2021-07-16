@@ -6,6 +6,7 @@ from Preprocessing.SimulationsData import *
 
 
 
+
 class CombAn:
     abData = pd.read_pickle(PickleData_AB)
     P = abData["P"]
@@ -20,27 +21,27 @@ class CombAn:
     allParameters = pd.read_pickle(PickleParamCombinations)
 
 
-    def __init__(self, sortingKey, nBest=3):
+    def __init__(self, sortingKey, nBestParams=3):
         assert sortingKey in ["rAvg", "r_d0", "r_d1", "r_d2","r_d3"],\
             "sortingKey should be: rAvg, r_d0, r_d1, r_d2, r_d3"
 
         self.sortingKey = sortingKey
 
-
-        self.SortingMethod()
-        self.Iteration(nBest)
-
-
-    def SortingMethod(self):
         self.indSorted = list(CombAn.allParameters.sort_values(by=self.sortingKey, ascending=False).index)
 
 
 
 
+        self.Iteration(nBestParams)
+        self.WriteExcel()
 
-    def Iteration(self, nBest):
 
-        for i in range(nBest):
+
+
+
+    def Iteration(self, nBestParams):
+
+        for i in range(nBestParams):
 
             ind = self.indSorted[i]
             parameter = self.allParameters.iloc[ind]
@@ -78,21 +79,20 @@ class CombAn:
                 plt.close()
 
                 plt.title(parName + ",   d=" + str(i))
+                # fig.savefig(contoursDir + allNames[n] + " " + str(chosenTSContours[nTS])  + '.png', dpi=300)
+
+
                 # plt.show()
 
 
 
 
+    def WriteExcel(self):
+        self.toExcel = CombAn.allParameters.sort_values(by=[self.sortingKey], ascending=False)
+        self.toExcel.to_excel(paramXlsx)
 
 
-            # plt.text(min(chosenData[value]), max(chosenData["P"]) + (max(chosenData["P"])-min(chosenData["P"]))*0.1, graphData[value]["txt"])  # position of x label text
-            # fig = plt.gcf()
-            # plt.grid(color='k', linestyle=':', linewidth=0.5)
-            # plt.legend()
-            # plt.pause(100)
-            # plt.draw()
-            # plt.close()
-            # fig.savefig(diagramsDir + value + '.png', dpi=300)
+
 
 
 

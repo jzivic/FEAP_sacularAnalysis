@@ -34,6 +34,8 @@ diagramsDir = analysisDir + ("diagrams/")
 contoursDir = analysisDir + ("contours/")
 picklesDir = analysisDir + ("pickles/")
 
+
+
 PickleData_basic = analysisDir+"SacularData_basic.pickle"                       # just read parameters
 
 PickleData_all = picklesDir+"SacularData_all.pickle"                           # derived parameters (A+B+C)
@@ -44,6 +46,7 @@ PickleParamCombinations = picklesDir + "ParametersCombinations.pickle"
 # ParametersCombinations_good = picklesDir + "ParametersCombinations_good.pickle"
 
 statXlsx = analysisDir + "statData.xlsx"
+paramXlsx = analysisDir + "paramData.xlsx"
 
 
 
