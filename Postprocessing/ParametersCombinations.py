@@ -145,21 +145,17 @@ class ParameterCombinations:
                         for N in range_2:
 
                             parameter = self.L ** iL * self.D ** jD * self.dSvi[0] ** kd * (N * self.D ** mD_d - self.dSvi[0] ** mD_d)
-
                             slope, intercept, rValue, pValue, se = linregress(parameter, self.P)
 
                             coeffName = "iL=" + str(iL) + " jD=" + str(jD) + " kd=" + str(kd) + " mD_d=" + str(
-                                mD_d) + " N=" + str(N)
+                                        mD_d) + " N=" + str(N)
                             coeffName_Dict = {"iL": iL, "jD": jD, "kd": kd, "mD_d": mD_d, "N": N}
 
                             allCoeffs["coeffName"].append(coeffName)
                             allCoeffs["r_d0"].append(rValue)
                             allCoeffs["coeffDict"].append(coeffName_Dict)
 
-                            df_all = pd.DataFrame(allCoeffs)
-
                             if abs(rValue) > 0.85:
-
                                 goodCoeffs["coeffName"].append(coeffName)
                                 goodCoeffs["r_d0"].append(rValue)
                                 goodCoeffs["coeffDict"].append(coeffName_Dict)
@@ -177,7 +173,19 @@ class ParameterCombinations:
                                 goodCoeffs["r_d3"].append(rSvi[3 - 1])
 
 
+        df_all = pd.DataFrame(allCoeffs)
+        df_all.to_pickle(ParametersCombinations_all)
 
+        goodCoeffs["rSuma"] = goodCoeffs["r_d0"] + goodCoeffs["r_d1"] + goodCoeffs["r_d2"] + goodCoeffs["r_d3"]
+        df_good = pd.DataFrame(goodCoeffs)
+
+        df_good.to_pickle(ParametersCombinations_good)
+
+
+
+
+    def DataProcesing(self):
+        3
 
 
 
