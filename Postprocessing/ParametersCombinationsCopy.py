@@ -19,9 +19,8 @@ d1 = ABData["d1"]
 d2 = ABData["d2"]
 d3 = ABData["d3"]
 
-Dmd = D - d0
+dSvi = [d0, d1, d2, d3]
 
-dSvi = [d0, d1,d2,d3]
 
 
 range_1 = [-3,-2,-1, 0, 1,2,3]
@@ -34,14 +33,16 @@ goodCoeffs = {"coeffName":[], "r_d0":[], "r_d1":[], "r_d2":[], "r_d3":[], "coeff
 
 
 for iL in range_1:
-    for iD in range_1:
-        for id in range_1:
+    for jD in range_1:
+        for kd in range_1:
 
-            parameter = L**iL * D**iD * d0**id
+
+
+            parameter = L**iL * D**jD * dSvi[0]**kd
             slope, intercept, rValue, pValue, se = linregress(parameter, P)
 
-            coeffName = "iL="+str(iL)+" iD="+str(iD)+" id="+str(id)
-            coeffName_Dict = {"iL": iL, "iD":iD, "id": id}
+            coeffName = "iL="+str(iL)+" jD="+str(jD)+" kd="+str(kd)
+            coeffName_Dict = {"iL": iL, "jD":jD, "kd": kd}
 
             allCoeffs["coeffName"].append(coeffName)
             allCoeffs["r_d0"].append(rValue)
@@ -57,45 +58,32 @@ for iL in range_1:
                 goodCoeffs["r_d0"].append(rValue)
                 goodCoeffs["coeffDict"].append(coeffName_Dict)
 
+                rSvi = []
+                for i in range(1,len(dSvi)):
+                    parameterGood = L ** iL * D ** jD * dSvi[i] ** kd
+                    slope, intercept, rValue, pValue, se = linregress(parameterGood, P)
+                    rSvi.append(rValue)
 
 
-                # def parametar_d(dVel):
-                #     par_d1 = L ** iL * D ** iD * dVel ** id
-                #     return par_d1
-                # parametar_d(d1)
-
-                par_d1 = L**iL * D**iD * d1**id
-                slope, intercept, rValue1, pValue, se = linregress(par_d1, P)
-                goodCoeffs["r_d1"].append(rValue1)
-
-                par_d2 = L**iL * D**iD * d2**id
-                slope, intercept, rValue2, pValue, se = linregress(par_d2, P)
-                goodCoeffs["r_d2"].append(rValue)
-
-                par_d3 = L**iL * D**iD * d3**id
-                slope, intercept, rValue3, pValue, se = linregress(par_d3, P)
-                goodCoeffs["r_d3"].append(rValue3)
-
-
-
-                for dIde in dSvi:
-                    par_d1 = L ** iL * D ** iD * d1 ** id
-                    slope, intercept, rValue1, pValue, se = linregress(par_d1, P)
-                    goodCoeffs["r_d1"].append(rValue1)
-
-
-
-
-
-
-
-
+                goodCoeffs["r_d1"].append(rSvi[1-1])
+                goodCoeffs["r_d2"].append(rSvi[2-1])
+                goodCoeffs["r_d3"].append(rSvi[3-1])
 
             df_good = pd.DataFrame(goodCoeffs)
 
 
 
-# print(df_good)
+
+
+
+
+
+
+
+
+
+
+print(df_good)
 # print(df_all)
 
 
