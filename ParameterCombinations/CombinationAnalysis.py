@@ -69,6 +69,7 @@ class CombinationAnalysis:
 
     goodParameters = pd.read_pickle(picklesDir + "ParametersCombinations_good.pickle")
 
+
     def __init__(self, sortingKey):
         assert sortingKey in ["rAvg", "r_d0", "r_d1", "r_d2","r_d2"],\
             "sortingKey should be: rAvg, r_d0, r_d1, r_d2, r_d2"
@@ -76,14 +77,47 @@ class CombinationAnalysis:
         self.sortingKey = sortingKey
 
 
+        self.SortingMethod()
+        self.Iteration(2)
+
+
     def SortingMethod(self):
-        indSorted = list(goodParameters.sort_values(by=self.sortingKey, ascending=True).index)
-        return indSorted
+        self.indSorted = list(CombinationAnalysis.goodParameters.sort_values(by=self.sortingKey, ascending=True).index)
+
+
+    def Iteration(self, nBest):
+
+        for i in range(nBest):
+
+            ind = self.indSorted[i]
+            parameter = self.goodParameters.iloc[ind]
+            coeffDict = parameter["coeffDict"]
+
+            iL = coeffDict["iL"]
+            jD = coeffDict["jD"]
+            kd = coeffDict["kd"]
+            mD_d = coeffDict["mD_d"]
+            N = coeffDict["N"]
 
 
 
 
-CombinationAnalysis()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CombinationAnalysis("rAvg")
 
 
 
