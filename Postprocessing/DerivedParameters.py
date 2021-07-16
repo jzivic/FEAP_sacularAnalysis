@@ -81,13 +81,13 @@ def DerivedParameters_f(basicPickle):
     allData["Flag"] = flagVector
 
 
-    print(len(allData["Flag"]))
+    # print(len(allData["Flag"]))
 
 
     C_Data = allData.loc[allData["Flag"] == "C"]             # Flag C represents surely ruptured AAA
     AB_Data = allData.loc[allData["Flag"] != "C"]            # Flags A,B represents AAA that should not rupture
 
-    print(type(C_Data))
+    # print(type(C_Data))
 
 
     # A_Data = allData.loc[allData["Flag"] == "A"]

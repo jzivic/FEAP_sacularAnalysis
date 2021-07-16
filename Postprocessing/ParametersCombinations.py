@@ -67,8 +67,8 @@ class ParameterCombinations:
 
                                 rSvi = []
                                 for i in range(1, len(self.dSvi)):
-                                    parameterGood = self.L ** iL * self.D ** jD * self.dSvi[i] ** kd * (
-                                                N * self.D ** mD_d - self.dSvi[i] ** mD_d)
+                                    parameterGood = self.L ** iL * self.D ** jD * self.dSvi[i] ** kd *\
+                                                    ( N * self.D ** mD_d - self.dSvi[i] ** mD_d)
 
                                     slope, intercept, rValueRest, p, se = linregress(parameterGood, self.P)
                                     rSvi.append(rValueRest)
@@ -90,16 +90,7 @@ class ParameterCombinations:
 
 
 
-    def DataProcesing(self):
-        3
-
-
-
-
-
 ParameterCombinations(PickleData_AB)
-
-
 
 
 

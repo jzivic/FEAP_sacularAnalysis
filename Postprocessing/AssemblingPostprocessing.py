@@ -13,14 +13,14 @@ from PlotContours import MakeDir_contours, PlotAllContours
 # PlotAllContours()
 
 
-from PlotParameters import MakeDir_diagrams, PlotingAllDiagrams
-MakeDir_diagrams()
-PlotingAllDiagrams()
+# from PlotParameters import MakeDir_diagrams, PlotingAllDiagrams
+# MakeDir_diagrams()
+# PlotingAllDiagrams()
 
 
 
-from Statics import CalculateStatistic
-CalculateStatistic()
+# from Statics import CalculateStatistic
+# CalculateStatistic()
 
 
 
