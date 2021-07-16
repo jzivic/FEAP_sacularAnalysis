@@ -1,9 +1,17 @@
+import shutil, os
 import pandas as pd
 from scipy.stats import linregress
 from matplotlib import pyplot as plt
 from Preprocessing.SimulationsData import *
 
 
+def MakeDir_diagrams():
+    try:
+        shutil.rmtree(paramCombDir)
+        shutil.rmtree(paramXlsx)
+    except:
+        FileNotFoundError
+    os.mkdir(paramCombDir)
 
 
 
@@ -26,24 +34,22 @@ class CombAn:
             "sortingKey should be: rAvg, r_d0, r_d1, r_d2, r_d3"
 
         self.sortingKey = sortingKey
-
         self.indSorted = list(CombAn.allParameters.sort_values(by=self.sortingKey, ascending=False).index)
 
 
 
-
-        self.Iteration(nBestParams)
         self.WriteExcel()
+        self.ParameterIteration(nBestParams)
 
 
 
 
 
-    def Iteration(self, nBestParams):
+    def ParameterIteration(self, nBestParams):
 
-        for i in range(nBestParams):
+        for indParam in range(nBestParams):
 
-            ind = self.indSorted[i]
+            ind = self.indSorted[indParam]
             parameter = self.allParameters.iloc[ind]
             paramDict = parameter["paramDict"]
 
@@ -52,17 +58,15 @@ class CombAn:
             kd = paramDict["kd"]
             mD_d = paramDict["mD_d"]
             N = paramDict["N"]
-
-
             parName = self.allParameters.iloc[ind]["paramName"]
-
-
             def Parameter(diameter):
                 parameter = CombAn.L**iL * CombAn.D**jD * diameter**kd * \
                             (N * CombAn.D**mD_d - diameter**mD_d)
-
                 return parameter
 
+
+
+            self.MakeParDir(indParam)
 
             for i in range(len(CombAn.dSvi)):
                 diameter = CombAn.dSvi[i]
@@ -79,11 +83,13 @@ class CombAn:
                 plt.close()
 
                 plt.title(parName + ",   d=" + str(i))
-                # fig.savefig(contoursDir + allNames[n] + " " + str(chosenTSContours[nTS])  + '.png', dpi=300)
+                fig.savefig(self.parDir + "d= "+str(i) +"    " + parName)
 
 
-                # plt.show()
 
+    def MakeParDir(self, number):
+        self.parDir = paramCombDir + (str(number) + "/")
+        os.mkdir(self.parDir)
 
 
 
@@ -97,7 +103,7 @@ class CombAn:
 
 
 
-
+MakeDir_diagrams()
 
 # CombAn("r_d0")
 CombAn("rAvg", 10)

@@ -34,6 +34,7 @@ diagramsDir = analysisDir + ("diagrams/")
 contoursDir = analysisDir + ("contours/")
 picklesDir = analysisDir + ("pickles/")
 
+paramCombDir = analysisDir + ("paramComb/")
 
 
 PickleData_basic = analysisDir+"SacularData_basic.pickle"                       # just read parameters
