@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 from Preprocessing.SimulationsData import *
 
 
-from ParameterCombinations import MakeCombinations
+from ParameterCombinations import MakeCombinations_version1
 # MakeCombinations(PickleData_AB)
 
 
