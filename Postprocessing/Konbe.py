@@ -95,7 +95,16 @@ df_good.to_pickle("DobreKombinacije.pickle")
 
 
 """
+import pandas as pd
+from scipy.stats import linregress
+from matplotlib import pyplot as plt
+# from Preprocessing.SimulationsData import *
+
+
+
+
 dobre = pd.read_pickle("DobreKombinacije.pickle")
+ABData = pd.read_pickle("SacularData_AB.pickle")
 
 
 # print(dobre)
@@ -106,9 +115,10 @@ m = max(dobre["r_d0"])
 
 a = list(dobre["r_d0"]).index(m)
 
-dobre["rSuma"] =  (dobre["r_d0"]+dobre["r_d1"]+dobre["r_d2"]+dobre["r_d3"] ) / 4
+dobre["rSuma"] =  (abs(dobre["r_d0"])+abs(dobre["r_d1"])+(dobre["r_d2"])+abs(dobre["r_d3"]) ) / 4
 
 print(dobre.sort_values(by="rSuma"))
+# print(dobre.sort_values(by="r_d0"))
 
 
 # print(a)
@@ -117,4 +127,27 @@ print(dobre.sort_values(by="rSuma"))
 
 # for rInd, row in dobre.iterrows():
 #     print(row)
+
+P = ABData["P"]
+
+L = ABData["L"]
+D = ABData["D"]
+
+d0 = ABData["d0"]
+d1 = ABData["d1"]
+d2 = ABData["d2"]
+d3 = ABData["d3"]
+
+
+
+# a1 = [iL=0, iD=1 id=0 id2=-1 M=]
+# parameter = L ** iL * D ** iD * dSvi[0] ** id * (M * D ** id2 - dSvi[0] ** id2)
+
+d = d2
+par = L**1 * D**(-1) * d**0 * (1*D**(2)-d**(2))
+slope, intercept, rValue, pValue, se = linregress(par, P)
+
+print(rValue)
+plt.scatter(par, P)
+plt.show()
 """
