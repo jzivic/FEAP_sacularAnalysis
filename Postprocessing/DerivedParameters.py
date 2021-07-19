@@ -25,7 +25,7 @@ def DerivedParameters_f(basicPickle):
     allData = pd.read_pickle(basicPickle)
     allData = allData.dropna()                                                       # exclude data where AAA is not formed
 
-    allData["P"] = allData["S22"] / sigmaCritical                                    # probability of rupture
+    allData["P"] = allData["S22"] #/ sigmaCritical                                    # probability of rupture
 
     allData["Ddr"] = allData["D"] / allData["d0"]
     allData["Ddr1"] = allData["D"] / allData["d1"]
@@ -33,6 +33,12 @@ def DerivedParameters_f(basicPickle):
     allData["Ddr3"] = allData["D"] / allData["d3"]
 
     allData["T"] = allData["L"] / allData["H"]
+    allData["HNeck"] = 160 - allData["H"]
+    allData["Hb"] = allData["H"] + allData["HNeck"]/2
+    allData["Hr"] = allData["HNeck"] / (allData["HNeck"]+allData["H"])
+    allData["HDr"] = allData["H"] / allData["d0"]
+
+
 
     allData["GRPI"] = allData["L"]**3*(4*allData["D"]**2-allData["d0"]**2)/allData["d0"]**2
     allData["GRPI1"] = allData["L"]**3*(4*allData["D"]**2-allData["d1"]**2)/allData["d1"]**2
@@ -44,10 +50,27 @@ def DerivedParameters_f(basicPickle):
     allData["NAL2"] = allData["L"]*(4*allData["D"]**2-allData["d2"]**2)/allData["d2"]**2
     allData["NAL3"] = allData["L"]*(4*allData["D"]**2-allData["d3"]**2)/allData["d3"]**2
 
-    allData["HNeck"] = 160 - allData["H"]
-    allData["Hb"] = allData["H"] + allData["HNeck"]/2
-    allData["Hr"] = allData["HNeck"] / (allData["HNeck"]+allData["H"])
-    allData["HDr"] = allData["H"] / allData["d0"]
+
+
+
+
+
+
+
+    allData["LDdr"] = allData["L"]*(allData["D"] / allData["d0"])
+    allData["LDdr1"] = allData["L"]*(allData["D"] / allData["d1"])
+    allData["LDdr2"] = allData["L"]*(allData["D"] / allData["d2"])
+    allData["LDdr3"] = allData["L"]*(allData["D"] / allData["d3"])
+
+
+    # allData["dodo"] = [ allData["L"]*(allData["D"] / allData["d0"]),
+    #                     allData["L"]*(allData["D"] / allData["d1"]),
+    #                     allData["L"]*(allData["D"] / allData["d1"]),
+    #                     allData["L"]*(allData["D"] / allData["d1"])]
+
+
+
+
 
 
     flagVector = []
@@ -56,56 +79,28 @@ def DerivedParameters_f(basicPickle):
     # Flags A,B represents AAA that should not rupture
     for i in range(len(allData["S22"])):
 
-        # if allData["D"][i] > flagCondition["D"]:
-        #     flag = "C"
-        #     continue
 
+        if allData["S22"][i] < flagCondition["S22"]["A-B"] and allData["GR"][i] < flagCondition["GR"]["A-B"] and allData["D"][i] < flagCondition["D"]:
+            flag = "A"
+        elif allData["S22"][i] < flagCondition["S22"]["B-C"] and allData["GR"][i] < flagCondition["GR"]["B-C"] and allData["D"][i] < flagCondition["D"]:
+            flag = "B"
 
-        # if allData["GR"][i] < flagCondition["GR"]["A-B"] and allData["D"][i] < flagCondition["D"]:
+        # if allData["D"][i] < flagCondition["D"] and allData["GR"][i] < flagCondition["GR"]["A-B"]:
         #     flag = "A"
-        # elif allData["GR"][i] < flagCondition["GR"]["B-C"] and allData["D"][i] < flagCondition["D"]:
+        # elif allData["D"][i] < flagCondition["D"] and allData["GR"][i] < flagCondition["GR"]["B-C"]:
         #     flag = "B"
 
 
-        if allData["S22"][i] < flagCondition["S22"]["A-B"]:
-            flag = "A"
-        elif allData["S22"][i] < flagCondition["S22"]["B-C"] :
-            flag = "B"
-
-
-
-
-        # elif allData["S22"][i] >= flagCondition["S22"]["B-C"] and allData["GR"][i] >= flagCondition["GR"]["A-B"]:
-        #     flag = "C"
         else:
             flag = "C"
-
         flagVector.append(flag)
 
 
 
     allData = allData.dropna()                                                       # exclude data where AAA is not formed
-
-
     allData["Flag"] = flagVector
-
-
-    # print(len(allData["Flag"]))
-
-
     C_Data = allData.loc[allData["Flag"] == "C"]             # Flag C represents surely ruptured AAA
     AB_Data = allData.loc[allData["Flag"] != "C"]            # Flags A,B represents AAA that should not rupture
-
-    # print(type(C_Data))
-
-
-    # A_Data = allData.loc[allData["Flag"] == "A"]
-    # B_Data = allData.loc[allData["Flag"] == "B"]
-    # C_Data = allData.loc[allData["Flag"] == "C"]
-
-    # AB_Data = allData.loc[allData["Flag"] != "C"]
-
-
 
     allData.to_pickle(PickleData_all)                       # storing data into separate pickles
     AB_Data.to_pickle(PickleData_AB)

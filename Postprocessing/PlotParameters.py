@@ -53,7 +53,7 @@ graphData:
 """
 
 graphData = {
-         "D":{"vName":"D","unit":"mm","txt":NoPos}, "H":{"vName":"H","unit":"mm","txt":NoPos},
+         # "D":{"vName":"D","unit":"mm","txt":NoPos}, "H":{"vName":"H","unit":"mm","txt":NoPos},
         #  "L":{"vName":"L","unit":"mm","txt":NoPos}, "S":{"vName":"S","unit":"$mm^2$","txt":NoPos},
         #  "V":{"vName":"V","unit":"$mm^3$","txt":NoPos}, "GR":{"vName":"GR","unit":"mm/y","txt":NoPos},
         #  "T":{"vName":"T","unit":"-","txt":NoPos},
@@ -77,6 +77,12 @@ graphData = {
         # "NAL1":{"vName":"NAL","unit":"mm","txt":pos1},
         # "NAL2":{"vName":"NAL","unit":"mm","txt":pos2},
         # "NAL3":{"vName":"NAL","unit":"mm","txt":pos3},
+
+        "LDdr": {"vName":"LDdr","unit":"mm","txt":pos0},
+        "LDdr1":{"vName":"LDdr1","unit":"mm","txt":pos1},
+        "LDdr2":{"vName":"LDdr2","unit":"mm","txt":pos2},
+        "LDdr3":{"vName":"LDdr3","unit":"mm","txt":pos3},
+
          }
 
 
@@ -127,7 +133,7 @@ def PlotingAllDiagrams():
             fig = plt.gcf()
             plt.grid(color='k', linestyle=':', linewidth=0.5)
             plt.legend()
-            plt.pause(100)
+            plt.pause(1)
             plt.draw()
             plt.close()
             fig.savefig(diagramsDir + value + '.png', dpi=300)
