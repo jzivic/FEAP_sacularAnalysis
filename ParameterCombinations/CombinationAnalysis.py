@@ -70,6 +70,7 @@ class CombAn:
             self.MakeParDir(nParam)
 
             for i in range(len(CombAn.dSvi)):
+
                 diameter = CombAn.dSvi[i]
 
                 slope, intercept, rValue, pValue, se = linregress(Parameter(diameter), CombAn.P)
@@ -77,12 +78,14 @@ class CombAn:
                 fig = plt.gcf()
                 plt.scatter(Parameter(diameter), CombAn.P)
 
+                ime = self.parName + ",   d=" + str(i)
+                plt.title(ime)     #ZAŠTOime par OVO NE RADI U 0. FOLDERU??
+
                 plt.grid(color='k', linestyle=':', linewidth=0.5)
                 plt.pause(0.1)
                 plt.draw()
                 plt.close()
 
-                plt.title(self.parName + ",   d=" + str(i))     #ZAŠTOime par OVO NE RADI U 0. FOLDERU??
                 fig.savefig(self.parDir + "d= "+str(i) +"    " + self.parName)
 
 
