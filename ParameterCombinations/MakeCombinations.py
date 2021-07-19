@@ -11,14 +11,14 @@ class MakeCombinations:
 
         self.inputData = pd.read_pickle(inputPickle)
 
-        self.SetCase()
+        self.SetParamCombos()
         self.Calculate_rValue()
 
 
 
-    def SetCase(self):
+    def SetParamCombos(self):
         self.range_1 = [-3, -2, -1, 0, 1, 2, 3]
-        self.range_12 = [-3, -2, -1, 1, 2, 3]
+        # self.range_12 = [-3, -2, -1, 1, 2, 3]
         self.range_2 = [1, 2, 4]
 
         self.allParameters = {"paramName":[], "r_d0":[], "r_d1":[], "r_d2":[], "r_d3":[], "rAvg":[], "paramDict":[]}
@@ -42,46 +42,47 @@ class MakeCombinations:
         for iL in self.range_1:
             for jD in self.range_1:
                 for kd in self.range_1:
-                    # for lDd in range_12:
-                    for mD_d in self.range_1:
-                        for N in self.range_2:
+                    for lDd in self.range_1:
+                        for mD_d in self.range_1:
+                            for N in self.range_2:
 
-                            parameter = self.L ** iL * self.D ** jD * self.dSvi[0] ** kd * (N * self.D ** mD_d - self.dSvi[0] ** mD_d)
-                            slope, intercept, rValue, pValue, se = linregress(parameter, self.P)
-                            rValue = abs(rValue)
+                                parameter = self.L ** iL * self.D ** jD * self.dSvi[0] ** kd * (N * self.D ** mD_d - self.dSvi[0] ** mD_d)**lDd
+                                paramName = "iL=" + str(iL) + " jD=" + str(jD) + " kd=" + str(kd)+ " lDd=" + str(lDd) + " mD_d=" + str(
+                                            mD_d) + " N=" + str(N)
+                                paramName_Dict = {"iL": iL, "jD": jD, "kd": kd, "lDd": lDd, "mD_d": mD_d, "N": N}
 
-                            paramName = "iL=" + str(iL) + " jD=" + str(jD) + " kd=" + str(kd) + " mD_d=" + str(
-                                        mD_d) + " N=" + str(N)
-                            paramName_Dict = {"iL": iL, "jD": jD, "kd": kd, "mD_d": mD_d, "N": N}
 
-                            self.allParameters["paramName"].append(paramName)
-                            self.allParameters["r_d0"].append(rValue)
-                            self.allParameters["paramDict"].append(paramName_Dict)
+                                # slope, intercept, rValue, pValue, se = linregress(parameter, self.P)
+                                # rValue = abs(rValue)
 
-                            rAll = []
-                            for i in range(1, len(self.dSvi)):
-                                parameterGood = self.L ** iL * self.D ** jD * self.dSvi[i] ** kd *\
-                                                ( N * self.D ** mD_d - self.dSvi[i] ** mD_d)
 
-                                slope, intercept, rValueRest, p, se = linregress(parameterGood, self.P)
-                                rValueRest = abs(rValueRest)
-                                rAll.append(rValueRest)
+                                self.allParameters["paramName"].append(paramName)
+                                self.allParameters["paramDict"].append(paramName_Dict)
 
-                            self.allParameters["r_d1"].append(rAll[1 - 1])
-                            self.allParameters["r_d2"].append(rAll[2 - 1])
-                            self.allParameters["r_d3"].append(rAll[3 - 1])
+                                rAll = []
+                                for i in range(0, len(self.dSvi)):
+                                    parameter = self.L ** iL * self.D ** jD * self.dSvi[i] ** kd *\
+                                                    ( N * self.D ** mD_d - self.dSvi[i] ** mD_d)**lDd
 
-                            # rA = (sum([abs(i) for i in rAll]) + abs(rValue))/4
-                            rA = (sum([i for i in rAll]) + rValue)/4
+                                    slope, intercept, rValue, p, se = linregress(parameter, self.P)
+                                    rValue = abs(rValue)
+                                    rAll.append(rValue)
 
-                            self.allParameters["rAvg"].append(rA)
+                                self.allParameters["r_d0"].append(rAll[0])
+                                self.allParameters["r_d1"].append(rAll[1])
+                                self.allParameters["r_d2"].append(rAll[2])
+                                self.allParameters["r_d3"].append(rAll[3])
+
+                                rAv = (sum([i for i in rAll]))/4
+
+                                self.allParameters["rAvg"].append(rAv)
 
 
         df_all = pd.DataFrame(self.allParameters)
         df_all.to_pickle(PickleParamCombinations)
 
 
-MakeCombinations(PickleData_AB)
+# MakeCombinations(PickleData_AB)
 
 
 

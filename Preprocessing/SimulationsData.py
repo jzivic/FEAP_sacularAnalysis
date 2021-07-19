@@ -20,7 +20,7 @@ chosenTimeSteps = [190, 208, 226, 244, 262, 280, 298, 316, 334, 352, 370, 388, 4
 
 allSimulationsAnalysis = True                      # if allSimulationsAnalysis==False: only one listed sim will be analyses
 sameInitalRadius = False
-sigmaCritical = 1000
+sigmaCritical = 800
 chosenFlag = "AB"                                  # "AB" or "C" or "all
 
 flagCondition = {"S22":{"A-B":500, "B-C":sigmaCritical}, "GR":{"A-B":5, "B-C":10}, "D":55}

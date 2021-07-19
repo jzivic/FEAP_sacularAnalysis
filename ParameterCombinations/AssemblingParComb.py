@@ -4,10 +4,16 @@ from matplotlib import pyplot as plt
 from Preprocessing.SimulationsData import *
 
 
-from ParameterCombinations import MakeCombinations_version1
-# MakeCombinations(PickleData_AB)
 
 
 
 
-from CombinationAnalysis import
+from MakeCombinations import MakeCombinations
+MakeCombinations(PickleData_AB)
+
+
+from CombinationAnalysis import MakeDir_combParam, CombAn
+MakeDir_combParam()
+CombAn("rAvg", 10)
+
+

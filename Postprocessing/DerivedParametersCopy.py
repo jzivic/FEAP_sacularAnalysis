@@ -61,19 +61,10 @@ def DerivedParameters_f(basicPickle):
         #     continue
 
 
-        # if allData["GR"][i] < flagCondition["GR"]["A-B"] and allData["D"][i] < flagCondition["D"]:
-        #     flag = "A"
-        # elif allData["GR"][i] < flagCondition["GR"]["B-C"] and allData["D"][i] < flagCondition["D"]:
-        #     flag = "B"
-
-
-        if allData["S22"][i] < flagCondition["S22"]["A-B"]:
+        if allData["S22"][i] < flagCondition["S22"]["A-B"] and allData["GR"][i] < flagCondition["GR"]["A-B"] and allData["D"][i] < flagCondition["D"]:
             flag = "A"
-        elif allData["S22"][i] < flagCondition["S22"]["B-C"] :
+        elif allData["S22"][i] < flagCondition["S22"]["B-C"] and allData["GR"][i] < flagCondition["GR"]["B-C"] and allData["D"][i] < flagCondition["D"]:
             flag = "B"
-
-
-
 
         # elif allData["S22"][i] >= flagCondition["S22"]["B-C"] and allData["GR"][i] >= flagCondition["GR"]["A-B"]:
         #     flag = "C"

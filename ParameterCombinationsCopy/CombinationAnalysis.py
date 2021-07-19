@@ -56,16 +56,13 @@ class CombAn:
             iL = paramDict["iL"]
             jD = paramDict["jD"]
             kd = paramDict["kd"]
-            lDd = paramDict["lDd"]
             mD_d = paramDict["mD_d"]
             N = paramDict["N"]
-
-
             self.parName = self.allParameters.iloc[indParam]["paramName"]
 
             def Parameter(diameter):
                 parameter = CombAn.L**iL * CombAn.D**jD * diameter**kd * \
-                            (N * CombAn.D**mD_d - diameter**mD_d)**lDd
+                            (N * CombAn.D**mD_d - diameter**mD_d)
                 return parameter
 
 
@@ -82,7 +79,7 @@ class CombAn:
                 plt.scatter(Parameter(diameter), CombAn.P)
 
                 ime = self.parName + ",   d=" + str(i)
-                plt.title(ime)
+                plt.title(ime)     #ZAŠTOime par OVO NE RADI U 0. FOLDERU??
 
                 plt.grid(color='k', linestyle=':', linewidth=0.5)
                 plt.pause(0.1)
@@ -108,12 +105,11 @@ class CombAn:
 
 
 
-# kriterij = "_r_d0/"
 
+MakeDir_combParam()
 
-
-# MakeDir_combParam()
-# CombAn("rAvg", 10)
+# CombAn("r_d0")
+CombAn("rAvg", 10)
 
 
 
