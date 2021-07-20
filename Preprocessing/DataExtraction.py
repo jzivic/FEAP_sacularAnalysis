@@ -278,7 +278,7 @@ class DataExtraction:
 
         self.D = float(nLine[2]) * 2
         self.GR = float(nLine[3]) * 2
-        self.S22 = float(nLine[5]) * 1000  # kPa# Reading D, GR, S22 from r1701 file
+        self.S22 = float(nLine[5])          # Reading D, GR, S22 from r1701 file
 
 
     # Iterates over eIW file where are coordinates stored in coordinatePoint -> points -> theta->Z order

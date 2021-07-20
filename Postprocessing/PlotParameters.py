@@ -119,7 +119,7 @@ def PlotingAllDiagrams():
             return "m"
 
     # Iterate over all values
-    for value in plotData:
+    for value in chosenData:
         # if type(chosenData[value][0]) != str:               # made to exclude logistic values (flag)
         if value in plotData.keys():
 
@@ -145,10 +145,9 @@ def PlotingAllDiagrams():
             fig.subplots_adjust(left=0.20)
 
             letterPosition_x = (min(xVariable) - (max(xVariable) - min(xVariable)) * 0.25)
-            # letterPosition_y = (min(yVariable) - (max(yVariable) - min(yVariable)) * 0.25)
-            plt.text(letterPosition_x, letterPosition_x, plotData[value]["letter"])
-
-
+            letterPosition_y = (min(yVariable) - (max(yVariable) - min(yVariable)) * 0.25)
+            plt.text(letterPosition_x, letterPosition_y, plotData[value]["letter"])
+            # print(plotData[value]["letter"])
 
 
             if value in Legends:
@@ -157,7 +156,7 @@ def PlotingAllDiagrams():
 
                 # plt.legend(loc='upper left',framealpha=1)
 
-            plt.pause(100)
+            plt.pause(1)
             plt.draw()
             plt.close()
             fig.savefig(diagramsDir + value + '.png', dpi=300)

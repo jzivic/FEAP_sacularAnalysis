@@ -25,9 +25,15 @@ def DerivedParameters_f(basicPickle, S22_condition = False):
     allData = pd.read_pickle(basicPickle)
     allData = allData.dropna()                                                       # exclude data where AAA is not formed
 
+    #transforming units
+    allData["S22"] *= 1000                                 # to kPa
+    allData["S"] /= 100                                    # to cm2
+    allData["V"] /= 1000                                   # to cm3
+
+
     S22 = allData["S22"]
-    L, H, D = allData["L"], allData["H"], allData["D"], 
-    d0, d1, d2, d3 = allData["d0"], allData["d1"], allData["d2"], allData["d3"], 
+    L, H, D = allData["L"], allData["H"], allData["D"],
+    d0, d1, d2, d3 = allData["d0"], allData["d1"], allData["d2"], allData["d3"],
     dAll = [d0, d1, d2, d3]
 
 
