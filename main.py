@@ -1,3 +1,4 @@
+import matplotlib.font_manager
 import pandas as pd
 # from openpyxl.styles import Font, PatternFill
 from Preprocessing.SimulationsData import *
@@ -9,11 +10,14 @@ from Preprocessing.SimulationsData import *
 
 
 
-a = "tata"
-
-tri = 3
 
 
+import matplotlib as mpl
+# print(mpl.font_manager.get_cachedir())
 
-print(a+tri)
+
+# for i in matplotlib.font_manager.get_fontconfig_fonts():
+#     print(i)
+
+print(matplotlib.get_cachedir())
 

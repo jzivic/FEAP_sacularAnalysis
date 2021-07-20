@@ -14,7 +14,7 @@ def CalculateStatistic():
     statData = pd.DataFrame(round(chosenData.describe(),3))
 
     # r value from linear regression, calculated for every value over value P
-    rValueDict = {value:linregress(chosenData[value],  chosenData["P"]).rvalue for value in chosenData if value!="Flag"}
+    rValueDict = {value:linregress(chosenData[value],  chosenData["RPI"]).rvalue for value in chosenData if value!="Flag"}
     df_rValue = pd.DataFrame(rValueDict, index=["rValue"])                  #converting to DataFrame
 
 
@@ -24,6 +24,7 @@ def CalculateStatistic():
     statData = pd.concat([statData,df_variance, df_rValue])                 # connecting to one DataFrame
     statData.to_excel(statXlsx)                                             # write to xlsx file
 
-
-
 # var = { ime:[vel] for ime,vel in zip(sveVelicine.columns,sveVelicine.var())}
+
+
+# CalculateStatistic()

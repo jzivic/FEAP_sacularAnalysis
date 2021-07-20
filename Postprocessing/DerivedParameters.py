@@ -22,7 +22,6 @@ def MakeDir_pickles():
 
 
 def DerivedParameters_f(basicPickle, S22_condition = False):
-# def DerivedParameters_f(basicPickle, condition = {"D_Gr":True, S=None}):
     allData = pd.read_pickle(basicPickle)
     allData = allData.dropna()                                                       # exclude data where AAA is not formed
 
@@ -52,9 +51,6 @@ def DerivedParameters_f(basicPickle, S22_condition = False):
         allData[GRPI[nd]] = L * D**2 * dAll[nd]**(-1) * (4*D-dAll[nd])**(-1)
 
 
-
-
-
     flagVector = []
     # iterate over all data, divide into A,B,C flags
     # Flag C represents surely ruptured AAA
@@ -77,9 +73,8 @@ def DerivedParameters_f(basicPickle, S22_condition = False):
                 flag = "C"
         flagVector.append(flag)
 
-
-    # allData = allData.dropna()                                                       # exclude data where AAA is not formed
     allData["Flag"] = flagVector
+
     C_Data = allData.loc[allData["Flag"] == "C"]             # Flag C represents surely ruptured AAA
     AB_Data = allData.loc[allData["Flag"] != "C"]            # Flags A,B represents AAA that should not rupture
 
@@ -87,8 +82,6 @@ def DerivedParameters_f(basicPickle, S22_condition = False):
     AB_Data.to_pickle(PickleData_AB)
     C_Data.to_pickle(PickleData_C)
 
-    shutil.copyfile(basicPickle,  picklesDir+"SacularData_basicCopy.pickle")            # copy and move to pickles dir
 
-
-MakeDir_pickles()
-DerivedParameters_f(PickleData_basic, S22_condition=False)
+# MakeDir_pickles()
+# DerivedParameters_f(PickleData_basic, S22_condition=False)
