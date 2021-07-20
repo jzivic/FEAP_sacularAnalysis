@@ -25,7 +25,7 @@ suffixList = ["101-2", "102-3"]
 TSLegnht_eIW = TSLenght + 3
 TSLegnht_rIl = TSLenght + 1
 TSLegnht_ctl = TSLenght + 1
-TSLegnht_rN1704 = 1
+TSLegnht_rN1701 = 1
 
 ###################################################################################################################
 
@@ -120,13 +120,13 @@ class DataExtraction:
                     startLine_eIW = 68 + TSLegnht_eIW * (chosenTimeStep - 0)                   # staring line in each .txt file
                     startLine_rIL = 5 + TSLegnht_rIl * (chosenTimeStep - 0)
                     startLine_ctl = 4 + TSLegnht_ctl * (chosenTimeStep - 0)
-                    startLine_rN1704 = 5 + TSLegnht_rN1704 * (chosenTimeStep - 0)
+                    startLine_rN1701 = 5 + TSLegnht_rN1701 * (chosenTimeStep - 0)
 
                 elif chosenTimeStep < 0:                                                        # negative timesteps counts from the last
                     startLine_eIW = 1 + TSLegnht_eIW * chosenTimeStep
                     startLine_rIL = 0 + TSLegnht_rIl * chosenTimeStep
                     startLine_ctl = 0 + TSLegnht_ctl * chosenTimeStep
-                    startLine_rN1704 = 0 + TSLegnht_rN1704 * chosenTimeStep
+                    startLine_rN1701 = 0 + TSLegnht_rN1701 * chosenTimeStep
 
                 if self.SameAsPreviousStep() == True:                                          # stopping analysis
                     break
@@ -145,10 +145,10 @@ class DataExtraction:
                 self.nl_ctl = sum(1 for line in open("res__CENTERLINE__" + suffix))
                 self.startLine_ctl = startLine_ctl  # % self.nl_ctl
 
-                opening_rN1704 = open("res__NODE_1704_" + suffix, "r")
-                self.wholeDocument_rN1704 = opening_rN1704.readlines()
-                self.nl_rN1704 = sum(1 for line in open("res__NODE_1704_" + suffix))
-                self.startLine_rN1704 = startLine_rN1704 #% self.nl_rN1704
+                opening_rN1701 = open("res__NODE_1701_" + suffix, "r")
+                self.wholeDocument_rN1701 = opening_rN1701.readlines()
+                self.nl_rN1701 = sum(1 for line in open("res__NODE_1701_" + suffix))
+                self.startLine_rN1701 = startLine_rN1701 #% self.nl_rN1701
 
             except:                                                                            # skip if there is no files in dir
                 FileNotFoundError
@@ -269,16 +269,16 @@ class DataExtraction:
         self.L = self.L + dL
 
 
-    # Calculate D, S22(Stress), GR from rN1704 .txt
+    # Calculate D, S22(Stress), GR from rN1701 .txt
     def Calculating_D_S22_GR(self):
         if self.chosenTSList[self.nTSt] > 0:
-            nLine = self.wholeDocument_rN1704[self.startLine_rN1704 - 1].strip().split()        # number of lines in rN1704 txt file
+            nLine = self.wholeDocument_rN1701[self.startLine_rN1701 - 1].strip().split()        # number of lines in rN1701 txt file
         elif self.chosenTSList[self.nTSt] < 0:
-            nLine = self.wholeDocument_rN1704[self.startLine_rN1704].strip().split()
+            nLine = self.wholeDocument_rN1701[self.startLine_rN1701].strip().split()
 
         self.D = float(nLine[2]) * 2
         self.GR = float(nLine[3]) * 2
-        self.S22 = float(nLine[5]) * 1000  # kPa# Reading D, GR, S22 from r1704 file
+        self.S22 = float(nLine[5]) * 1000  # kPa# Reading D, GR, S22 from r1701 file
 
 
     # Iterates over eIW file where are coordinates stored in coordinatePoint -> points -> theta->Z order

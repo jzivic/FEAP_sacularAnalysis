@@ -46,13 +46,13 @@ pos3 = "for $d$ measured at $h$=48 mm"
 
 
 """
-graphData: 
+plotData: 
     Describing each value, additional informations
         vName - value name on x axis
         txt - additional description in the corner if necessary
 """
 
-graphData = {
+plotData = {
          # "D":{"vName":"D","unit":"mm","txt":NoPos}, "H":{"vName":"H","unit":"mm","txt":NoPos},
         #  "L":{"vName":"L","unit":"mm","txt":NoPos}, "S":{"vName":"S","unit":"$mm^2$","txt":NoPos},
         #  "V":{"vName":"V","unit":"$mm^3$","txt":NoPos}, "GR":{"vName":"GR","unit":"mm/y","txt":NoPos},
@@ -78,10 +78,13 @@ graphData = {
         # "NAL2":{"vName":"NAL","unit":"mm","txt":pos2},
         # "NAL3":{"vName":"NAL","unit":"mm","txt":pos3},
 
-        "LDdr": {"vName":"LDdr","unit":"mm","txt":pos0},
+        "LDdr": {"vName":"LDdr","unit":"mm","txt": pos0},
         "LDdr1":{"vName":"LDdr1","unit":"mm","txt":pos1},
         "LDdr2":{"vName":"LDdr2","unit":"mm","txt":pos2},
         "LDdr3":{"vName":"LDdr3","unit":"mm","txt":pos3},
+
+
+        "LDdr3":{"vName":"LDdr3","unit":"mm","txt":[pos0, pos1, pos2, pos3]},
 
          }
 
@@ -100,47 +103,62 @@ def PlotingAllDiagrams():
 
     # Iterate over all values
     for value in chosenData:
-        if value in graphData.keys():               # made to exclude logistic values (flag)
+        if value in plotData.keys():               # made to exclude logistic values (flag)
 
-            plt.ylabel("$P$ [-]")
-            plt.xlabel("${}$ {}{}{}"  .format(graphData[value]["vName"]," [", graphData[value]["unit"], "]"))       # x axis line
-            xVariable = chosenData[value]
-            yVariable = chosenData["P"]
-
-            # iterates over all points to get color and get rid of unnecessary legend data
-            rList = []                                                                 # aid, made to store radius of analyzed simulations
-            for i in range(len(chosenData[value])):
-
-                # ??
-                # if chosenData["S22"][i]<800: # additional condition to exclude higher values
-
-                # legend to avoid multiple unnecessary dot plotting in legend box
-                plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["r"][i]),
-                            label = ("$r$ = " + str(chosenData["r"][i]) + " mm") if chosenData["r"][i] not in rList else "", alpha=0.7)
-                rList.append(chosenData["r"][i])
-
-            # Statistical values written on upper left corner
-            def statText():
-                slope, intercept, r, p, se = linregress(chosenData[value], chosenData["P"])
-                textPosition = (min(chosenData[value]) - (max(chosenData[value]) - min(chosenData[value])) * 0.20)
-                plt.text(textPosition, 0.9,
-                         'r=' + str(format(r, '.3g')) + "\n" + 'p=' + str(format(p, '.3g')) + "\n" + 'se=' + str(
-                             format(se, '.3g')), fontsize=12)
-            # # statText()
+            print(type(plotData[value]))
+        
+            # print()
 
 
-            plt.text(min(chosenData[value]), max(chosenData["P"]) + (max(chosenData["P"])-min(chosenData["P"]))*0.1, graphData[value]["txt"])  # position of x label text
-            fig = plt.gcf()
-            plt.grid(color='k', linestyle=':', linewidth=0.5)
-            plt.legend()
-            plt.pause(1)
-            plt.draw()
-            plt.close()
-            fig.savefig(diagramsDir + value + '.png', dpi=300)
+
+
+
+
+
+
+
+
+
+
+            # plt.ylabel("$P$ [-]")
+            # plt.xlabel("${}$ {}{}{}"  .format(plotData[value]["vName"]," [", plotData[value]["unit"], "]"))       # x axis line
+            # xVariable = chosenData[value]
+            # yVariable = chosenData["P"]
+            #
+            # # iterates over all points to get color and get rid of unnecessary legend data
+            # rList = []                                                                 # aid, made to store radius of analyzed simulations
+            # for i in range(len(chosenData[value])):
+            #
+            #     # ??
+            #     # if chosenData["S22"][i]<800: # additional condition to exclude higher values
+            #
+            #     # legend to avoid multiple unnecessary dot plotting in legend box
+            #     plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["r"][i]),
+            #                 label = ("$r$ = " + str(chosenData["r"][i]) + " mm") if chosenData["r"][i] not in rList else "", alpha=0.7)
+            #     rList.append(chosenData["r"][i])
+            #
+            # # Statistical values written on upper left corner
+            # def statText():
+            #     slope, intercept, r, p, se = linregress(chosenData[value], chosenData["P"])
+            #     textPosition = (min(chosenData[value]) - (max(chosenData[value]) - min(chosenData[value])) * 0.20)
+            #     plt.text(textPosition, 0.9,
+            #              'r=' + str(format(r, '.3g')) + "\n" + 'p=' + str(format(p, '.3g')) + "\n" + 'se=' + str(
+            #                  format(se, '.3g')), fontsize=12)
+            # # # statText()
+            #
+            #
+            # plt.text(min(chosenData[value]), max(chosenData["P"]) + (max(chosenData["P"])-min(chosenData["P"]))*0.1, plotData[value]["txt"])  # position of x label text
+            # fig = plt.gcf()
+            # plt.grid(color='k', linestyle=':', linewidth=0.5)
+            # plt.legend()
+            # plt.pause(1)
+            # plt.draw()
+            # plt.close()
+            # fig.savefig(diagramsDir + value + '.png', dpi=300)
 
 
 # MakeDir_diagrams()
-# PlotingAllDiagrams()
+PlotingAllDiagrams()
 
 
 

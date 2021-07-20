@@ -44,10 +44,13 @@ PickleData_AB = picklesDir+"SacularData_AB.pickle"
 PickleData_C = picklesDir+"SacularData_C.pickle"
 
 PickleParamCombinations = picklesDir + "ParametersCombinations.pickle"
-# ParametersCombinations_good = picklesDir + "ParametersCombinations_good.pickle"
 
 statXlsx = analysisDir + "statData.xlsx"
 paramXlsx = paramCombDir + "paramData.xlsx"
+
+
+
+
 
 
 
