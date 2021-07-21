@@ -62,7 +62,7 @@ plotData = {
          "V":{"vName":"$V$","unit":"mm$^3$","heightLabel":NoPos, "letter":"b)"},
          "T":{"vName":"$T$","unit":"-","heightLabel":NoPos, "letter":"b)"},
 
-        "d0": {"vName": "d", "unit": "mm", "txt": pos0, "letter":")"},
+        "d0": {"vName": "d", "unit": "mm", "heightLabel": pos0, "letter":")"},
         "d1": {"vName": "$d$", "unit": "mm", "heightLabel": pos1, "letter":"a)"},
         "d2": {"vName": "$d$", "unit": "mm", "heightLabel": pos2, "letter":"a)"},
         "d3": {"vName": "$d$", "unit": "mm", "heightLabel": pos3, "letter":"a)"},

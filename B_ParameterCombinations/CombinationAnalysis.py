@@ -17,7 +17,7 @@ def MakeDir_combParam():
 
 class CombinationAnalysis:
     abData = pd.read_pickle(PickleData_AB)
-    P = abData["P"]
+    RPI = abData["RPI"]
     L = abData["L"]
     D = abData["D"]
     d0 = abData["d0"]
@@ -63,18 +63,16 @@ class CombinationAnalysis:
                             (N * CombinationAnalysis.D**mD_d - diameter**mD_d)**lDd
                 return parameter
 
-
-
             self.MakeParDir(nParam)
 
             for i in range(len(CombinationAnalysis.dSvi)):
 
                 diameter = CombinationAnalysis.dSvi[i]
 
-                slope, intercept, rValue, pValue, se = linregress(Parameter(diameter), CombinationAnalysis.P)
+                slope, intercept, rValue, pValue, se = linregress(Parameter(diameter), CombinationAnalysis.RPI)
 
                 fig = plt.gcf()
-                plt.scatter(Parameter(diameter), CombinationAnalysis.P)
+                plt.scatter(Parameter(diameter), CombinationAnalysis.RPI)
 
                 ime = self.parName + ",   d=" + str(i)
                 plt.title(ime)
@@ -84,7 +82,7 @@ class CombinationAnalysis:
                 plt.draw()
                 plt.close()
 
-                fig.savefig(self.parDir + "d= "+str(i) +"    " + self.parName)
+                fig.savefig(self.parDir + "d= "+str(i) +",    " + self.parName)
 
 
 
