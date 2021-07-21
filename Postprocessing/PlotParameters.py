@@ -10,6 +10,16 @@ from scipy.stats import linregress
 from Preprocessing.SimulationsData import *
 
 
+# import matplotlib.font_manager
+
+font = {'family' : 'Times New Roman',
+        'size'   : 23}
+plt.rc('font', **font)
+plt.rcParams['mathtext.fontset'] = 'stix'
+# print(matplotlib.get_cachedir)
+
+
+
 
 
 
@@ -59,36 +69,34 @@ plotData:
 """
 
 plotData = {
-         "D":{"vName":"D","unit":"mm","txt":NoPos, "letter":"a)"},
-         "L":{"vName":"L","unit":"mm","txt":NoPos, "letter":"b)"},
-         "S":{"vName":"S","unit":"$mm^2$","txt":NoPos, "letter":"a)"},
-         "V":{"vName":"V","unit":"$mm^3$","txt":NoPos, "letter":"b)"},
-         "T":{"vName":"T","unit":"-","txt":NoPos, "letter":"b)"},
+        #  "D":{"vName":"D","unit":"mm","heightLabel":NoPos, "letter":"a)"},
+        #  "L":{"vName":"L","unit":"mm","heightLabel":NoPos, "letter":"b)"},
+        #  "S":{"vName":"S","unit":"$mm^2$","heightLabel":NoPos, "letter":"a)"},
+        #  "V":{"vName":"V","unit":"$mm^3$","heightLabel":NoPos, "letter":"b)"},
+        #  "T":{"vName":"T","unit":"-","heightLabel":NoPos, "letter":"b)"},
+        #
+        # # "d0": {"vName": "d", "unit": "mm", "txt": pos0, "letter":")"},
+        # "d1": {"vName": "d", "unit": "mm", "heightLabel": pos1, "letter":"a)"},
+        # "d2": {"vName": "d", "unit": "mm", "heightLabel": pos2, "letter":"a)"},
+        # "d3": {"vName": "d", "unit": "mm", "heightLabel": pos3, "letter":"a)"},
+        #
+        # "Ddr0": {"vName":"Ddr", "unit":"-", "heightLabel": pos0, "letter":"a)"},
+        # "Ddr1": {"vName":"Ddr", "unit":"-", "heightLabel": pos1,  "letter":"b)"},
+        # "Ddr2": {"vName":"Ddr", "unit":"-", "heightLabel": pos2,  "letter":"b)"},
+        # "Ddr3": {"vName":"Ddr", "unit":"-", "heightLabel": pos3,  "letter":"b)"},
+        #
+        # "GRPI0": {"vName":"GRPI", "unit":"mm", "heightLabel":pos0, "letter":"a)"},
+        "GRPI1": {"vName":"GRPI", "unit":"mm", "heightLabel":pos1, "letter":"c)"},
+        "GRPI2": {"vName":"GRPI", "unit":"mm", "heightLabel":pos2, "letter":"c)"},
+        "GRPI3": {"vName":"GRPI", "unit":"mm", "heightLabel":pos3, "letter":"c)"},
 
-        # "d0": {"vName": "d", "unit": "mm", "txt": pos0, "letter":")"},
-        "d1": {"vName": "d", "unit": "mm", "txt": pos1, "letter":"a)"},
-        "d2": {"vName": "d", "unit": "mm", "txt": pos2, "letter":"a)"},
-        "d3": {"vName": "d", "unit": "mm", "txt": pos3, "letter":"a)"},
-
-        "Ddr0": {"vName":"Ddr", "unit":"-", "txt": pos0, "letter":"a)"},
-        "Ddr1": {"vName":"Ddr", "unit":"-", "txt": pos1,  "letter":"b)"},
-        "Ddr2": {"vName":"Ddr", "unit":"-", "txt": pos2,  "letter":"b)"},
-        "Ddr3": {"vName":"Ddr", "unit":"-", "txt": pos3,  "letter":"b)"},
-
-        "GRPI0": {"vName":"GRPI", "unit":"mm", "txt":pos0, "letter":"a)"},
-        "GRPI1": {"vName":"GRPI", "unit":"mm", "txt":pos1, "letter":"c)"},
-        "GRPI2": {"vName":"GRPI", "unit":"mm", "txt":pos2, "letter":"c)"},
-        "GRPI3": {"vName":"GRPI", "unit":"mm", "txt":pos3, "letter":"c)"},
-
-        "NAL0": {"vName":"NAL", "unit":"mm", "txt":pos0, "letter":"b)"},
-        "NAL1": {"vName":"NAL", "unit":"mm", "txt":pos1, "letter":"d)"},
-        "NAL2": {"vName":"NAL", "unit":"mm", "txt":pos2, "letter":"d)"},
-        "NAL3": {"vName":"NAL", "unit":"mm", "txt":pos3, "letter":"d)"},
+        "NAL0": {"vName":"NAL", "unit":"mm", "heightLabel":pos0, "letter":"b)"},
+        "NAL1": {"vName":"NAL", "unit":"mm", "heightLabel":pos1, "letter":"d)"},
+        "NAL2": {"vName":"NAL", "unit":"mm", "heightLabel":pos2, "letter":"d)"},
+        "NAL3": {"vName":"NAL", "unit":"mm", "heightLabel":pos3, "letter":"d)"},
          }
 
-
-Legends = ["D", "Ddr0", "S", "GRPI0", "GRPI1", "GRPI2", "GRPI3" ]
-
+diagWLegend = ["D", "Ddr0", "S", "GRPI0", "GRPI1", "GRPI2", "GRPI3" ]
 
 
 
@@ -96,13 +104,8 @@ Legends = ["D", "Ddr0", "S", "GRPI0", "GRPI1", "GRPI2", "GRPI3" ]
 
 
 
-import matplotlib.font_manager
 
-font = {'family' : 'Times New Roman',
-        'size'   : 23}
-plt.rc('font', **font)
-plt.rcParams['mathtext.fontset'] = 'stix'
-# print(matplotlib.get_cachedir)
+
 
 
 
@@ -144,13 +147,17 @@ def PlotingAllDiagrams():
             fig.subplots_adjust(bottom=0.18) #pomak dolje crte da ne odreže graf
             fig.subplots_adjust(left=0.20)
 
+            heightLabelPosition_x = min(xVariable) - abs(max(xVariable) - min(xVariable))*0.05
+            heightLabelPosition_y = max(yVariable)*1.06
+            plt.text(heightLabelPosition_x, heightLabelPosition_y, plotData[value]["heightLabel"])
+
+
             letterPosition_x = (min(xVariable) - (max(xVariable) - min(xVariable)) * 0.25)
             letterPosition_y = (min(yVariable) - (max(yVariable) - min(yVariable)) * 0.25)
             plt.text(letterPosition_x, letterPosition_y, plotData[value]["letter"])
-            # print(plotData[value]["letter"])
 
 
-            if value in Legends:
+            if value in diagWLegend:
                 plt.legend(loc='upper left', framealpha=1, labelspacing=0, borderpad=0.1, handletextpad=-0.5,
                            handlelength=1.8, bbox_to_anchor=(-0.03, 1.04))
 
