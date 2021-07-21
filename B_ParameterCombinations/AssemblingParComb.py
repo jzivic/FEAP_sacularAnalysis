@@ -4,13 +4,13 @@ from matplotlib import pyplot as plt
 from A_Preprocessing.SimulationsData import *
 
 
-# from DerivedParameters import DerivedParameters_f, MakeDir_pickles
-# MakeDir_pickles()
-# DerivedParameters_f(PickleData_basic)
+from DerivedParameters import DerivedParameters_f, MakeDir_pickles
+MakeDir_pickles()
+DerivedParameters_f(PickleData_basic)
 
 
-# from MakeCombinations import MakeCombinations
-# MakeCombinations(PickleData_AB)
+from MakeCombinations import MakeCombinations
+MakeCombinations(PickleData_AB)
 
 
 from CombinationAnalysis import MakeDir_combParam, CombinationAnalysis

@@ -45,14 +45,9 @@ class MakeCombinations:
                         for mD_d in self.range_1:
                             for N in self.range_2:
 
-                                parameter = self.L ** iL * self.D ** jD * self.dSvi[0] ** kd * (N * self.D ** mD_d - self.dSvi[0] ** mD_d)**lDd
                                 paramName = "iL=" + str(iL) + " jD=" + str(jD) + " kd=" + str(kd)+ " lDd=" + str(lDd) + " mD_d=" + str(
                                             mD_d) + " N=" + str(N)
                                 paramName_Dict = {"iL": iL, "jD": jD, "kd": kd, "lDd": lDd, "mD_d": mD_d, "N": N}
-
-
-                                # slope, intercept, rValue, pValue, se = linregress(parameter, self.P)
-                                # rValue = abs(rValue)
 
 
                                 self.allParameters["paramName"].append(paramName)
@@ -63,7 +58,7 @@ class MakeCombinations:
                                     parameter = self.L ** iL * self.D ** jD * self.dSvi[i] ** kd *\
                                                     ( N * self.D ** mD_d - self.dSvi[i] ** mD_d)**lDd
 
-                                    slope, intercept, rValue, p, se = linregress(parameter, self.P)
+                                    slope, intercept, rValue, p, se = linregress(parameter, self.RPI)
                                     rValue = abs(rValue)
                                     rAll.append(rValue)
 
@@ -72,9 +67,9 @@ class MakeCombinations:
                                 self.allParameters["r_d2"].append(rAll[2])
                                 self.allParameters["r_d3"].append(rAll[3])
 
-                                rAv = (sum([i for i in rAll]))/4
+                                rAvg = (sum([i for i in rAll]))/4
 
-                                self.allParameters["rAvg"].append(rAv)
+                                self.allParameters["rAvg"].append(rAvg)
 
 
         df_all = pd.DataFrame(self.allParameters)

@@ -15,7 +15,8 @@ from SimulationsData import *
 ###################################################################################################################
 # analyzing just one simulation for testing
 # chosenTimeSteps = [190, 220,280, 316, 350]
-oneSimTestPath = "/home/josip/feapMoje/pocetak/" + parametarskaAnaliza + "/rezultati/sakularna/r=10/parametar_k1/k1=1.06"
+oneSimTestPath = "/home/josip/feapMoje/pocetak/parametarskaAnalizaSve/rezultati/sakularna/r=10/parametar_k1/k1=1.06"
+
 ###################################################################################################################
 
 #TSLenght depends on number of mesh elements. Same for all simulations
