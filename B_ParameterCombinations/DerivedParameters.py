@@ -6,7 +6,7 @@ Devide all data by flags to separate pickles
 
 import pandas as pd
 import shutil, os
-from Preprocessing.SimulationsData import *
+from A_Preprocessing.SimulationsData import *
 
 
 def MakeDir_pickles():
@@ -18,19 +18,16 @@ def MakeDir_pickles():
 
 
 
-
-
-
 def DerivedParameters_f(basicPickle, S22_condition = False):
     allData = pd.read_pickle(basicPickle)
     allData = allData.dropna()                                                       # exclude data where AAA is not formed
 
     #transforming units
-    allData["S22"] *= 1000                                 # to kPa
-    allData["S"] /= 100                                    # to cm2
-    allData["V"] /= 1000                                   # to cm3
+    allData["S22"] *= 1000                                 # Pa to kPa
+    allData["S"] /= 100                                    # mm2 to cm2
+    allData["V"] /= 1000                                   # mm3 to cm3
 
-
+    # easier to write
     S22 = allData["S22"]
     L, H, D = allData["L"], allData["H"], allData["D"],
     d0, d1, d2, d3 = allData["d0"], allData["d1"], allData["d2"], allData["d3"],
@@ -38,7 +35,6 @@ def DerivedParameters_f(basicPickle, S22_condition = False):
 
 
     allData["RPI"] = S22 / sigmaCritical                                    # probability of rupture
-    # allData["P"] = S22 / sigmaCritical                                    # probability of rupture
 
     allData["T"] = L / H
     allData["HNeck"] = 160 - H
@@ -46,8 +42,7 @@ def DerivedParameters_f(basicPickle, S22_condition = False):
     allData["Hr"] = allData["HNeck"] / (allData["HNeck"]+ H)
     allData["HDr"] = allData["H"] / d0
 
-
-
+    # to avoid multiple lines
     NAL = ["NAL0", "NAL1", "NAL2", "NAL3"]
     GRPI = ["GRPI0", "GRPI1", "GRPI2", "GRPI3"]
     Ddr = ["Ddr0", "Ddr1", "Ddr2", "Ddr3"]
@@ -56,8 +51,8 @@ def DerivedParameters_f(basicPickle, S22_condition = False):
         allData[NAL[nd]] = L * D * dAll[nd]**(-1)
         allData[GRPI[nd]] = L * D**2 * dAll[nd]**(-1) * (4*D-dAll[nd])**(-1)
 
+    flagVector = [] # list to store flag data
 
-    flagVector = []
     # iterate over all data, divide into A,B,C flags
     # Flag C represents surely ruptured AAA
     # Flags A,B represents AAA that should not rupture
@@ -89,5 +84,5 @@ def DerivedParameters_f(basicPickle, S22_condition = False):
     C_Data.to_pickle(PickleData_C)
 
 
-# MakeDir_pickles()
-# DerivedParameters_f(PickleData_basic, S22_condition=False)
+MakeDir_pickles()
+DerivedParameters_f(PickleData_basic, S22_condition)

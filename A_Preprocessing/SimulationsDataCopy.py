@@ -25,7 +25,7 @@ chosenFlag = "AB"                                  # "AB" or "C" or "all
 
 flagCondition = {"S22":{"A-B":500, "B-C":sigmaCritical}, "GR":{"A-B":5, "B-C":10}, "D":55}
 
-
+S22_condition = False
 
 resultsDir = "/home/josip/feap/pocetak/"+parametarskaAnaliza+"/rezultati/sakularna/"                          #path to analysis dir
 

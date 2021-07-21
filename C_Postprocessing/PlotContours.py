@@ -8,8 +8,8 @@ import shutil, os
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from Preprocessing.SimulationsData import *
-from Preprocessing.DirectorySearch import DirectorySearch
+from A_Preprocessing.SimulationsData import *
+from A_Preprocessing.DirectorySearch import DirectorySearch
 
 
 # Make "contours" dir to save contour pictures

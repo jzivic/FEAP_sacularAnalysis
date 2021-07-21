@@ -1,7 +1,7 @@
 import pandas as pd
 from scipy.stats import linregress
 from matplotlib import pyplot as plt
-from Preprocessing.SimulationsData import *
+from A_Preprocessing.SimulationsData import *
 
 
 
@@ -18,13 +18,12 @@ class MakeCombinations:
 
     def SetParamCombos(self):
         self.range_1 = [-3, -2, -1, 0, 1, 2, 3]
-        # self.range_12 = [-3, -2, -1, 1, 2, 3]
         self.range_2 = [1, 2, 4]
 
         self.allParameters = {"paramName":[], "r_d0":[], "r_d1":[], "r_d2":[], "r_d3":[], "rAvg":[], "paramDict":[]}
 
 
-        self.P = self.inputData["P"]
+        self.RPI = self.inputData["RPI"]
         self.L = self.inputData["L"]
         self.D = self.inputData["D"]
 

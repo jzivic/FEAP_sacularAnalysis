@@ -7,7 +7,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.stats import linregress
 
-from Preprocessing.SimulationsData import *
+from A_Preprocessing.SimulationsData import *
 
 
 font = {'family' : 'Times New Roman',
@@ -140,8 +140,8 @@ def PlotingAllDiagrams():
             fig.savefig(diagramsDir + value + '.png', dpi=300)
 
 
-MakeDir_diagrams()
-PlotingAllDiagrams()
+# MakeDir_diagrams()
+# PlotingAllDiagrams()
 
 
 

@@ -2,7 +2,7 @@ import shutil, os
 import pandas as pd
 from scipy.stats import linregress
 from matplotlib import pyplot as plt
-from Preprocessing.SimulationsData import *
+from A_Preprocessing.SimulationsData import *
 
 
 def MakeDir_combParam():
@@ -15,7 +15,7 @@ def MakeDir_combParam():
 
 
 
-class CombAn:
+class CombinationAnalysis:
     abData = pd.read_pickle(PickleData_AB)
     P = abData["P"]
     L = abData["L"]
@@ -34,15 +34,10 @@ class CombAn:
             "sortingKey should be: rAvg, r_d0, r_d1, r_d2, r_d3"
 
         self.sortingKey = sortingKey
-        self.indSorted = list(CombAn.allParameters.sort_values(by=self.sortingKey, ascending=False).index)
-
-
+        self.indSorted = list(CombinationAnalysis.allParameters.sort_values(by=self.sortingKey, ascending=False).index)
 
         self.WriteExcel()
         self.ParameterIteration(nBestParams)
-
-
-
 
 
     def ParameterIteration(self, nBestParams):
@@ -64,22 +59,22 @@ class CombAn:
             self.parName = self.allParameters.iloc[indParam]["paramName"]
 
             def Parameter(diameter):
-                parameter = CombAn.L**iL * CombAn.D**jD * diameter**kd * \
-                            (N * CombAn.D**mD_d - diameter**mD_d)**lDd
+                parameter = CombinationAnalysis.L**iL * CombinationAnalysis.D**jD * diameter**kd * \
+                            (N * CombinationAnalysis.D**mD_d - diameter**mD_d)**lDd
                 return parameter
 
 
 
             self.MakeParDir(nParam)
 
-            for i in range(len(CombAn.dSvi)):
+            for i in range(len(CombinationAnalysis.dSvi)):
 
-                diameter = CombAn.dSvi[i]
+                diameter = CombinationAnalysis.dSvi[i]
 
-                slope, intercept, rValue, pValue, se = linregress(Parameter(diameter), CombAn.P)
+                slope, intercept, rValue, pValue, se = linregress(Parameter(diameter), CombinationAnalysis.P)
 
                 fig = plt.gcf()
-                plt.scatter(Parameter(diameter), CombAn.P)
+                plt.scatter(Parameter(diameter), CombinationAnalysis.P)
 
                 ime = self.parName + ",   d=" + str(i)
                 plt.title(ime)
@@ -100,20 +95,14 @@ class CombAn:
 
 
     def WriteExcel(self):
-        self.toExcel = CombAn.allParameters.sort_values(by=[self.sortingKey], ascending=False)
+        self.toExcel = CombinationAnalysis.allParameters.sort_values(by=[self.sortingKey], ascending=False)
         self.toExcel.to_excel(paramXlsx)
 
 
 
 
-
-
-# kriterij = "_r_d0/"
-
-
-
 # MakeDir_combParam()
-# CombAn("rAvg", 10)
+# CombinationAnalysis("rAvg", 10)
 
 
 
