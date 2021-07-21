@@ -10,21 +10,10 @@ from scipy.stats import linregress
 from Preprocessing.SimulationsData import *
 
 
-# import matplotlib.font_manager
-
 font = {'family' : 'Times New Roman',
         'size'   : 23}
 plt.rc('font', **font)
 plt.rcParams['mathtext.fontset'] = 'stix'
-# print(matplotlib.get_cachedir)
-
-
-
-
-
-
-
-
 
 
 
@@ -54,7 +43,6 @@ chosenData = chosenData_f()
 
 
 
-
 NoPos = ""                                                  # descriptive text for selected diagram height
 pos0 = "for healthy $d$"
 pos1 = "for $d$ measured at $h$=62 mm"
@@ -67,25 +55,24 @@ plotData:
         vName - value name on x axis
         txt - additional description in the corner if necessary
 """
-
 plotData = {
-        #  "D":{"vName":"D","unit":"mm","heightLabel":NoPos, "letter":"a)"},
-        #  "L":{"vName":"L","unit":"mm","heightLabel":NoPos, "letter":"b)"},
-        #  "S":{"vName":"S","unit":"$mm^2$","heightLabel":NoPos, "letter":"a)"},
-        #  "V":{"vName":"V","unit":"$mm^3$","heightLabel":NoPos, "letter":"b)"},
-        #  "T":{"vName":"T","unit":"-","heightLabel":NoPos, "letter":"b)"},
-        #
-        # # "d0": {"vName": "d", "unit": "mm", "txt": pos0, "letter":")"},
-        # "d1": {"vName": "d", "unit": "mm", "heightLabel": pos1, "letter":"a)"},
-        # "d2": {"vName": "d", "unit": "mm", "heightLabel": pos2, "letter":"a)"},
-        # "d3": {"vName": "d", "unit": "mm", "heightLabel": pos3, "letter":"a)"},
-        #
-        # "Ddr0": {"vName":"Ddr", "unit":"-", "heightLabel": pos0, "letter":"a)"},
-        # "Ddr1": {"vName":"Ddr", "unit":"-", "heightLabel": pos1,  "letter":"b)"},
-        # "Ddr2": {"vName":"Ddr", "unit":"-", "heightLabel": pos2,  "letter":"b)"},
-        # "Ddr3": {"vName":"Ddr", "unit":"-", "heightLabel": pos3,  "letter":"b)"},
-        #
-        # "GRPI0": {"vName":"GRPI", "unit":"mm", "heightLabel":pos0, "letter":"a)"},
+         "D":{"vName":"$D$","unit":"mm","heightLabel":NoPos, "letter":"a)"},
+         "L":{"vName":"$L$","unit":"mm","heightLabel":NoPos, "letter":"b)"},
+         "S":{"vName":"$S$","unit":"mm$^2$","heightLabel":NoPos, "letter":"a)"},
+         "V":{"vName":"$V$","unit":"mm$^3$","heightLabel":NoPos, "letter":"b)"},
+         "T":{"vName":"$T$","unit":"-","heightLabel":NoPos, "letter":"b)"},
+
+        "d0": {"vName": "d", "unit": "mm", "txt": pos0, "letter":")"},
+        "d1": {"vName": "$d$", "unit": "mm", "heightLabel": pos1, "letter":"a)"},
+        "d2": {"vName": "$d$", "unit": "mm", "heightLabel": pos2, "letter":"a)"},
+        "d3": {"vName": "$d$", "unit": "mm", "heightLabel": pos3, "letter":"a)"},
+
+        "Ddr0": {"vName":"$Ddr$", "unit":"-", "heightLabel": pos0, "letter":"a)"},
+        "Ddr1": {"vName":"$Ddr$", "unit":"-", "heightLabel": pos1,  "letter":"b)"},
+        "Ddr2": {"vName":"$Ddr$", "unit":"-", "heightLabel": pos2,  "letter":"b)"},
+        "Ddr3": {"vName":"$Ddr$", "unit":"-", "heightLabel": pos3,  "letter":"b)"},
+
+        "GRPI0": {"vName":"GRPI", "unit":"mm", "heightLabel":pos0, "letter":"a)"},
         "GRPI1": {"vName":"GRPI", "unit":"mm", "heightLabel":pos1, "letter":"c)"},
         "GRPI2": {"vName":"GRPI", "unit":"mm", "heightLabel":pos2, "letter":"c)"},
         "GRPI3": {"vName":"GRPI", "unit":"mm", "heightLabel":pos3, "letter":"c)"},
@@ -96,17 +83,9 @@ plotData = {
         "NAL3": {"vName":"NAL", "unit":"mm", "heightLabel":pos3, "letter":"d)"},
          }
 
-diagWLegend = ["D", "Ddr0", "S", "GRPI0", "GRPI1", "GRPI2", "GRPI3" ]
 
-
-
-
-
-
-
-
-
-
+# list of values that have legend in the corner
+diagWithLegend = ["D", "Ddr0", "S", "GRPI0", "GRPI1", "GRPI2", "GRPI3" ]
 
 
 # Plot all values in chosen TimeSteps in loop
@@ -123,15 +102,12 @@ def PlotingAllDiagrams():
 
     # Iterate over all values
     for value in chosenData:
-        # if type(chosenData[value][0]) != str:               # made to exclude logistic values (flag)
         if value in plotData.keys():
 
-
             plt.ylabel("RPI [-]")
-            plt.xlabel("${}$ {}{}{}"  .format(plotData[value]["vName"]," [", plotData[value]["unit"], "]"))       # x axis line
+            plt.xlabel("{} {}{}{}"  .format(plotData[value]["vName"]," [", plotData[value]["unit"], "]"))       # x axis line
             xVariable = chosenData[value]
             yVariable = chosenData["RPI"]
-
 
             # # iterates over all points to get color and get rid of unnecessary legend data
             rList = []                                                                 # aid, made to store radius of analyzed simulations
@@ -144,31 +120,24 @@ def PlotingAllDiagrams():
 
             fig = plt.gcf()
             plt.grid(color='k', linestyle=':', linewidth=0.5)
-            fig.subplots_adjust(bottom=0.18) #pomak dolje crte da ne odreže graf
+            fig.subplots_adjust(bottom=0.18)                        # empty space on the bottom
             fig.subplots_adjust(left=0.20)
 
-            heightLabelPosition_x = min(xVariable) - abs(max(xVariable) - min(xVariable))*0.05
+            heightLabelPosition_x = min(xVariable) - abs(max(xVariable) - min(xVariable))*0.05          # txt position
             heightLabelPosition_y = max(yVariable)*1.06
-            plt.text(heightLabelPosition_x, heightLabelPosition_y, plotData[value]["heightLabel"])
+            plt.text(heightLabelPosition_x, heightLabelPosition_y, plotData[value]["heightLabel"])      # h,d values
 
-
-            letterPosition_x = (min(xVariable) - (max(xVariable) - min(xVariable)) * 0.25)
+            letterPosition_x = (min(xVariable) - (max(xVariable) - min(xVariable)) * 0.25)              # label in article
             letterPosition_y = (min(yVariable) - (max(yVariable) - min(yVariable)) * 0.25)
             plt.text(letterPosition_x, letterPosition_y, plotData[value]["letter"])
 
-
-            if value in diagWLegend:
+            if value in diagWithLegend:
                 plt.legend(loc='upper left', framealpha=1, labelspacing=0, borderpad=0.1, handletextpad=-0.5,
                            handlelength=1.8, bbox_to_anchor=(-0.03, 1.04))
-
-                # plt.legend(loc='upper left',framealpha=1)
-
             plt.pause(1)
             plt.draw()
             plt.close()
             fig.savefig(diagramsDir + value + '.png', dpi=300)
-
-
 
 
 MakeDir_diagrams()
