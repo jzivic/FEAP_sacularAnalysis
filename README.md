@@ -1,10 +1,13 @@
 # FEAP_sacularAnalysis
 
-In the A_Preprocessing̣->SimulationsData: resultsDir has to be specified. Within all other directories will be automatically made
 
-Py scripts made to analyze all FEAP simulations.  After finished, all FEAP simulation results are stored in notepad documents in different (sub)direcories. 
+Python scripts made to analyze FEAP simulations. 
+
+Input simulations and processed output data are stored: https://drive.google.com/drive/folders/13ZakNl0kf7Y5AIffglaOynaulLBCIVw-?usp=sharing
+When finished, all FEAP simulation results are stored in notepad documents in several different (sub)direcories. 
 Analysis pogram is diveded into 3 parts thas has to be run (Assembing+A/B/C) separately:
 
+In the A_Preprocessing̣->SimulationsData: resultsDir has to be specified(uploaded to drive⨪>inputData). 
 1) A_Preprocessing:
   - Select sonditions, wanted Timesteps for analysis and contor plotting, direcotry and pickle names..  
   - Iterates over the main directory,gets all simulation names and paths from several different subfolders at different levels. 
