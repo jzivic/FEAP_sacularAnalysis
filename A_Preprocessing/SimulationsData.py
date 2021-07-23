@@ -7,9 +7,6 @@ TimeSteps, dir and data names, critical values are selected here:
 """
 
 resultsDir = "/home/josip/feap/pocetak/parametarskaAnalizaSve/rezultati/sakularna/"   #path to analysis dir
-analysisDir = resultsDir + "analysisData/"
-
-
 
 
 
@@ -21,6 +18,8 @@ chosenTimeSteps = [190, 208, 226, 244, 262, 280, 298, 316, 334, 352, 370, 388, 4
 allSimulationsAnalysis = True
 sameInitalRadius = False
 
+
+analysisDir = resultsDir + "analysisData/"
 PickleData_basic = analysisDir+"SacularData_basic.pickle"                       # just read parameters
 picklesDir = analysisDir + ("pickles/")
 

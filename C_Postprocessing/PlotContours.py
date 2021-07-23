@@ -92,7 +92,7 @@ def PlotAllContours():
                 fig = plt.gcf()
                 plt.grid(color='k', linestyle=':', linewidth=0.5)
                 plt.legend()
-                plt.pause(1)                                                                   # one pictuer is diplayed only second and program move to next
+                plt.pause(0.1)                                                                   # one pictuer is diplayed only second and program move to next
                 plt.draw()
                 plt.close()
                 fig.savefig(contoursDir + allNames[n] + " " + str(chosenTSContours[nTS])  + '.png', dpi=300)
