@@ -5,7 +5,7 @@ In the A_Preprocessing̣->SimulationsData: resultsDir has to be specified. Withi
 Py scripts made to analyze all FEAP simulations.  After finished, all FEAP simulation results are stored in notepad documents in different (sub)direcories. 
 Analysis pogram is diveded into 3 parts thas has to be run (Assembing+A/B/C) separately:
 
-1) A_Prerocessing:
+1) A_Preprocessing:
   - Select sonditions, wanted Timesteps for analysis and contor plotting, direcotry and pickle names..  
   - Iterates over the main directory,gets all simulation names and paths from several different subfolders at different levels. 
   - Extract data for every simulation: With several conditions, for selected timesteps from several different files in each simulation directory.
