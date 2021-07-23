@@ -1,12 +1,7 @@
-import pandas as pd
 
-
-from A_Preprocessing.SimulationsData import *
-
-
-# from PlotContours import MakeDir_contours, PlotAllContours
-# MakeDir_contours()
-# PlotAllContours()
+from PlotContours import MakeDir_contours, PlotAllContours
+MakeDir_contours()
+PlotAllContours()
 
 
 from PlotParameters import MakeDir_diagrams, PlotingAllDiagrams

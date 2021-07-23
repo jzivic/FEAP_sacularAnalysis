@@ -5,8 +5,6 @@ Plot all diagrams in a loop.
 import shutil, os
 import pandas as pd
 import matplotlib.pyplot as plt
-from scipy.stats import linregress
-
 from A_Preprocessing.SimulationsData import *
 
 
