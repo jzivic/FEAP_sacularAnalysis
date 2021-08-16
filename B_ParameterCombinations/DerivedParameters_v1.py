@@ -18,7 +18,7 @@ def MakeDir_pickles():
 
 
 
-def DerivedParameters_f(basicPickle, S22_condition = False):
+def DerivedParameters_f1(basicPickle, S22_condition = False):
     allData = pd.read_pickle(basicPickle)
     allData = allData.dropna()                                                       # exclude data where AAA is not formed
 
@@ -58,17 +58,17 @@ def DerivedParameters_f(basicPickle, S22_condition = False):
     # Flags A,B represents AAA that should not rupture
     for i in range(len(allData["S22"])):
         if S22_condition == True:
-            if allData["S22"][i] < flagCondition["S22"]["A-B"] and allData["GR"][i] < flagCondition["GR"]["A-B"] and allData["D"][i] < flagCondition["D"]:
+            if allData["S22"][i] < flagCondition_1["S22"]["A-B"] and allData["GR"][i] < flagCondition_1["GR"]["A-B"] and allData["D"][i] < flagCondition_1["D"]:
                 flag = "A"
-            elif allData["S22"][i] < flagCondition["S22"]["B-C"] and allData["GR"][i] < flagCondition["GR"]["B-C"] and allData["D"][i] < flagCondition["D"]:
+            elif allData["S22"][i] < flagCondition_1["S22"]["B-C"] and allData["GR"][i] < flagCondition_1["GR"]["B-C"] and allData["D"][i] < flagCondition_1["D"]:
                 flag = "B"
             else:
                 flag = "C"
 
         elif S22_condition == False:
-            if allData["D"][i] < flagCondition["D"] and allData["GR"][i] < flagCondition["GR"]["A-B"]:
+            if allData["D"][i] < flagCondition_1["D"] and allData["GR"][i] < flagCondition_1["GR"]["A-B"]:
                 flag = "A"
-            elif allData["D"][i] < flagCondition["D"] and allData["GR"][i] < flagCondition["GR"]["B-C"]:
+            elif allData["D"][i] < flagCondition_1["D"] and allData["GR"][i] < flagCondition_1["GR"]["B-C"]:
                 flag = "B"
             else:
                 flag = "C"
@@ -84,5 +84,5 @@ def DerivedParameters_f(basicPickle, S22_condition = False):
     C_Data.to_pickle(PickleData_C)
 
 
-MakeDir_pickles()
-DerivedParameters_f(PickleData_basic, S22_condition)
+# MakeDir_pickles()
+# DerivedParameters_f1(PickleData_basic, S22_condition)

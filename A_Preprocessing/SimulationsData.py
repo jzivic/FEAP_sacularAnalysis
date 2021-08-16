@@ -25,19 +25,34 @@ picklesDir = analysisDir + ("pickles/")
 
 
 
-
-
-
 # B_ParameterCombinations:
+flagVersion = "v1"
+assert flagVersion in ["v1", "v2"], "Unknown version"
+
+if flagVersion=="v1":
+    chosenFlag = "AB"
+elif flagVersion=="v2":
+    chosenFlag = "A"
+
+
+# Data for v1
 sigmaCritical = 1000
-flagCondition = {"S22":{"A-B":500, "B-C":sigmaCritical}, "GR":{"A-B":5, "B-C":10}, "D":55}
-chosenFlag = "AB"                                  # "AB" or "C" or "all
+flagCondition_1 = {"S22":{"A-B":500, "B-C":sigmaCritical}, "GR":{"A-B":5, "B-C":10}, "D":55}
 S22_condition = False
 sortingKey = "rAvg"                                # rAvg, r_d0, r_d1, r_d2, r_d3
 nBestParams = 10
 
+# Data for v2
+RPI_condition = 1.2
+D_condition = True
+flagCondition_2 = {"D":60}
+
+
+
+
 paramCombDir = analysisDir + ("paramComb/")
 PickleData_all = picklesDir+"SacularData_all.pickle"                           # derived parameters (A+B+C)
+PickleData_A = picklesDir+"SacularData_A.pickle"     #novo
 PickleData_AB = picklesDir+"SacularData_AB.pickle"
 PickleData_C = picklesDir+"SacularData_C.pickle"
 PickleParamCombinations = picklesDir + "ParametersCombinations.pickle"
@@ -52,7 +67,6 @@ paramXlsx = paramCombDir + "paramData.xlsx"
 diagramsDir = analysisDir + ("diagrams/")
 contoursDir = analysisDir + ("contours/")
 statXlsx = analysisDir + "statData.xlsx"
-
 
 
 

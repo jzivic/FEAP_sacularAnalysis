@@ -26,7 +26,11 @@ def MakeDir_diagrams():
 
 # Load chosen data depending on flag
 def chosenData_f():
-    if chosenFlag =="AB":
+    if chosenFlag =="A":
+        A_Data = pd.read_pickle(PickleData_A)
+        return A_Data
+
+    elif chosenFlag =="AB":
         AB_Data = pd.read_pickle(PickleData_AB)
         return AB_Data
 
@@ -102,6 +106,7 @@ def PlotingAllDiagrams():
     for value in chosenData:
         if value in plotData.keys():
 
+            # plt.ylabel("RPI [-]")
             plt.ylabel("RPI [-]")
             plt.xlabel("{} {}{}{}"  .format(plotData[value]["vName"]," [", plotData[value]["unit"], "]"))       # x axis line
             xVariable = chosenData[value]
@@ -129,10 +134,10 @@ def PlotingAllDiagrams():
             letterPosition_y = (min(yVariable) - (max(yVariable) - min(yVariable)) * 0.25)
             plt.text(letterPosition_x, letterPosition_y, plotData[value]["letter"])
 
-            if value in diagWithLegend:
-                plt.legend(loc='upper left', framealpha=1, labelspacing=0, borderpad=0.1, handletextpad=-0.5,
-                           handlelength=1.8, bbox_to_anchor=(-0.03, 1.04))
-            plt.pause(1)
+            # if value in diagWithLegend:
+            #     plt.legend(loc='upper left', framealpha=1, labelspacing=0, borderpad=0.1, handletextpad=-0.5,
+            #                handlelength=1.8, bbox_to_anchor=(-0.03, 1.04))
+            plt.pause(0.01)
             plt.draw()
             plt.close()
             fig.savefig(diagramsDir + value + '.png', dpi=300)
