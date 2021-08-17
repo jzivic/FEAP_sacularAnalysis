@@ -64,7 +64,7 @@ plotData = {
          "V":{"vName":"$V$","unit":"mm$^3$","heightLabel":NoPos, "letter":"b)"},
          "T":{"vName":"$T$","unit":"-","heightLabel":NoPos, "letter":"b)"},
 
-        # "d0": {"vName": "d", "unit": "mm", "heightLabel": pos0, "letter":")"},
+        "d0": {"vName": "d", "unit": "mm", "heightLabel": pos0, "letter":")"},
         "d1": {"vName": "$d$", "unit": "mm", "heightLabel": pos1, "letter":"a)"},
         "d2": {"vName": "$d$", "unit": "mm", "heightLabel": pos2, "letter":"a)"},
         "d3": {"vName": "$d$", "unit": "mm", "heightLabel": pos3, "letter":"a)"},
@@ -95,17 +95,18 @@ def PlotingAllDiagrams():
 
     # Determine dot color depending on radius size
     def colorR(radius):
-        if radius == 16:
+        if radius == 8:
             return 'c'
-        elif radius == 20:
+        elif radius == 10:
             return "black"
-        elif radius == 24:
+        elif radius == 12:
             return "m"
 
     # Iterate over all values
     for value in chosenData:
         if value in plotData.keys():
 
+            # plt.ylabel("RPI [-]")
             plt.ylabel("RPI [-]")
             plt.xlabel("{} {}{}{}"  .format(plotData[value]["vName"]," [", plotData[value]["unit"], "]"))       # x axis line
             xVariable = chosenData[value]
@@ -115,9 +116,9 @@ def PlotingAllDiagrams():
             rList = []                                                                 # aid, made to store radius of analyzed simulations
             for i in range(len(chosenData[value])):
                 # legend to avoid multiple unnecessary dot plotting in legend box
-                plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["d_round"][i]), s=14,
-                            label = ("$d_\mathrm{in}$ = " + str(chosenData["d_round"][i]) + " mm") if chosenData["d_round"][i] not in rList else "", alpha=0.7)
-                rList.append(chosenData["d_round"][i])
+                plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["r"][i]), s=14,
+                            label = ("$r$ = " + str(chosenData["r"][i]) + " mm") if chosenData["r"][i] not in rList else "", alpha=0.7)
+                rList.append(chosenData["r"][i])
 
 
             fig = plt.gcf()
@@ -136,7 +137,7 @@ def PlotingAllDiagrams():
             if value in diagWithLegend:
                 plt.legend(loc='upper left', framealpha=1, labelspacing=0, borderpad=0.1, handletextpad=-0.5,
                            handlelength=1.8, bbox_to_anchor=(-0.03, 1.04))
-            plt.pause(0.1)
+            plt.pause(0.01)
             plt.draw()
             plt.close()
             fig.savefig(diagramsDir + value + '.png', dpi=300)
@@ -224,9 +225,9 @@ def PlotingAllDiagrams():
             # for i in range(len(chosenData[value])):
             #
             #     # legend to avoid multiple unnecessary dot plotting in legend box
-            #     plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["d_round"][i]),
-            #                 label = ("$r$ = " + str(chosenData["d_round"][i]) + " mm") if chosenData["d_round"][i] not in rList else "", alpha=0.7)
-            #     rList.append(chosenData["d_round"][i])
+            #     plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["r"][i]),
+            #                 label = ("$r$ = " + str(chosenData["r"][i]) + " mm") if chosenData["r"][i] not in rList else "", alpha=0.7)
+            #     rList.append(chosenData["r"][i])
             #
             # # Statistical values written on upper left corner
             # def statText():

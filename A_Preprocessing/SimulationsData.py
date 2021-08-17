@@ -26,14 +26,13 @@ picklesDir = analysisDir + ("pickles/")
 
 
 # B_ParameterCombinations:
-flagVersion = "v1"
+flagVersion = "v2"                                 # flag condition version
 assert flagVersion in ["v1", "v2"], "Unknown version"
 
 if flagVersion=="v1":
     chosenFlag = "AB"
 elif flagVersion=="v2":
     chosenFlag = "A"
-
 
 # Data for v1
 sigmaCritical = 1000
@@ -67,7 +66,6 @@ paramXlsx = paramCombDir + "paramData.xlsx"
 diagramsDir = analysisDir + ("diagrams/")
 contoursDir = analysisDir + ("contours/")
 statXlsx = analysisDir + "statData.xlsx"
-
 
 
 

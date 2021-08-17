@@ -58,7 +58,7 @@ class MakeCombinations:
                                     parameter = self.L ** iL * self.D ** jD * self.dSvi[i] ** kd *\
                                                     (N*self.D**mD_d - self.dSvi[i]**mD_d)**lDd
                                     slope, intercept, rValue, p, se = linregress(parameter, self.RPI)
-                                    rValue = abs(rValue)
+                                    rValue = abs(rValue)                                                    # r1=-0.9 better then r2=0.8
                                     rAll.append(rValue)
 
                                 self.allParameters["r_d0"].append(rAll[0])
@@ -74,6 +74,18 @@ class MakeCombinations:
         df_all.to_pickle(PickleParamCombinations)
 
 # MakeCombinations(PickleData_AB)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

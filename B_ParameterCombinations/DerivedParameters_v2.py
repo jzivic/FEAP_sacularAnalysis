@@ -1,6 +1,6 @@
 """
 Calculate all derived from basic parameters
-Devide all data by flags to separate pickles
+Devide all data by flags to separate pickles (2. condition)
 
 """
 
@@ -26,6 +26,8 @@ def DerivedParameters_f2(basicPickle, S22_condition = False):
     # allData["S22"] *= 1000                               # MPa to kPa
     allData["S"] /= 100                                    # mm2 to cm2
     allData["V"] /= 1000                                   # mm3 to cm3
+    allData["d_round"] = allData["r"] * 2
+
 
     # easier to write
     S22 = allData["S22"]
@@ -67,7 +69,7 @@ def DerivedParameters_f2(basicPickle, S22_condition = False):
                 flag = "C"
 
         elif D_condition == True:
-            if allData["D"][i] < flagCondition["D"] and allData["RPI"][i] < RPI_condition:
+            if allData["D"][i] < flagCondition_2["D"] and allData["RPI"][i] < RPI_condition:
                 flag = "A"
             else:
                 flag = "C"
@@ -76,16 +78,13 @@ def DerivedParameters_f2(basicPickle, S22_condition = False):
     allData["Flag"] = flagVector
 
     A_Data = allData.loc[allData["Flag"] == "A"]             # Flag A represents surely ruptured AAA
-
     C_Data = allData.loc[allData["Flag"] == "C"]             # Flag C represents surely ruptured AAA
-    AB_Data = allData.loc[allData["Flag"] != "C"]            # Flags A,B represents AAA that should not rupture
 
     allData.to_pickle(PickleData_all)                       # storing data into separate pickles
-    A_Data.to_pickle(PickleData_A)                          #novo
-    AB_Data.to_pickle(PickleData_AB)
+    A_Data.to_pickle(PickleData_A)
     C_Data.to_pickle(PickleData_C)
 
 
 
-# MakeDir_pickles()
-# DerivedParameters_f2(PickleData_basic, S22_condition)
+MakeDir_pickles()
+DerivedParameters_f2(PickleData_basic, S22_condition)

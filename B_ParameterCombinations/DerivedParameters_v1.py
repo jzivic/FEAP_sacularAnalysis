@@ -1,6 +1,6 @@
 """
 Calculate all derived from basic parameters
-Devide all data by flags to separate pickles
+Devide all data by flags to separate pickles (1. condition)
 
 """
 
@@ -26,6 +26,8 @@ def DerivedParameters_f1(basicPickle, S22_condition = False):
     allData["S22"] *= 1000                                 # Pa to kPa
     allData["S"] /= 100                                    # mm2 to cm2
     allData["V"] /= 1000                                   # mm3 to cm3
+    allData["d_round"] = allData["r"] * 2
+
 
     # easier to write
     S22 = allData["S22"]
@@ -86,3 +88,5 @@ def DerivedParameters_f1(basicPickle, S22_condition = False):
 
 # MakeDir_pickles()
 # DerivedParameters_f1(PickleData_basic, S22_condition)
+
+
