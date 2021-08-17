@@ -132,6 +132,7 @@ def PlotingAllDiagrams_v2():
             if value in diagWithLegend:
                 plt.legend(loc='lower right', framealpha=1, labelspacing=0, borderpad=0.1, handletextpad=-0.5,
                            handlelength=1.8, bbox_to_anchor=(1.025, -0.036))
+
             plt.pause(0.1)
             plt.draw()
             plt.close()
