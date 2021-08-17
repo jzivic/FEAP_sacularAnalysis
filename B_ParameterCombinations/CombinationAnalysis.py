@@ -1,6 +1,6 @@
 """
 Class to analyze all parameters and sort them by key.
-Write everything to excel table and plot several best parameters (stored in separate direcotries)
+Write everything to excel table and plot n best parameters (stored in separate direcotries)
 """
 
 import shutil, os
@@ -20,34 +20,19 @@ def MakeDir_combParam():
 
 
 class CombinationAnalysis:
-    # if flagVersion == "v1":
-    #     inputData = pd.read_pickle(PickleData_AB)                  # entry simulations data
-    # elif flagVersion == "v2":
-    #     inputData = pd.read_pickle(PickleData_A)
 
-    # RPI = inputData["RPI"]
-    # L = inputData["L"]
-    # D = inputData["D"]
-    # d0 = inputData["d0"]
-    # d1 = inputData["d1"]
-    # d2 = inputData["d2"]
-    # d3 = inputData["d3"]
-    # dAll = [d0, d1, d2, d3]
-    # allParameters = pd.read_pickle(PickleParamCombinations)     # get parameter exponents and coefficients
-
-    def __init__(self, inputData, sortingKey, nBestParams=3):
+    def __init__(self, inputData_raw, sortingKey, nBestParams=3):
         assert sortingKey in ["rAvg", "r_d0", "r_d1", "r_d2","r_d3"],\
             "sortingKey should be: rAvg, r_d0, r_d1, r_d2, r_d3"                # only possible
-        self.inputData_in = inputData
         self.sortingKey = sortingKey                                           # defined in SimulationsData
-        self.SetInputData_f()
+        self.SetInputData_f(inputData_raw)
         self.indSorted = list(self.allParameters.sort_values(by=self.sortingKey, ascending=False).index) # sorted parameter indices list by r(d0,avg..)
         self.WriteExcel()
         self.ParameterIteration(nBestParams)
 
-    # @classmethod
-    def SetInputData_f(self):
-        inputData = pd.read_pickle(self.inputData_in)
+
+    def SetInputData_f(self, inputData_arg):
+        inputData = pd.read_pickle(inputData_arg)
         self.RPI = inputData["RPI"]
         self.L = inputData["L"]
         self.D = inputData["D"]
@@ -58,8 +43,9 @@ class CombinationAnalysis:
         self.dAll = [d0, d1, d2, d3]
         self.allParameters = pd.read_pickle(PickleParamCombinations)     # get parameter exponents and coefficients
 
+
+    # Iterates over nBestParams best parameters sorted by sortingKey
     def ParameterIteration(self, nBestParams):      # number of best parameters analyzed
-        # iterates over nBestParams best parameters sorted by sortingKey
         for nParam in range(nBestParams):
             indParam = self.indSorted[nParam]                                   # parameter index
             parameter = self.allParameters.iloc[indParam]
@@ -73,21 +59,17 @@ class CombinationAnalysis:
             mD_d = paramDict["mD_d"]
             N = paramDict["N"]
 
-            #function just to write parameter shorteer
-            def Parameter(diameter):
-                parameter = self.L**iL * self.D**jD * diameter**kd * \
-                            (N * self.D**mD_d - diameter**mD_d)**lDd
-                return parameter
             self.MakeParDir(nParam)
 
             # iterating diameters d0,d1,d2,d3 and Plot diagram
             for i in range(len(self.dAll)):
                 diameter = self.dAll[i]
+                parameter = self.L ** iL * self.D ** jD * diameter ** kd * (N * self.D ** mD_d - diameter ** mD_d) ** lDd
 
                 fig = plt.gcf()
                 plt.ylabel("RPI [-]")
                 plt.xlabel("Parameter "+ str(indParam))                                                 # parameter index
-                plt.scatter(Parameter(diameter), self.RPI)
+                plt.scatter(parameter, self.RPI)
                 paramExp = self.parName + ",   d=" + str(i)
                 plt.title(paramExp)
                 plt.grid(color='k', linestyle=':', linewidth=0.5)

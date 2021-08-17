@@ -14,7 +14,6 @@ from A_Preprocessing.SimulationsData import *
 
 class MakeCombinations:
     def __init__(self, inputPickle):
-
         self.inputData = pd.read_pickle(inputPickle)
         self.SetParamCombos()
         self.Calculate_rValue()
@@ -22,8 +21,8 @@ class MakeCombinations:
 
     # Get values from pickles
     def SetParamCombos(self):
-        self.coeffs_1 = [-3, -2, -1, 0, 1, 2, 3]         # exponents
-        self.coeffs = [1, 2, 4]
+        self.coeffs_power = [-3, -2, -1, 0, 1, 2, 3]         # exponents
+        self.coeffs_mulptier = [1, 2, 4]
 
         self.allParameters = {"paramName":[], "r_d0":[], "r_d1":[], "r_d2":[], "r_d3":[], "rAvg":[], "paramDict":[]}    # store r values, name and coeffs for every parameter
 
@@ -39,12 +38,12 @@ class MakeCombinations:
 
     # Make parameter combinations, for every calculate rvalue. Store all to pickle
     def Calculate_rValue(self):
-        for iL in self.coeffs_1:
-            for jD in self.coeffs_1:
-                for kd in self.coeffs_1:
-                    for lDd in self.coeffs_1:
-                        for mD_d in self.coeffs_1:
-                            for N in self.coeffs:
+        for iL in self.coeffs_power:
+            for jD in self.coeffs_power:
+                for kd in self.coeffs_power:
+                    for lDd in self.coeffs_power:
+                        for mD_d in self.coeffs_power:
+                            for N in self.coeffs_mulptier:
 
                                 paramName = "iL=" + str(iL) + " jD=" + str(jD) + " kd=" + str(kd)+ " lDd=" + str(lDd) + " mD_d=" + str(
                                             mD_d) + " N=" + str(N)

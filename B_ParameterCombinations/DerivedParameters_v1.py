@@ -28,7 +28,6 @@ def DerivedParameters_v1(basicPickle, S22_condition = False):
     allData["V"] /= 1000                                   # mm3 to cm3
     allData["d_round"] = allData["r"] * 2
 
-
     # easier to write
     S22 = allData["S22"]
     L, H, D = allData["L"], allData["H"], allData["D"],

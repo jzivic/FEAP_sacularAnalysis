@@ -30,10 +30,6 @@ def chosenData_f():
         A_Data = pd.read_pickle(PickleData_A)
         return A_Data
 
-    # elif chosenFlag =="AB":
-    #     AB_Data = pd.read_pickle(PickleData_AB)
-    #     return AB_Data
-
     elif chosenFlag =="C":
         C_Data = pd.read_pickle(PickleData_C)
         return C_Data
