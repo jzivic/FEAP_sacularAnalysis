@@ -34,14 +34,14 @@ if flagVersion=="v1":
 elif flagVersion=="v2":
     chosenFlag = "A"
 
-# Data for v1
+# Data for v1: RPI = strenght/sigmaCritical=const
 sigmaCritical = 1000
 flagCondition_1 = {"S22":{"A-B":500, "B-C":sigmaCritical}, "GR":{"A-B":5, "B-C":10}, "D":55}
 S22_condition = False
 sortingKey = "rAvg"                                # rAvg, r_d0, r_d1, r_d2, r_d3
 nBestParams = 10
 
-# Data for v2
+# Data for v2: RPI = strenght/S_resist
 RPI_condition = 1.2
 D_condition = True
 flagCondition_2 = {"D":60}

@@ -6,7 +6,7 @@ Write all to .xlsx file
 import pandas as pd
 from scipy.stats import linregress
 from A_Preprocessing.SimulationsData import *
-from PlotParameters import chosenData
+from PlotParameters_v2 import chosenData
 
 
 def CalculateStatistic():

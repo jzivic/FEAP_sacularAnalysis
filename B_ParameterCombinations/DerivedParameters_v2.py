@@ -23,7 +23,6 @@ def DerivedParameters_f2(basicPickle, S22_condition = False):
     allData = allData.dropna()                                                       # exclude data where AAA is not formed
 
     #transforming units
-    # allData["S22"] *= 1000                               # MPa to kPa
     allData["S"] /= 100                                    # mm2 to cm2
     allData["V"] /= 1000                                   # mm3 to cm3
     allData["d_round"] = allData["r"] * 2
@@ -34,10 +33,6 @@ def DerivedParameters_f2(basicPickle, S22_condition = False):
     L, H, D = allData["L"], allData["H"], allData["D"],
     d0, d1, d2, d3 = allData["d0"], allData["d1"], allData["d2"], allData["d3"],
     dAll = [d0, d1, d2, d3]
-
-    # allData["RPI"] = S22 / sigmaCritical                                    # probability of rupture
-
-
 
     allData["T"] = L / H
     allData["HNeck"] = 160 - H
@@ -52,16 +47,14 @@ def DerivedParameters_f2(basicPickle, S22_condition = False):
     for nd in range(len(dAll)):
         allData[Ddr[nd]] = D * dAll[nd]**(-1)
         allData[NAL[nd]] = L * D * dAll[nd]**(-1)
-        allData[GRPI[nd]] = L * D**2 * dAll[nd]**(-1) * (4*D-dAll[nd])**(-1)
-
+        allData[GRPI[nd]] = L**2 * dAll[nd]**(-1) * (4*D**(-1)-dAll[nd]**(-1))**(-1) / 100 # mm2 to cm2
 
     allData["S_resist"] = 0.82299 - 0.156*(allData["Ddr0"] - 2.46)
     allData["RPI"] = S22 / allData["S_resist"]                                    # probability of rupture
 
-
-
     flagVector = [] # list to store flag data
     for i in range(len(allData["RPI"])):
+
         if D_condition == False:
             if allData["RPI"][i] < RPI_condition:
                 flag = "A"
@@ -86,5 +79,5 @@ def DerivedParameters_f2(basicPickle, S22_condition = False):
 
 
 
-MakeDir_pickles()
-DerivedParameters_f2(PickleData_basic, S22_condition)
+# MakeDir_pickles()
+# DerivedParameters_f2(PickleData_basic, S22_condition)

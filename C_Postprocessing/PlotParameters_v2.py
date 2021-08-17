@@ -30,9 +30,9 @@ def chosenData_f():
         A_Data = pd.read_pickle(PickleData_A)
         return A_Data
 
-    elif chosenFlag =="AB":
-        AB_Data = pd.read_pickle(PickleData_AB)
-        return AB_Data
+    # elif chosenFlag =="AB":
+    #     AB_Data = pd.read_pickle(PickleData_AB)
+    #     return AB_Data
 
     elif chosenFlag =="C":
         C_Data = pd.read_pickle(PickleData_C)
@@ -64,7 +64,7 @@ plotData = {
          "V":{"vName":"$V$","unit":"mm$^3$","heightLabel":NoPos, "letter":"b)"},
          "T":{"vName":"$T$","unit":"-","heightLabel":NoPos, "letter":"b)"},
 
-        "d0": {"vName": "d", "unit": "mm", "heightLabel": pos0, "letter":")"},
+        # "d0": {"vName": "d", "unit": "mm", "heightLabel": pos0, "letter":")"},
         "d1": {"vName": "$d$", "unit": "mm", "heightLabel": pos1, "letter":"a)"},
         "d2": {"vName": "$d$", "unit": "mm", "heightLabel": pos2, "letter":"a)"},
         "d3": {"vName": "$d$", "unit": "mm", "heightLabel": pos3, "letter":"a)"},
@@ -74,10 +74,10 @@ plotData = {
         "Ddr2": {"vName":"$Ddr$", "unit":"-", "heightLabel": pos2,  "letter":"b)"},
         "Ddr3": {"vName":"$Ddr$", "unit":"-", "heightLabel": pos3,  "letter":"b)"},
 
-        "GRPI0": {"vName":"GRPI", "unit":"mm", "heightLabel":pos0, "letter":"a)"},
-        "GRPI1": {"vName":"GRPI", "unit":"mm", "heightLabel":pos1, "letter":"c)"},
-        "GRPI2": {"vName":"GRPI", "unit":"mm", "heightLabel":pos2, "letter":"c)"},
-        "GRPI3": {"vName":"GRPI", "unit":"mm", "heightLabel":pos3, "letter":"c)"},
+        "GRPI0": {"vName":"GRPI", "unit":"cm$^2$", "heightLabel":pos0, "letter":"a)"},
+        "GRPI1": {"vName":"GRPI", "unit":"cm$^2$", "heightLabel":pos1, "letter":"c)"},
+        "GRPI2": {"vName":"GRPI", "unit":"cm$^2$", "heightLabel":pos2, "letter":"c)"},
+        "GRPI3": {"vName":"GRPI", "unit":"cm$^2$", "heightLabel":pos3, "letter":"c)"},
 
         "NAL0": {"vName":"NAL", "unit":"mm", "heightLabel":pos0, "letter":"b)"},
         "NAL1": {"vName":"NAL", "unit":"mm", "heightLabel":pos1, "letter":"d)"},
@@ -86,65 +86,67 @@ plotData = {
          }
 
 
+
 # list of values that have legend in the corner
 diagWithLegend = ["D", "Ddr0", "S", "GRPI0", "GRPI1", "GRPI2", "GRPI3" ]
 
 
 # Plot all values in chosen TimeSteps in loop
-def PlotingAllDiagrams():
+def PlotingAllDiagrams_v2():
 
     # Determine dot color depending on radius size
     def colorR(radius):
-        if radius == 8:
+        if radius == 16:
             return 'c'
-        elif radius == 10:
+        elif radius == 20:
             return "black"
-        elif radius == 12:
+        elif radius == 24:
             return "m"
 
     # Iterate over all values
     for value in chosenData:
         if value in plotData.keys():
 
-            # plt.ylabel("RPI [-]")
-            plt.ylabel("RPI [-]")
-            plt.xlabel("{} {}{}{}"  .format(plotData[value]["vName"]," [", plotData[value]["unit"], "]"))       # x axis line
-            xVariable = chosenData[value]
-            yVariable = chosenData["RPI"]
-
-            # # iterates over all points to get color and get rid of unnecessary legend data
-            rList = []                                                                 # aid, made to store radius of analyzed simulations
-            for i in range(len(chosenData[value])):
-                # legend to avoid multiple unnecessary dot plotting in legend box
-                plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["r"][i]), s=14,
-                            label = ("$r$ = " + str(chosenData["r"][i]) + " mm") if chosenData["r"][i] not in rList else "", alpha=0.7)
-                rList.append(chosenData["r"][i])
-
-
-            fig = plt.gcf()
-            plt.grid(color='k', linestyle=':', linewidth=0.5)
-            fig.subplots_adjust(bottom=0.18)                        # empty space on the bottom
-            fig.subplots_adjust(left=0.20)
-
-            heightLabelPosition_x = min(xVariable) - abs(max(xVariable) - min(xVariable))*0.05          # txt position
-            heightLabelPosition_y = max(yVariable)*1.06
-            plt.text(heightLabelPosition_x, heightLabelPosition_y, plotData[value]["heightLabel"])      # h,d values
-
-            letterPosition_x = (min(xVariable) - (max(xVariable) - min(xVariable)) * 0.25)              # label in article
-            letterPosition_y = (min(yVariable) - (max(yVariable) - min(yVariable)) * 0.25)
-            plt.text(letterPosition_x, letterPosition_y, plotData[value]["letter"])
-
             if value in diagWithLegend:
-                plt.legend(loc='upper left', framealpha=1, labelspacing=0, borderpad=0.1, handletextpad=-0.5,
-                           handlelength=1.8, bbox_to_anchor=(-0.03, 1.04))
-            plt.pause(0.01)
-            plt.draw()
-            plt.close()
-            fig.savefig(diagramsDir + value + '.png', dpi=300)
+
+                plt.ylabel("RPI [-]")
+                plt.xlabel("{} {}{}{}"  .format(plotData[value]["vName"]," [", plotData[value]["unit"], "]"))       # x axis line
+                xVariable = chosenData[value]
+                yVariable = chosenData["RPI"]
+
+                # # iterates over all points to get color and get rid of unnecessary legend data
+                rList = []                                                                 # aid, made to store radius of analyzed simulations
+                for i in range(len(chosenData[value])):
+                    # legend to avoid multiple unnecessary dot plotting in legend box
+                    plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["d_round"][i]), s=14,
+                                label = ("$d_\mathrm{in}$ = " + str(chosenData["d_round"][i]) + " mm") if chosenData["d_round"][i] not in rList else "", alpha=0.7)
+                    rList.append(chosenData["d_round"][i])
+
+
+                fig = plt.gcf()
+                plt.grid(color='k', linestyle=':', linewidth=0.5)
+                fig.subplots_adjust(bottom=0.18)                        # empty space on the bottom
+                fig.subplots_adjust(left=0.20)
+
+                heightLabelPosition_x = min(xVariable) - abs(max(xVariable) - min(xVariable))*0.05          # txt position
+                heightLabelPosition_y = max(yVariable)*1.06
+                plt.text(heightLabelPosition_x, heightLabelPosition_y, plotData[value]["heightLabel"])      # h,d values
+
+                letterPosition_x = (min(xVariable) - (max(xVariable) - min(xVariable)) * 0.25)              # label in article
+                letterPosition_y = (min(yVariable) - (max(yVariable) - min(yVariable)) * 0.25)
+                plt.text(letterPosition_x, letterPosition_y, plotData[value]["letter"])
+
+                if value in diagWithLegend:
+                    plt.legend(loc='lower right', framealpha=1, labelspacing=0, borderpad=0.1, handletextpad=-0.5,
+                               handlelength=1.8, bbox_to_anchor=(1.025, -0.036))
+                plt.pause(0.1)
+                plt.draw()
+                plt.close()
+                fig.savefig(diagramsDir + value + '.png', dpi=300)
 
 
 # MakeDir_diagrams()
-# PlotingAllDiagrams()
+# PlotingAllDiagrams_v2()
 
 
 
@@ -225,9 +227,9 @@ def PlotingAllDiagrams():
             # for i in range(len(chosenData[value])):
             #
             #     # legend to avoid multiple unnecessary dot plotting in legend box
-            #     plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["r"][i]),
-            #                 label = ("$r$ = " + str(chosenData["r"][i]) + " mm") if chosenData["r"][i] not in rList else "", alpha=0.7)
-            #     rList.append(chosenData["r"][i])
+            #     plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["d_round"][i]),
+            #                 label = ("$r$ = " + str(chosenData["d_round"][i]) + " mm") if chosenData["d_round"][i] not in rList else "", alpha=0.7)
+            #     rList.append(chosenData["d_round"][i])
             #
             # # Statistical values written on upper left corner
             # def statText():

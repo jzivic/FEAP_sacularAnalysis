@@ -20,14 +20,18 @@ def MakeDir_combParam():
 
 
 class CombinationAnalysis:
-    abData = pd.read_pickle(PickleData_AB)                  # entry simulations data
-    RPI = abData["RPI"]
-    L = abData["L"]
-    D = abData["D"]
-    d0 = abData["d0"]
-    d1 = abData["d1"]
-    d2 = abData["d2"]
-    d3 = abData["d3"]
+    if flagVersion == "v1":
+        inputData = pd.read_pickle(PickleData_AB)                  # entry simulations data
+    elif flagVersion == "v2":
+        inputData = pd.read_pickle(PickleData_A)
+
+    RPI = inputData["RPI"]
+    L = inputData["L"]
+    D = inputData["D"]
+    d0 = inputData["d0"]
+    d1 = inputData["d1"]
+    d2 = inputData["d2"]
+    d3 = inputData["d3"]
     dSvi = [d0, d1, d2, d3]
     allParameters = pd.read_pickle(PickleParamCombinations)     # get parameter exponents and coefficients
 
@@ -47,7 +51,6 @@ class CombinationAnalysis:
             parameter = self.allParameters.iloc[indParam]
             paramDict = parameter["paramDict"]                                  # exponents written
             self.parName = parameter["paramName"]
-
 
             iL = paramDict["iL"]        # exponents
             jD = paramDict["jD"]
@@ -90,8 +93,8 @@ class CombinationAnalysis:
         self.Excel.to_excel(paramXlsx)
 
 
-# MakeDir_combParam()
-# CombinationAnalysis(sortingKey, nBestParams)
+MakeDir_combParam()
+CombinationAnalysis(sortingKey, nBestParams)
 
 
 

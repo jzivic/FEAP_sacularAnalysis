@@ -15,7 +15,6 @@ elif flagVersion == "v2":
 
 
 from MakeCombinations import MakeCombinations
-MakeCombinations(PickleData_AB)
 if chosenFlag == "A":
     MakeCombinations(PickleData_A)
 elif chosenFlag == "AB":

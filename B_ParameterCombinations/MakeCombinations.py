@@ -73,6 +73,7 @@ class MakeCombinations:
         df_all = pd.DataFrame(self.allParameters)
         df_all.to_pickle(PickleParamCombinations)
 
+# MakeCombinations(PickleData_A)
 # MakeCombinations(PickleData_AB)
 
 
