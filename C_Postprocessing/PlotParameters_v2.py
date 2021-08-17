@@ -107,42 +107,39 @@ def PlotingAllDiagrams_v2():
     for value in chosenData:
         if value in plotData.keys():
 
+            plt.ylabel("RPI [-]")
+            plt.xlabel("{} {}{}{}"  .format(plotData[value]["vName"]," [", plotData[value]["unit"], "]"))       # x axis line
+            xVariable = chosenData[value]
+            yVariable = chosenData["RPI"]
+
+            # # iterates over all points to get color and get rid of unnecessary legend data
+            rList = []                                                                 # aid, made to store radius of analyzed simulations
+            for i in range(len(chosenData[value])):
+                # legend to avoid multiple unnecessary dot plotting in legend box
+                plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["d_round"][i]), s=14,
+                            label = ("$d_\mathrm{in}$ = " + str(chosenData["d_round"][i]) + " mm") if chosenData["d_round"][i] not in rList else "", alpha=0.7)
+                rList.append(chosenData["d_round"][i])
+
+            fig = plt.gcf()
+            plt.grid(color='k', linestyle=':', linewidth=0.5)
+            fig.subplots_adjust(bottom=0.18)                        # empty space on the bottom
+            fig.subplots_adjust(left=0.20)
+
+            heightLabelPosition_x = min(xVariable) - abs(max(xVariable) - min(xVariable))*0.05          # txt position
+            heightLabelPosition_y = max(yVariable)*1.06
+            plt.text(heightLabelPosition_x, heightLabelPosition_y, plotData[value]["heightLabel"])      # h,d values
+
+            letterPosition_x = (min(xVariable) - (max(xVariable) - min(xVariable)) * 0.25)              # label in article
+            letterPosition_y = (min(yVariable) - (max(yVariable) - min(yVariable)) * 0.25)
+            plt.text(letterPosition_x, letterPosition_y, plotData[value]["letter"])
+
             if value in diagWithLegend:
-
-                plt.ylabel("RPI [-]")
-                plt.xlabel("{} {}{}{}"  .format(plotData[value]["vName"]," [", plotData[value]["unit"], "]"))       # x axis line
-                xVariable = chosenData[value]
-                yVariable = chosenData["RPI"]
-
-                # # iterates over all points to get color and get rid of unnecessary legend data
-                rList = []                                                                 # aid, made to store radius of analyzed simulations
-                for i in range(len(chosenData[value])):
-                    # legend to avoid multiple unnecessary dot plotting in legend box
-                    plt.scatter(xVariable[i], yVariable[i], c=colorR(chosenData["d_round"][i]), s=14,
-                                label = ("$d_\mathrm{in}$ = " + str(chosenData["d_round"][i]) + " mm") if chosenData["d_round"][i] not in rList else "", alpha=0.7)
-                    rList.append(chosenData["d_round"][i])
-
-
-                fig = plt.gcf()
-                plt.grid(color='k', linestyle=':', linewidth=0.5)
-                fig.subplots_adjust(bottom=0.18)                        # empty space on the bottom
-                fig.subplots_adjust(left=0.20)
-
-                heightLabelPosition_x = min(xVariable) - abs(max(xVariable) - min(xVariable))*0.05          # txt position
-                heightLabelPosition_y = max(yVariable)*1.06
-                plt.text(heightLabelPosition_x, heightLabelPosition_y, plotData[value]["heightLabel"])      # h,d values
-
-                letterPosition_x = (min(xVariable) - (max(xVariable) - min(xVariable)) * 0.25)              # label in article
-                letterPosition_y = (min(yVariable) - (max(yVariable) - min(yVariable)) * 0.25)
-                plt.text(letterPosition_x, letterPosition_y, plotData[value]["letter"])
-
-                if value in diagWithLegend:
-                    plt.legend(loc='lower right', framealpha=1, labelspacing=0, borderpad=0.1, handletextpad=-0.5,
-                               handlelength=1.8, bbox_to_anchor=(1.025, -0.036))
-                plt.pause(0.1)
-                plt.draw()
-                plt.close()
-                fig.savefig(diagramsDir + value + '.png', dpi=300)
+                plt.legend(loc='lower right', framealpha=1, labelspacing=0, borderpad=0.1, handletextpad=-0.5,
+                           handlelength=1.8, bbox_to_anchor=(1.025, -0.036))
+            plt.pause(0.1)
+            plt.draw()
+            plt.close()
+            fig.savefig(diagramsDir + value + '.png', dpi=300)
 
 
 # MakeDir_diagrams()

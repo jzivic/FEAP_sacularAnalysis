@@ -20,29 +20,43 @@ def MakeDir_combParam():
 
 
 class CombinationAnalysis:
-    if flagVersion == "v1":
-        inputData = pd.read_pickle(PickleData_AB)                  # entry simulations data
-    elif flagVersion == "v2":
-        inputData = pd.read_pickle(PickleData_A)
+    # if flagVersion == "v1":
+    #     inputData = pd.read_pickle(PickleData_AB)                  # entry simulations data
+    # elif flagVersion == "v2":
+    #     inputData = pd.read_pickle(PickleData_A)
 
-    RPI = inputData["RPI"]
-    L = inputData["L"]
-    D = inputData["D"]
-    d0 = inputData["d0"]
-    d1 = inputData["d1"]
-    d2 = inputData["d2"]
-    d3 = inputData["d3"]
-    dSvi = [d0, d1, d2, d3]
-    allParameters = pd.read_pickle(PickleParamCombinations)     # get parameter exponents and coefficients
+    # RPI = inputData["RPI"]
+    # L = inputData["L"]
+    # D = inputData["D"]
+    # d0 = inputData["d0"]
+    # d1 = inputData["d1"]
+    # d2 = inputData["d2"]
+    # d3 = inputData["d3"]
+    # dAll = [d0, d1, d2, d3]
+    # allParameters = pd.read_pickle(PickleParamCombinations)     # get parameter exponents and coefficients
 
-    def __init__(self, sortingKey, nBestParams=3):
+    def __init__(self, inputData, sortingKey, nBestParams=3):
         assert sortingKey in ["rAvg", "r_d0", "r_d1", "r_d2","r_d3"],\
             "sortingKey should be: rAvg, r_d0, r_d1, r_d2, r_d3"                # only possible
+        self.inputData_in = inputData
         self.sortingKey = sortingKey                                           # defined in SimulationsData
-        self.indSorted = list(CombinationAnalysis.allParameters.sort_values(by=self.sortingKey, ascending=False).index) # sorted parameter indices list by r(d0,avg..)
+        self.SetInputData_f()
+        self.indSorted = list(self.allParameters.sort_values(by=self.sortingKey, ascending=False).index) # sorted parameter indices list by r(d0,avg..)
         self.WriteExcel()
         self.ParameterIteration(nBestParams)
 
+    # @classmethod
+    def SetInputData_f(self):
+        inputData = pd.read_pickle(self.inputData_in)
+        self.RPI = inputData["RPI"]
+        self.L = inputData["L"]
+        self.D = inputData["D"]
+        d0 = inputData["d0"]
+        d1 = inputData["d1"]
+        d2 = inputData["d2"]
+        d3 = inputData["d3"]
+        self.dAll = [d0, d1, d2, d3]
+        self.allParameters = pd.read_pickle(PickleParamCombinations)     # get parameter exponents and coefficients
 
     def ParameterIteration(self, nBestParams):      # number of best parameters analyzed
         # iterates over nBestParams best parameters sorted by sortingKey
@@ -61,19 +75,19 @@ class CombinationAnalysis:
 
             #function just to write parameter shorteer
             def Parameter(diameter):
-                parameter = CombinationAnalysis.L**iL * CombinationAnalysis.D**jD * diameter**kd * \
-                            (N * CombinationAnalysis.D**mD_d - diameter**mD_d)**lDd
+                parameter = self.L**iL * self.D**jD * diameter**kd * \
+                            (N * self.D**mD_d - diameter**mD_d)**lDd
                 return parameter
             self.MakeParDir(nParam)
 
             # iterating diameters d0,d1,d2,d3 and Plot diagram
-            for i in range(len(CombinationAnalysis.dSvi)):
-                diameter = CombinationAnalysis.dSvi[i]
+            for i in range(len(self.dAll)):
+                diameter = self.dAll[i]
 
                 fig = plt.gcf()
                 plt.ylabel("RPI [-]")
                 plt.xlabel("Parameter "+ str(indParam))                                                 # parameter index
-                plt.scatter(Parameter(diameter), CombinationAnalysis.RPI)
+                plt.scatter(Parameter(diameter), self.RPI)
                 paramExp = self.parName + ",   d=" + str(i)
                 plt.title(paramExp)
                 plt.grid(color='k', linestyle=':', linewidth=0.5)
@@ -89,12 +103,12 @@ class CombinationAnalysis:
 
     # Write xlsx with all parameter combinations
     def WriteExcel(self):
-        self.Excel = CombinationAnalysis.allParameters.sort_values(by=[self.sortingKey], ascending=False)
+        self.Excel = self.allParameters.sort_values(by=[self.sortingKey], ascending=False)
         self.Excel.to_excel(paramXlsx)
 
 
-MakeDir_combParam()
-CombinationAnalysis(sortingKey, nBestParams)
+# MakeDir_combParam()
+# CombinationAnalysis(PickleData_A, sortingKey, nBestParams)
 
 
 

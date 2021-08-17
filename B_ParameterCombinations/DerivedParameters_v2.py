@@ -18,7 +18,7 @@ def MakeDir_pickles():
 
 
 
-def DerivedParameters_f2(basicPickle, S22_condition = False):
+def DerivedParameters_v2(basicPickle, S22_condition = False):
     allData = pd.read_pickle(basicPickle)
     allData = allData.dropna()                                                       # exclude data where AAA is not formed
 
@@ -80,4 +80,4 @@ def DerivedParameters_f2(basicPickle, S22_condition = False):
 
 
 # MakeDir_pickles()
-# DerivedParameters_f2(PickleData_basic, S22_condition)
+# DerivedParameters_v2(PickleData_basic, S22_condition)
