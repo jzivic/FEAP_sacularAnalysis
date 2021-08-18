@@ -38,8 +38,7 @@ def chosenData_f():
         all_Data = pd.read_pickle(PickleData_all)
         return all_Data
 chosenData = chosenData_f()
-
-
+chosenData = chosenData.sort_values(by=['d_round']) # for legend to be in order
 
 NoPos = ""                                                  # descriptive text for selected diagram height
 pos0 = "for healthy $d$"
@@ -58,7 +57,7 @@ plotData = {
          "L":{"vName":"$L$","unit":"mm","heightLabel":NoPos, "letter":"b)"},
          "S":{"vName":"$S$","unit":"mm$^2$","heightLabel":NoPos, "letter":"a)"},
          "V":{"vName":"$V$","unit":"mm$^3$","heightLabel":NoPos, "letter":"b)"},
-         "T":{"vName":"$T$","unit":"-","heightLabel":NoPos, "letter":"b)"},
+         "T":{"vName":"$T$","unit":"-","heightLabel":NoPos, "letter":"d)"},
 
         # "d0": {"vName": "d", "unit": "mm", "heightLabel": pos0, "letter":")"},
         "d1": {"vName": "$d$", "unit": "mm", "heightLabel": pos1, "letter":"a)"},
@@ -67,18 +66,19 @@ plotData = {
 
         "Ddr0": {"vName":"$Ddr$", "unit":"-", "heightLabel": pos0, "letter":"a)"},
         "Ddr1": {"vName":"$Ddr$", "unit":"-", "heightLabel": pos1,  "letter":"b)"},
-        "Ddr2": {"vName":"$Ddr$", "unit":"-", "heightLabel": pos2,  "letter":"b)"},
-        "Ddr3": {"vName":"$Ddr$", "unit":"-", "heightLabel": pos3,  "letter":"b)"},
+        "Ddr2": {"vName":"$Ddr$", "unit":"-", "heightLabel": pos2,  "letter":"c)"},
+        # "Ddr3": {"vName":"$Ddr$", "unit":"-", "heightLabel": pos3,  "letter":"b)"},
 
         "GRPI0": {"vName":"GRPI", "unit":"cm$^2$", "heightLabel":pos0, "letter":"a)"},
         "GRPI1": {"vName":"GRPI", "unit":"cm$^2$", "heightLabel":pos1, "letter":"c)"},
-        "GRPI2": {"vName":"GRPI", "unit":"cm$^2$", "heightLabel":pos2, "letter":"c)"},
-        "GRPI3": {"vName":"GRPI", "unit":"cm$^2$", "heightLabel":pos3, "letter":"c)"},
+        "GRPI2": {"vName":"GRPI", "unit":"cm$^2$", "heightLabel":pos2, "letter":"e)"},
+        # "GRPI3": {"vName":"GRPI", "unit":"cm$^2$", "heightLabel":pos3, "letter":"c)"},
 
         "NAL0": {"vName":"NAL", "unit":"mm", "heightLabel":pos0, "letter":"b)"},
         "NAL1": {"vName":"NAL", "unit":"mm", "heightLabel":pos1, "letter":"d)"},
-        "NAL2": {"vName":"NAL", "unit":"mm", "heightLabel":pos2, "letter":"d)"},
-        "NAL3": {"vName":"NAL", "unit":"mm", "heightLabel":pos3, "letter":"d)"},
+        "NAL2": {"vName":"NAL", "unit":"mm", "heightLabel":pos2, "letter":"f)"},
+        # "NAL3": {"vName":"NAL", "unit":"mm", "heightLabel":pos3, "letter":"d)"},
+
          }
 
 
@@ -116,6 +116,7 @@ def PlotingAllDiagrams_v2():
                             label = ("$d_\mathrm{in}$ = " + str(chosenData["d_round"][i]) + " mm") if chosenData["d_round"][i] not in rList else "", alpha=0.7)
                 rList.append(chosenData["d_round"][i])
 
+
             fig = plt.gcf()
             plt.grid(color='k', linestyle=':', linewidth=0.5)
             fig.subplots_adjust(bottom=0.18)                        # empty space on the bottom
@@ -133,14 +134,14 @@ def PlotingAllDiagrams_v2():
                 plt.legend(loc='lower right', framealpha=1, labelspacing=0, borderpad=0.1, handletextpad=-0.5,
                            handlelength=1.8, bbox_to_anchor=(1.025, -0.036))
 
-            plt.pause(0.1)
+            plt.pause(0.01)
             plt.draw()
             plt.close()
             fig.savefig(diagramsDir + value + '.png', dpi=300)
 
 
-# MakeDir_diagrams()
-# PlotingAllDiagrams_v2()
+MakeDir_diagrams()
+PlotingAllDiagrams_v2()
 
 
 
