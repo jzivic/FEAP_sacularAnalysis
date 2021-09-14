@@ -4,7 +4,8 @@
 Python scripts made to analyze FEAP simulations. 
 
 Input simulations and processed output data are stored at: https://drive.google.com/drive/folders/13ZakNl0kf7Y5AIffglaOynaulLBCIVw-?usp=sharing.
-When finished, all FEAP simulation results are stored in notepad documents in several different (sub)direcories. 
+
+When finished, all FEAP simulation results are stored in txt documents in several different (sub)direcories. 
 Analysis pogram is diveded into 3 parts that have to be run (Assembling+A/B/C) separately:
 
 In the A_Preprocessing̣->SimulationsData: resultsDir has to be specified (uploaded to drive⨪>inputData). 
